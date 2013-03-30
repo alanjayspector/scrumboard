@@ -7,6 +7,7 @@ class InvalidHourError(CardError) : pass
 class InvalidStoryPointError(CardError) : pass
 class NeedsPOReviewError(CardError) : pass
 class NeedsCodeReviewError(CardError) : pass
+class NeedsQAError(CardError) : pass
 class InvalidPOReviewValueError(CardError) : pass
 class InvalidCardAttribute(CardError) : pass
 class InvalidAccessOfDict(CardError) : pass
@@ -15,7 +16,10 @@ class InvalidAccessOfDict(CardError) : pass
 class Card(dict):
     cardDataMap = {
         "storyPoints"  : ( 1,2,3,5,13,40,100 ),
-        "placeOnBoard" : [ "Backlog", "Research", "Development", "CodeReview", "POReview", "QA", "Done"]
+        "placeOnBoard" : [ "Backlog", "Research", "Development", "CodeReview", "POReview", "QA", "Done"],
+        "QAArgs"       : ( "QA", "needsQA", "hadQA", NeedsQAError),
+        "POReviewArgs"       : ( "POReview", "needsPOReview", "hadPOReview", NeedsPOReviewError),
+        "CodeReviewArgs"     : ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError)
     }
     def __init__(self):
         dict.__init__(self)
@@ -66,33 +70,33 @@ class Card(dict):
 
 
     def __CodeReviewCheck(self,previousPlaceOnBoard, newPlaceOnBoard):
-        if self["needsCodeReview"] :
-            stateIndex = Card.cardDataMap["placeOnBoard"].index("CodeReview")
+            self.__stateCheck(Card.cardDataMap["CodeReviewArgs"], \
+                            previousPlaceOnBoard, newPlaceOnBoard)
+
+
+
+    def __stateCheck(self,stateArgs, previousPlaceOnBoard, newPlaceOnBoard):
+        if self[stateArgs[1]] :
+            stateIndex = Card.cardDataMap["placeOnBoard"].index(stateArgs[0])
             previousIndex = Card.cardDataMap["placeOnBoard"].index(previousPlaceOnBoard)
             newIndex = Card.cardDataMap["placeOnBoard"].index(newPlaceOnBoard)
 
             if newIndex < previousIndex :
-                self["hadCodeReview"] = False
-
-
+                self[stateArgs[2]] = False
+            elif newIndex > previousIndex and \
+                            stateIndex < newIndex and not self[stateArgs[2]] :
+                raise stateArgs[3]
+            elif newIndex == stateIndex :
+                self[stateArgs[2]] = True
 
 
     def __POReviewCheck(self,previousPlaceOnBoard, newPlaceOnBoard):
-        if self["needsPOReview"] and previousPlaceOnBoard == "POReview" :
-            previousIndex = Card.cardDataMap["placeOnBoard"].index(previousPlaceOnBoard)
-            newIndex = Card.cardDataMap["placeOnBoard"].index(newPlaceOnBoard)
-            if newIndex < previousIndex :
-                self["hadPOReview"] = False
-
-
+        self.__stateCheck(Card.cardDataMap["POReviewArgs"], \
+            previousPlaceOnBoard, newPlaceOnBoard)
 
     def __QACheck(self,previousPlaceOnBoard, newPlaceOnBoard):
-        if self["needsQA"] and previousPlaceOnBoard == "QA" :
-            previousIndex = Card.cardDataMap["placeOnBoard"].index(previousPlaceOnBoard)
-            newIndex = Card.cardDataMap["placeOnBoard"].index(newPlaceOnBoard)
-            if newIndex < previousIndex :
-                self["hadQA"] = False
-
+        self.__stateCheck(Card.cardDataMap["QAArgs"], \
+            previousPlaceOnBoard, newPlaceOnBoard)
 
     def __moveCardToBacklog(self,previousPlaceOnBoard):
         dict.__setitem__(self,"placeOnBoard", "Backlog")
@@ -119,23 +123,14 @@ class Card(dict):
 
     def moveCard(self,place=None):
         if place in Card.cardDataMap["placeOnBoard"]:
-            move_card_function = getattr(self,"__moveCardTo%s" % place)
             self.__CodeReviewCheck(self["placeOnBoard"],place)
-            self.__QA(self["placeOnBoard"],place)
+            self.__QACheck(self["placeOnBoard"],place)
             self.__POReviewCheck(self["placeOnBoard"],place)
+            move_card_function = getattr(self,"__moveCardTo%s" % place)
             return move_card_function(self["placeOnBard"])
         else :
             raise InvalidPlaceOnBoardError, \
                 "Valid placements are:%s" % ",".join(Card.cardDataMap["placeOnBoard"])
-
-
-#                if value == "Done" and self["needsPOReview"] and not self["hadPOReview"]:
-#                    raise NeedsPOReviewError, \
-#                         "This card can not be moved to Done till it has had a PO Review"
-#                elif value == "Done" and not self["hadCodeReview"]:
-#                    raise NeedsCodeReviewError, \
-#                         "This card can not be moved to Done till it has had a Code Review"
-
 
     def addANote(self,note,noteWriter):
         pass
