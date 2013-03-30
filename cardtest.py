@@ -14,6 +14,11 @@ class cardPlacementChecks(unittest.TestCase) :
         testCard = Card()
         self.assertRaises(NeedsPOReviewError,testCard.moveCard, "Done")
 
+    def testDoneWithoutQA(self):
+        testCard = Card()
+        self.assertRaises(NeedsQAError,testCard.moveCard, "Done")
+
+
     def testInvalidPlacement(self) :
         testCard = Card()
         self.assertRaises(InvalidPlaceOnBoardError,testCard.moveCard, "HappyTown")
