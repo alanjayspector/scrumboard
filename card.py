@@ -8,6 +8,7 @@ class InvalidStoryPointError(CardError) : pass
 class NeedsPOReviewError(CardError) : pass
 class NeedsCodeReviewError(CardError) : pass
 class NeedsQAError(CardError) : pass
+class InvalidValueError(CardError) : pass
 class InvalidPOReviewValueError(CardError) : pass
 class InvalidCardAttribute(CardError) : pass
 class InvalidAccessOfDict(CardError) : pass
@@ -19,7 +20,10 @@ class Card(dict):
         "placeOnBoard" : [ "Backlog", "Research", "Development", "CodeReview", "POReview", "QA", "Done"],
         "QAArgs"       : ( "QA", "needsQA", "hadQA", NeedsQAError),
         "POReviewArgs"       : ( "POReview", "needsPOReview", "hadPOReview", NeedsPOReviewError),
-        "CodeReviewArgs"     : ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError)
+        "CodeReviewArgs"     : ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError),
+        "hourArgs" : ( "estimatedQAHours", "estimatedDevHours", "spentQAHours", "spentDevHours"),
+        "boolArgs" : ( "needsPOReview", "hadQAReview", "needsQA", "hadQA", "needsCodeReview", "hadCodeReview")
+
     }
     def __init__(self):
         dict.__init__(self)
@@ -33,8 +37,8 @@ class Card(dict):
         self["needsQA"] = True
         self["assignedTo"] = None
         self["description"] = None
-        self["QAHoursSpent"] = 0
-        self["DevHoursSpent"] = 0
+        self["spentQAHours"] = 0
+        self["spentDevHours"] = 0
         self["placeOnBoard"] = "Backlog"
         self["notes"] = []
 
@@ -47,23 +51,21 @@ class Card(dict):
             else:
                 raise InvalidStoryPointError, \
                     "Invalid %s" % key, "Valid story point sizes are:%s" % ",".join(Card.cardDataMap[key])
-
-        elif key in ( "estimatedQAHours", "estimatedDevHours", "QAHoursSpent", "DevHoursSpent"):
+        elif key in Card.cardDataMap["hourArgs"] :
             if isinstance(value, int) is True and value >= 0:
                 dict.__setitem__(self,key,value)
             else:
                 raise InvalidHourError, \
                         "Value must be an int not '%s'" % value
-        elif key in ( "needsPOReview", "needsQA", "needsCodeReview" ):
+        elif key in Card.cardDataMap["boolArgs"] :
             if isinstance(value, bool):
                 dict.__setitem__(self,key,value)
             else:
-                raise InvalidPOReviewValueError ,\
+                raise InvalidValueError ,\
                     "%s must be a bool not '%s" % (key,value)
         elif key == "placeOnBoard":
             self.moveCard(value)
-        elif key in ( "description", "assignedTo", "hadPOReview", \
-                      "notes", "hadQA", "hadCodeReview"):
+        elif key in ( "description", "assignedTo", "notes" ) :
             dict.__setitem__(self,key,value)
         else:
             raise InvalidCardAttribute
@@ -72,8 +74,6 @@ class Card(dict):
     def __CodeReviewCheck(self,previousPlaceOnBoard, newPlaceOnBoard):
             self.__stateCheck(Card.cardDataMap["CodeReviewArgs"], \
                             previousPlaceOnBoard, newPlaceOnBoard)
-
-
 
     def __stateCheck(self,stateArgs, previousPlaceOnBoard, newPlaceOnBoard):
         if self[stateArgs[1]] :
@@ -88,7 +88,6 @@ class Card(dict):
                 raise stateArgs[3]
             elif newIndex == stateIndex :
                 self[stateArgs[2]] = True
-
 
     def __POReviewCheck(self,previousPlaceOnBoard, newPlaceOnBoard):
         self.__stateCheck(Card.cardDataMap["POReviewArgs"], \
