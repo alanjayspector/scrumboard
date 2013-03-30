@@ -22,7 +22,8 @@ class Card(dict):
         "POReviewArgs"       : ( "POReview", "needsPOReview", "hadPOReview", NeedsPOReviewError),
         "CodeReviewArgs"     : ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError),
         "hourArgs" : ( "estimatedQAHours", "estimatedDevHours", "spentQAHours", "spentDevHours"),
-        "boolArgs" : ( "needsPOReview", "hadQAReview", "needsQA", "hadQA", "needsCodeReview", "hadCodeReview")
+        "boolArgs" : ( "needsPOReview", "hadPOReview", "needsQA", "hadQA", \
+                       "needsCodeReview", "hadCodeReview")
 
     }
     def __init__(self):

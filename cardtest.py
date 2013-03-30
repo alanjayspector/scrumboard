@@ -23,6 +23,11 @@ class cardPlacementChecks(unittest.TestCase) :
         testCard = Card()
         self.assertRaises(InvalidPlaceOnBoardError,testCard.moveCard, "HappyTown")
 
+    def testCardHadQA(self):
+        testCard = Card()
+        testCard["needsPOReview"] = False
+        testCard.moveCard("QA")
+        self.assertEqual(True,testCard["hadQA"], "hadQA was not set")
 
 
 
