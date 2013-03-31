@@ -26,6 +26,11 @@ class Card(dict):
                        "needsCodeReview", "hadCodeReview")
 
     }
+    STATE_NAME = 0
+    NEEDS_STATE_NAME = 1
+    HAD_STATE_NAME = 2
+    STATE_EXCEPTION = 3
+
     def __init__(self):
         dict.__init__(self)
         self["storyPoints"] = 1
@@ -79,18 +84,18 @@ class Card(dict):
                             previousPlaceOnBoard, newPlaceOnBoard)
 
     def __stateCheck(self,stateArgs, previousPlaceOnBoard, newPlaceOnBoard):
-        if self[stateArgs[1]] :
-            stateIndex = Card.cardDataMap["placeOnBoard"].index(stateArgs[0])
+        if self[stateArgs[Card.NEEDS_STATE_NAME]] :
+            stateIndex = Card.cardDataMap["placeOnBoard"].index(stateArgs[Card.STATE_NAME])
             previousIndex = Card.cardDataMap["placeOnBoard"].index(previousPlaceOnBoard)
             newIndex = Card.cardDataMap["placeOnBoard"].index(newPlaceOnBoard)
 
             if newIndex < previousIndex :
-                self[stateArgs[2]] = False
+                self[stateArgs[Card.HAD_STATE_NAME]] = False
             elif newIndex > previousIndex and \
-                            stateIndex < newIndex and not self[stateArgs[2]] :
-                raise stateArgs[3]
+                            stateIndex < newIndex and not self[stateArgs[Card.HAD_STATE_NAME]] :
+                raise stateArgs[Card.STATE_EXCEPTION]
             elif newIndex == stateIndex :
-                self[stateArgs[2]] = True
+                self[stateArgs[Card.HAD_STATE_NAME]] = True
 
     def __POReviewCheck(self,previousPlaceOnBoard, newPlaceOnBoard):
         self.__stateCheck(Card.cardDataMap["POReviewArgs"], \
@@ -114,7 +119,6 @@ class Card(dict):
         pass
 
 # timeLeftInSprint < (EstimatedDevHours - DevHoursSpent)
-
     def isCardRed(self,timeLeftInSprint):
         pass
 
