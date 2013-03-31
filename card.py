@@ -35,6 +35,7 @@ class Card(dict):
         self["hadPOReview"] = False
         self["hadCodeReview"] = False
         self["needsCodeReview"] = True
+        self["hadQA"] = False
         self["needsQA"] = True
         self["assignedTo"] = None
         self["description"] = None
@@ -100,7 +101,6 @@ class Card(dict):
             previousPlaceOnBoard, newPlaceOnBoard)
 
     def __moveCardToBacklog(self,previousPlaceOnBoard):
-        print "I am here"
         dict.__setitem__(self,"placeOnBoard", "Backlog")
 
     def __moveCardToResearch(self,previousPlaceOnBoard):
@@ -111,7 +111,6 @@ class Card(dict):
 
     def __moveCardToCodeReview(self,previousPlaceOnBoard):
         dict.__setitem__(self,"placeOnBoard", "CodeReview")
-        pass
 
     def __moveCardToPOReview(self,previousPlaceOnBoard):
         dict.__setitem__(self,"placeOnBoard", "POReview")

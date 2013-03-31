@@ -12,10 +12,13 @@ class cardPlacementChecks(unittest.TestCase) :
 
     def testDoneWithoutPoReview(self):
         testCard = Card()
+        testCard["needsCodeReview"] = False
+        testCard["needsQA"]  = False
         self.assertRaises(NeedsPOReviewError,testCard.moveCard, "Done")
 
     def testDoneWithoutQA(self):
         testCard = Card()
+        testCard["needsCodeReview"] = False
         self.assertRaises(NeedsQAError,testCard.moveCard, "Done")
 
 
@@ -26,6 +29,7 @@ class cardPlacementChecks(unittest.TestCase) :
     def testCardHadQA(self):
         testCard = Card()
         testCard["needsPOReview"] = False
+        testCard["needsCodeReview"] = False
         testCard.moveCard("QA")
         self.assertEqual(True,testCard["hadQA"], "hadQA was not set")
 
