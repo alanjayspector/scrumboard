@@ -40,7 +40,8 @@ class Card(dict):
         self["description"] = None
         self["spentQAHours"] = 0
         self["spentDevHours"] = 0
-        self["placeOnBoard"] = "Backlog"
+        #use dict _setitem_ since this is an __init__ and doesnt need to follow our workflow
+        dict.__setitem__(self,"placeOnBoard","Backlog")
         self["notes"] = []
 
 
@@ -99,6 +100,7 @@ class Card(dict):
             previousPlaceOnBoard, newPlaceOnBoard)
 
     def __moveCardToBacklog(self,previousPlaceOnBoard):
+        print "I am here"
         dict.__setitem__(self,"placeOnBoard", "Backlog")
 
     def __moveCardToResearch(self,previousPlaceOnBoard):
@@ -121,7 +123,7 @@ class Card(dict):
         dict.__setitem__(self,"placeOnBoard", "Done")
 
 
-    def moveCard(self,place=None):
+    def moveCard(self,place):
         if place in Card.cardDataMap["placeOnBoard"]:
             self.__CodeReviewCheck(self["placeOnBoard"],place)
             self.__QACheck(self["placeOnBoard"],place)
