@@ -100,35 +100,12 @@ class Card(dict):
         self.__stateCheck(Card.cardDataMap["QAArgs"], \
             previousPlaceOnBoard, newPlaceOnBoard)
 
-    def __moveCardToBacklog(self,previousPlaceOnBoard):
-        dict.__setitem__(self,"placeOnBoard", "Backlog")
-
-    def __moveCardToResearch(self,previousPlaceOnBoard):
-        dict.__setitem__(self,"placeOnBoard", "Research")
-
-    def __moveCardToDevelopment(self,previousPlaceOnBoard):
-        dict.__setitem__(self,"placeOnBoard", "Development")
-
-    def __moveCardToCodeReview(self,previousPlaceOnBoard):
-        dict.__setitem__(self,"placeOnBoard", "CodeReview")
-
-    def __moveCardToPOReview(self,previousPlaceOnBoard):
-        dict.__setitem__(self,"placeOnBoard", "POReview")
-
-    def __moveCardToQA(self,previousPlaceOnBoard):
-        dict.__setitem__(self,"placeOnBoard", "QA")
-
-    def __moveCardToDone(self,previousPlaceOnBoard):
-        dict.__setitem__(self,"placeOnBoard", "Done")
-
-
     def moveCard(self,place):
         if place in Card.cardDataMap["placeOnBoard"]:
             self.__CodeReviewCheck(self["placeOnBoard"],place)
             self.__QACheck(self["placeOnBoard"],place)
             self.__POReviewCheck(self["placeOnBoard"],place)
-            move_card_function = getattr(self,"__moveCardTo%s" % place)
-            return move_card_function(self["placeOnBard"])
+            dict.__setitem__(self, "placeOnBoard", place)
         else :
             raise InvalidPlaceOnBoardError, \
                 "Valid placements are:%s" % ",".join(Card.cardDataMap["placeOnBoard"])
