@@ -4,24 +4,25 @@ from UserDict import UserDict
 
 
 class ScrumBoard(UserDict):
-
     def __init__(self):
         UserDict.__init__(self)
         self["cards"] = []
         self["people"] = []
-        self["sprintStartDate"] = None
-        self["sprintEndDate"] = None
-        self["sprintHoursPerDay"] = 4
+        self["startDate"] = None
+        self["endDate"] = None
+        self["HoursPerDay"] = 4
 
 
-
-    def placeCard(self,card,location):
+    def placeCard(self, card, location):
+        pass
 
 
     def totalQAHours(self):
+        pass
 
 
     def totalDevHours(self):
+        pass
 
 
 

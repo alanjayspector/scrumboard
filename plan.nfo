@@ -8,12 +8,13 @@ Phase I
     The program should simulate the following:
         Create a scrumboard
         Create Cards
-        Create People
-        Assign People to Cards
+        Create Person
+        Assign Person to Cards
         Start Sprint
-        Assign People to Cards
+        Assign Person to Cards
         Move Cards on Board to different places
         Display Status on each Card on the Board
+        simulate days passing to calculate statuses on Cards
         End Sprint
 
 3. learn how to use MySQL with Python
@@ -24,9 +25,30 @@ Phase I
     Test generating multiple instances of scrumboards and switching between them while doing the actions listed in #2
 8.  learn Django
 9.  port classes over to django for the purpose of creating restful services on each entity type, tests are required
-10. add authentication layer and test
-11. add authorization layer and test
 
 Phase II
 
-1. Add "note" class which
+1. add authentication layer and test
+2. add authorization layer and test
+3. create "note" class which will be used on both cards (additional info that is datetime based) and Person (auditing), tests
+4. incorporate note class into Person (audit mechanism so need to update methods to use this) and Cards
+5. Person web interfaces (authentication, crud and login/logout), jasmine/sinon tests
+6. Card web interfaces ( authentication, crud), jasmine/sinon tests
+7. Scrumboard web interfaces ( authentication, crud + display ) jasmine/sinon tests
+
+Phase III
+
+1. Reporting functionality via scrumboard class
+    Velocity for a sprint, velocity of person,
+    # of slipped cards,
+    reporting on persons (cards completed on time, completed early, did not complete in sprint, number of story points completed)
+2. Add restful s ervices for reporting
+3. Web interface for reports
+
+Phase IV.
+
+1. learn iOS
+2. iOS client - features TBD
+
+
+
