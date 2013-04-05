@@ -1,0 +1,32 @@
+Phase I
+
+
+1. Create Classes and Tests for classes
+    Card, Person, Scrumboard
+
+2. Create command line program that will interact with a scrumboard instance
+    The program should simulate the following:
+        Create a scrumboard
+        Create Cards
+        Create People
+        Assign People to Cards
+        Start Sprint
+        Assign People to Cards
+        Move Cards on Board to different places
+        Display Status on each Card on the Board
+        End Sprint
+
+3. learn how to use MySQL with Python
+4. setup up DDL for project
+5. add datastore backing for project
+6. test backing
+7. Revisit command line program but now instead of it simulating a scrumboard data should be persistent
+    Test generating multiple instances of scrumboards and switching between them while doing the actions listed in #2
+8.  learn Django
+9.  port classes over to django for the purpose of creating restful services on each entity type, tests are required
+10. add authentication layer and test
+11. add authorization layer and test
+
+Phase II
+
+1. Add "note" class which
