@@ -118,6 +118,9 @@ class Card(dict):
     def addANote(self,note,noteWriter):
         pass
 
+    def assignPerson(self,person):
+        pass
+
 # timeLeftInSprint < (EstimatedDevHours - DevHoursSpent)
     def isCardRed(self,timeLeftInSprint):
         pass
