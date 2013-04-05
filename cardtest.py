@@ -7,6 +7,28 @@ from card import *
 
 
 
+class cardColorChecks(unittest.TestCase) :
+
+    def isCardRed(self):
+        testCard = Card()
+        testCard["estimatedDevHours"] = 8
+        testCard["spentDevHours"] = 4
+        self.assertEqual(True, testCard.isCardRed(6), "Card should be red")
+
+    def isCardGreen(self):
+        testCard = Card()
+        testCard["estimatedDevHours"] = 8
+        testCard["spentDevHours"] = 4
+        self.assertEqual(True, self.isCardGreen(10), "Card should be green")
+
+    def isCardYellow(self):
+        testCard = Card()
+        testCard["estimatedDevHours"] = 4
+        testCard["spentDevHours"] = 9
+        self.assertEqual(True, self.isCardGreen(10), "Card should be yellow")
+
+
+
 class cardPlacementChecks(unittest.TestCase) :
 
 

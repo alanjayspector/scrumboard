@@ -21,7 +21,7 @@ class Card(dict):
         "QAArgs"       : ( "QA", "needsQA", "hadQA", NeedsQAError),
         "POReviewArgs"       : ( "POReview", "needsPOReview", "hadPOReview", NeedsPOReviewError),
         "CodeReviewArgs"     : ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError),
-        "hourArgs" : ( "estimatedQAHours", "estimatedDevHours", "spentQAHours", "spentDevHours"),
+        "hourArgs" : ( "estimatedQAHours", "estimatedDevHours",  "spentDevHours"),
         "boolArgs" : ( "needsPOReview", "hadPOReview", "needsQA", "hadQA", \
                        "needsCodeReview", "hadCodeReview")
 
@@ -44,7 +44,6 @@ class Card(dict):
         self["needsQA"] = True
         self["assignedTo"] = None
         self["description"] = None
-        self["spentQAHours"] = 0
         self["spentDevHours"] = 0
         #use dict _setitem_ since this is an __init__ and doesnt need to follow our workflow
         dict.__setitem__(self,"placeOnBoard","Backlog")
@@ -118,20 +117,39 @@ class Card(dict):
     def addANote(self,note,noteWriter):
         pass
 
-    def assignPerson(self,person):
-        pass
-
-# timeLeftInSprint < (EstimatedDevHours - DevHoursSpent)
     def isCardRed(self,timeLeftInSprint):
-        pass
+        if self["placeOnBoard"] == "Done":
+            return False
 
-# (DevHoursSpent > EstimatedDevHours)
-    def isCardYellow(self):
-        pass
+        evaluatedHours = ( self["estimatedDevHours"] - self["spentDevHours"]) \
+                if self["estimatedDevHours"] > self["spentDevHours"] else self["spentDevHours"]
 
-#timeLeftInSprint >= ( EstimatedDevHours - DevHoursSpent)
+        if timeLeftInSprint <= evaluatedHours :
+            return True
+        else:
+            return False
+
+    def isCardYellow(self,timeLeftInSprint):
+        if self["placeOnBoard"] == "Done":
+            return False
+        elif self["spentDevHours"] >= self["estimatedDevHours"] :
+            return True
+
+
     def isCardGreen(self, timeLeftInSprint):
-        pass
+        if self["placeOnBoard"] == "Done":
+            return True
+        elif self.isCardYellow(timeLeftInSprint) :
+            return False
+        elif self.isCardRed(timeLeftInSprint) :
+            return False
+        else:
+            return True
+
+
+
+
+
 
 
 
