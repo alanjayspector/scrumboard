@@ -4,7 +4,6 @@ from UserDict import UserDict
 
 
 class Person(UserDict):
-
     def __init__(self):
         UserDict.__init__(self)
         self["name"] = None
@@ -12,7 +11,6 @@ class Person(UserDict):
         self["cardsAssignedTo"] = []
 
 
-    def assignCard(self,card):
 
 
 

@@ -94,7 +94,9 @@ class Card(dict):
                     "%s must be a bool not '%s" % (key, value)
         elif key == "placeOnBoard":
             self.moveCard(value)
-        elif key in ( "description", "assignedTo", "notes" ):
+        elif key in ( "description", "assignedTo"  ):
+            dict.__setitem__(self, key, value)
+        elif key in Card.cardDataMap["dateArgs"]:
             dict.__setitem__(self, key, value)
         else:
             raise InvalidCardAttribute
