@@ -1,7 +1,7 @@
 __author__ = 'alan'
 
 
-class Person():
+class Person(object):
     def __init__(self):
         self.firstName = None
         self.lastName = None
@@ -9,20 +9,6 @@ class Person():
         self.estimatedSprintHours = 0
         self.availableSprintHoursLeft = 0
 
-    def firstName(self, firstName):
-        pass
-
-    def lastName(self, lastName):
-        pass
-
-    def avatar(self, avatar):
-        pass
-
-    def estimatedSprintHours(self, estimatedSprintHours):
-        pass
-
-    def availableSprintHours(self, availableSprintHours):
-        pass
 
 
 
