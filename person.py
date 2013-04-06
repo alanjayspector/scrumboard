@@ -3,12 +3,18 @@ __author__ = 'alan'
 from UserDict import UserDict
 
 
-class Person(UserDict):
+class Person():
     def __init__(self):
-        UserDict.__init__(self)
-        self["name"] = None
-        self["availableHoursInSprint"] = 0
-        self["cardsAssignedTo"] = []
+        self.firstName = None
+        self.lastName = None
+        self.avatar = None
+        self.estimatedSprintHours = 0
+        self.availableSprintHoursLeft = 0
+
+
+
+
+
 
 
 

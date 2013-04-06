@@ -60,8 +60,8 @@ class Card(dict):
         dict.__init__(self)
         self["storyPoints"] = 1
         self["createdDate"] = datetime.datetime.now(pytz.utc).strftime(utils.DATE_FORMAT)
-        self["startDate"] = ""
-        self["completedDate"] = ""
+        self["startDate"] = None
+        self["completedDate"] = None
         self["estimatedQAHours"] = 0
         self["estimatedDevHours"] = 0
         self["needsPOReview"] = True
