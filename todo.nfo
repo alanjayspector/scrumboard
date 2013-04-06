@@ -1,3 +1,3 @@
 1. check for datetime types in python and datetime bultin functions or packages  DONE!
 2. had fun with subclasses dict for card.py but it maybe time move this from being a dict subclass to just an class with attributes
-3. make datetime test on cardtest actually mean something3. make datetime test on cardtest actually mean something3. make datetime test on cardtest actually mean something
+3. make datetime test on cardtest actually mean something

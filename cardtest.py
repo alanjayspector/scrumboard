@@ -15,10 +15,12 @@ class datetimeChecks(unittest.TestCase):
         easternTZ = pytz.timezone("US/Eastern")
         westernTZ = pytz.timezone("US/Pacific")
         centralTZ = pytz.timezone("US/Central")
+        utcTZ = pytz.timezone("UTC")
         print dateString
         print utils.getLocalizeDateTime(dateString, easternTZ)
         print utils.getLocalizeDateTime(dateString, westernTZ)
         print utils.getLocalizeDateTime(dateString, centralTZ)
+        print utils.getLocalizeDateTime(dateString, utcTZ)
 
         return True
 
