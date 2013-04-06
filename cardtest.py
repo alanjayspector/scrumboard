@@ -8,12 +8,14 @@ import utils
 
 
 class datetimeChecks(unittest.TestCase):
+    #need to turn this into an actual test... first must sleeeeeeeep
     def testCreatedDate(self):
         testCard = Card()
         dateString = testCard["createdDate"]
         easternTZ = pytz.timezone("US/Eastern")
         westernTZ = pytz.timezone("US/Pacific")
         centralTZ = pytz.timezone("US/Central")
+        print dateString
         print utils.getLocalizeDateTime(dateString, easternTZ)
         print utils.getLocalizeDateTime(dateString, westernTZ)
         print utils.getLocalizeDateTime(dateString, centralTZ)
