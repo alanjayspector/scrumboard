@@ -1,7 +1,5 @@
 __author__ = 'alan'
 
-from UserDict import UserDict
-
 
 class Person():
     def __init__(self):
@@ -10,6 +8,23 @@ class Person():
         self.avatar = None
         self.estimatedSprintHours = 0
         self.availableSprintHoursLeft = 0
+
+    def firstName(self, firstName):
+        pass
+
+    def lastName(self, lastName):
+        pass
+
+    def avatar(self, avatar):
+        pass
+
+    def estimatedSprintHours(self, estimatedSprintHours):
+        pass
+
+    def availableSprintHours(self, availableSprintHours):
+        pass
+
+
 
 
 
