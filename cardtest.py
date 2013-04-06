@@ -3,6 +3,22 @@ __author__ = 'alan'
 import unittest
 import card
 from card import *
+import pytz
+import utils
+
+
+class datetimeChecks(unittest.TestCase):
+    def testCreatedDate(self):
+        testCard = Card()
+        dateString = testCard["createdDate"]
+        easternTZ = pytz.timezone("US/Eastern")
+        westernTZ = pytz.timezone("US/Pacific")
+        centralTZ = pytz.timezone("US/Central")
+        print utils.getLocalizeDateTime(dateString, easternTZ)
+        print utils.getLocalizeDateTime(dateString, westernTZ)
+        print utils.getLocalizeDateTime(dateString, centralTZ)
+
+        return True
 
 
 class cardColorChecks(unittest.TestCase):

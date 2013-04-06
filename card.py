@@ -1,5 +1,9 @@
 __author__ = 'alan'
 
+import datetime
+import pytz
+import utils
+
 
 class CardError(Exception): pass
 
@@ -55,6 +59,7 @@ class Card(dict):
     def __init__(self):
         dict.__init__(self)
         self["storyPoints"] = 1
+        self["createdDate"] = datetime.datetime.now(pytz.utc).strftime(utils.DATE_FORMAT)
         self["startDate"] = ""
         self["completedDate"] = ""
         self["estimatedQAHours"] = 0
@@ -70,7 +75,6 @@ class Card(dict):
         self["spentDevHours"] = 0
         #use dict _setitem_ since this is an __init__ and doesnt need to follow our workflow
         dict.__setitem__(self, "placeOnBoard", "Backlog")
-
 
     def __setitem__(self, key, value):
 
