@@ -159,6 +159,8 @@ class Card(dict):
             return False
         elif self["spentDevHours"] >= self["estimatedDevHours"]:
             return True
+        else:
+            return False
 
 
     def isCardGreen(self, timeLeftInSprint):
