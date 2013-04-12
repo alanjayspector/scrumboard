@@ -12,4 +12,13 @@ class Sprint(object):
         pass
 
 
+    def createCard(self):
+        pass
+
+    def createScrumboard(self):
+        pass
+
+    def createPerson(self):
+        pass
+
 
