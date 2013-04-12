@@ -8,5 +8,8 @@ class ScrumBoard(object):
         self.startDate = None
         self.endDate = None
         self.hoursPerDay = 4
+        self.sprintName = None
+        self.team = None
+
 
 
