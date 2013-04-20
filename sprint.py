@@ -1,5 +1,9 @@
 __author__ = 'alanspector'
 
+import card
+import person
+import scrumboard
+
 
 class Sprint(object):
     def __init__(self):
