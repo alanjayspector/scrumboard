@@ -1,6 +1,6 @@
 1. check for datetime types in python and datetime bultin functions or packages  DONE!
 2. had fun with subclasses dict for card.py but it maybe time move this from being a dict subclass to just an class with attributes
 3. make datetime test on cardtest actually mean something
-4. generators for cardID, personID, sprintID, scrumboardID
+4. generators for cardID, personID, sprintID, scrumboardID -- Done! Hello @staticmethod
 5. should scrumboard.cards and scrumboard.people be associated arrays? Need to check best practices for this
 

@@ -45,7 +45,7 @@ class Card(dict):
         "QAArgs": ( "QA", "needsQA", "hadQA", NeedsQAError),
         "POReviewArgs": ( "POReview", "needsPOReview", "hadPOReview", NeedsPOReviewError),
         "CodeReviewArgs": ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError),
-        "hourArgs": ( "estimatedQAHours", "estimatedDevHours", "spentDevHours"),
+        "intArgs": ( "estimatedQAHours", "estimatedDevHours", "spentDevHours", "cardID"),
         "boolArgs": ( "needsPOReview", "hadPOReview", "needsQA", "hadQA", \
                       "needsCodeReview", "hadCodeReview"),
         "dateArgs": ( "createdDate", "startDate", "completedDate")
@@ -55,9 +55,11 @@ class Card(dict):
     NEEDS_STATE_NAME = 1
     HAD_STATE_NAME = 2
     STATE_EXCEPTION = 3
+    IDctr = 0
 
     def __init__(self):
         dict.__init__(self)
+        self["cardID"] = Card.getNextID()
         self["storyPoints"] = 1
         self["createdDate"] = datetime.datetime.now(pytz.utc).strftime(utils.DATE_FORMAT)
         self["startDate"] = None
@@ -78,6 +80,11 @@ class Card(dict):
         #use dict _setitem_ since this is an __init__ and doesnt need to follow our workflow
         dict.__setitem__(self, "placeOnBoard", "Backlog")
 
+    @staticmethod
+    def getNextID():
+        Card.IDctr += 1
+        return Card.IDctr
+
     def __setitem__(self, key, value):
 
         if key == "storyPoints":
@@ -86,7 +93,7 @@ class Card(dict):
             else:
                 raise InvalidStoryPointError, \
                     "Invalid %s" % key, "Valid story point sizes are:%s" % ",".join(Card.cardDataMap[key])
-        elif key in Card.cardDataMap["hourArgs"]:
+        elif key in Card.cardDataMap["intArgs"]:
             if isinstance(value, int) is True and value >= 0:
                 dict.__setitem__(self, key, value)
             else:

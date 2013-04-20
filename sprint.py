@@ -6,7 +6,10 @@ import scrumboard
 
 
 class Sprint(object):
+    IDctr = 0
+
     def __init__(self):
+        self.sprintID = Sprint.getNextID()
         self.startDate = None
         self.endDate = None
         self.hoursPerDay = 4
@@ -14,6 +17,12 @@ class Sprint(object):
         self.team = None
 
         pass
+
+
+    def getNextID():
+        Sprint.IDctr += 1
+        return Sprint.IDctr
+
 
     def iterateDay(self):
         pass
