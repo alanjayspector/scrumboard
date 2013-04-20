@@ -70,9 +70,11 @@ class Card(dict):
         self["needsCodeReview"] = True
         self["hadQA"] = False
         self["needsQA"] = True
-        self["assignedTo"] = None
         self["description"] = None
         self["spentDevHours"] = 0
+        self["developer"] = None
+        self["qa"] = None
+
         #use dict _setitem_ since this is an __init__ and doesnt need to follow our workflow
         dict.__setitem__(self, "placeOnBoard", "Backlog")
 
@@ -98,7 +100,7 @@ class Card(dict):
                     "%s must be a bool not '%s" % (key, value)
         elif key == "placeOnBoard":
             self.moveCard(value)
-        elif key in ( "description", "assignedTo"  ):
+        elif key in ( "description", "developer", "qa"  ):
             dict.__setitem__(self, key, value)
         elif key in Card.cardDataMap["dateArgs"]:
             dict.__setitem__(self, key, value)

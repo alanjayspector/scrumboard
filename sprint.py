@@ -11,7 +11,6 @@ class Sprint(object):
     def assignPersonToCard(self):
         pass
 
-
     def createCard(self):
         pass
 
@@ -20,5 +19,12 @@ class Sprint(object):
 
     def createPerson(self):
         pass
+
+    def startSprint(self):
+        pass
+
+    def endSprint(self):
+        pass
+
 
 

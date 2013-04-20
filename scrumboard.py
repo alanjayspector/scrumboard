@@ -13,3 +13,14 @@ class ScrumBoard(object):
 
 
 
+    def reportGreenCards(self):
+        pass
+
+    def reportYellowCards(self):
+        pass
+
+    def reportRedCards(self):
+        pass
+
+
+
