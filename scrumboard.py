@@ -5,21 +5,15 @@ class ScrumBoard(object):
     def __init__(self):
         self.cards = []
         self.people = []
-        self.startDate = None
-        self.endDate = None
-        self.hoursPerDay = 4
-        self.sprintName = None
-        self.team = None
+        self.sprint = None
 
-
-
-    def reportGreenCards(self):
+    def reportGreenCards(self,timeLeftInSprint):
         pass
 
-    def reportYellowCards(self):
+    def reportYellowCards(self,timeLeftInSprint):
         pass
 
-    def reportRedCards(self):
+    def reportRedCards(self,timeLeftInSprint):
         pass
 
 
