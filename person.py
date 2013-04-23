@@ -21,6 +21,11 @@ class Person(object):
         Person.IDctr += 1
         return Person.IDctr
 
+    def __eq__(self, other):
+        return self.personID == other.personID
+
+    def __hash__(self):
+        return hash(self.personID)
 
 
 

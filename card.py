@@ -45,7 +45,7 @@ class Card(dict):
         "QAArgs": ( "QA", "needsQA", "hadQA", NeedsQAError),
         "POReviewArgs": ( "POReview", "needsPOReview", "hadPOReview", NeedsPOReviewError),
         "CodeReviewArgs": ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError),
-        "intArgs": ( "estimatedQAHours", "estimatedDevHours", "spentDevHours", "cardID"),
+        "intArgs": ( "estimatedQAHours", "estimatedDevHours", "spentDevHours"),
         "boolArgs": ( "needsPOReview", "hadPOReview", "needsQA", "hadQA", \
                       "needsCodeReview", "hadCodeReview"),
         "dateArgs": ( "createdDate", "startDate", "completedDate")
@@ -59,7 +59,6 @@ class Card(dict):
 
     def __init__(self):
         dict.__init__(self)
-        self["cardID"] = Card.getNextID()
         self["storyPoints"] = 1
         self["createdDate"] = datetime.datetime.now(pytz.utc).strftime(utils.DATE_FORMAT)
         self["startDate"] = None
@@ -79,6 +78,13 @@ class Card(dict):
 
         #use dict _setitem_ since this is an __init__ and doesnt need to follow our workflow
         dict.__setitem__(self, "placeOnBoard", "Backlog")
+        dict.__setitem__(self, "cardID", Card.getNextID())
+
+    def __eq__(self, other):
+        return self["cardID"] == other["cardID"]
+
+    def __hash__(self):
+        return hash(self["cardID"])
 
     @staticmethod
     def getNextID():
