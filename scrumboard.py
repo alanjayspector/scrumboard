@@ -8,7 +8,7 @@ class ScrumBoard(object):
         self.scrumBoardID = ScrumBoard.getNextID()
         self.cards = []
         self.people = []
-        self.sprint = None
+        self.sprintID = None
 
     @staticmethod
     def getNextID():
@@ -23,6 +23,15 @@ class ScrumBoard(object):
 
     def reportRedCards(self,timeLeftInSprint):
         return [ card for card in self.cards if card.isCardRed(timeLeftInSprint) ]
+
+    def getCardsInPlace(self,place):
+        pass
+
+    def getCardsAssignedToPerson(self,personID):
+        pass
+
+
+
 
 
 

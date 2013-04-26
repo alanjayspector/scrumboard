@@ -27,6 +27,9 @@ class Sprint(object):
     def iterateDay(self):
         pass
 
+    def assignPersonToScrumboard(self):
+        pass
+
     def assignPersonToCard(self):
         pass
 
