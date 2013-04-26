@@ -10,12 +10,11 @@ class Person(object):
         self.firstName = None
         self.lastName = None
         self.avatar = None
-        self.currentSprint = None
-        self.pastCards = []
-        self.currentCards = []
+        self.currentSprintID = None
+        #keys will be sprintIDs, values will be lists of cards
+        self.cards = {}
         self.estimatedSprintHours = 0
         self.spentSprintHours = 0
-        self.notes = []
 
     @staticmethod
     def getNextID():
@@ -38,6 +37,9 @@ class Person(object):
         pass
 
     def getVelocityForCurrentSprint(self):
+        pass
+
+    def getVelocityForPastSprint(self,sprintID):
         pass
 
 
