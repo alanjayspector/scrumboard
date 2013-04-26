@@ -22,25 +22,48 @@ class Person(object):
         return Person.IDctr
 
     def getUnallocatedHoursInSprint(self):
-        pass
+        totalEstimatedHours = self.getAllocatedHoursInSprint()
+        return self.estimatedSprintHours - totalEstimatedHours
 
     def getAllocatedHoursInSprint(self):
-        pass
+        cards = self.cards[self.currentSprintID]
+        totalEstimatedHours = 0
+        if self.isADeveloper:
+            for card in cards:
+                totalEstimatedHours += card["estimatedDevHours"]
+        else:
+            for card in cards:
+                totalEstimatedHours += card["estimatedQAHours"]
+
+        return totalEstimatedHours
 
     def getCurrentRedCards(self,timeLeftInSprint):
-        pass
+        cards = self.cards[self.currentSprintID]
+        return [ card for card in cards if card.isCardRed(timeLeftInSprint)]
 
     def getCurrentGreenCards(self,timeLeftInSprint):
-        pass
+        cards = self.cards[self.currentSprintID]
+        return [ card for card in cards if card.isCardGreen(timeLeftInSprint)]
 
     def getCurrentYellowCards(self, timeLeftInSprint):
-        pass
+        cards = self.cards[self.currentSprintID]
+        return [ card for card in cards if card.isCardYellow(timeLeftInSprint)]
 
     def getVelocityForCurrentSprint(self):
-        pass
+        return self.getVelocityForSprint(self.currentSprintID)
 
-    def getVelocityForPastSprint(self,sprintID):
-        pass
+    def getVelocityForSprint(self,sprintID):
+        cards = self.cards[sprintID]
+        doneStoryPoints = 0
+        outstandingStoryPoints = 0
+
+        for card in cards:
+            if card["placeOnBoard"] == "Done":
+                doneStoryPoints += card["storyPoints"]
+            else:
+                outstandingStoryPoints += cards["storyPoints"]
+
+        return (doneStoryPoints, outstandingStoryPoints )
 
 
 

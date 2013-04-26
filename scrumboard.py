@@ -33,6 +33,17 @@ class ScrumBoard(object):
     def getPerson(self,personID):
         pass
 
+    def getCard(self,cardID):
+        pass
+
+    def getTotalStoryPoints(self):
+        pass
+
+    def getVelocity(self):
+        pass
+
+
+
 
 
 

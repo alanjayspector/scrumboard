@@ -1,8 +1,7 @@
 __author__ = 'alanspector'
 
-import card
-import person
 import scrumboard
+from scrumboard import *
 
 
 class Sprint(object):
@@ -15,6 +14,7 @@ class Sprint(object):
         self.hoursPerDay = 4
         self.name = None
         self.team = None
+        self.scrumBoard = None
 
         pass
 
