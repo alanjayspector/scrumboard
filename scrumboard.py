@@ -16,13 +16,13 @@ class ScrumBoard(object):
         return ScrumBoard.IDctr
 
     def reportGreenCards(self,timeLeftInSprint):
-        pass
+        return [ card for card in self.cards if card.isCardGreen(timeLeftInSprint) ]
 
     def reportYellowCards(self,timeLeftInSprint):
-        pass
+        return [ card for card in self.cards if card.isCardYellow(timeLeftInSprint) ]
 
     def reportRedCards(self,timeLeftInSprint):
-        pass
+        return [ card for card in self.cards if card.isCardRed(timeLeftInSprint) ]
 
 
 
