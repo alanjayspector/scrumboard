@@ -7,6 +7,19 @@ import pytz
 import utils
 
 
+class cardColorChecks(unittest.TestCase):
+
+    def testYellowCards(self):
+        pass
+
+    def testGreenCards(self):
+        pass
+
+    def testRedCards(self):
+        pass
+
+
+
 class datetimeChecks(unittest.TestCase):
     #need to turn this into an actual test... first must sleeeeeeeep
 

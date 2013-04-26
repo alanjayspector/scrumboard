@@ -37,6 +37,7 @@ class InvalidCardAttribute(CardError): pass
 
 class InvalidAccessOfDict(CardError): pass
 
+class InvalidConstructorParams(CardError): pass
 
 class Card(dict):
     cardDataMap = {
@@ -56,25 +57,38 @@ class Card(dict):
     HAD_STATE_NAME = 2
     STATE_EXCEPTION = 3
     IDctr = 0
+    PARAMS = {
+        "storyPoints": 1,
+        "createdDate": datetime.datetime.now(pytz.utc).strftime(utils.DATE_FORMAT),
+        "startDate": None,
+        "estimatedQAHours": 0,
+        "estimatedDevHours": 0,
+        "needsPOReview": True,
+        "hadPOReview": False,
+        "hadCodeReview": False,
+        "needsCodeReview": True,
+        "hadQA":False,
+        "needsQA": True,
+        "description": None,
+        "spentDevHours": 0,
+        "developer": None,
+        "qa" : None
+    }
 
-    def __init__(self):
+    def __init__(self, params = None):
         dict.__init__(self)
-        self["storyPoints"] = 1
-        self["createdDate"] = datetime.datetime.now(pytz.utc).strftime(utils.DATE_FORMAT)
-        self["startDate"] = None
-        self["completedDate"] = None
-        self["estimatedQAHours"] = 0
-        self["estimatedDevHours"] = 0
-        self["needsPOReview"] = True
-        self["hadPOReview"] = False
-        self["hadCodeReview"] = False
-        self["needsCodeReview"] = True
-        self["hadQA"] = False
-        self["needsQA"] = True
-        self["description"] = None
-        self["spentDevHours"] = 0
-        self["developer"] = None
-        self["qa"] = None
+        if params is not None:
+            if not isinstance(params,dict):
+                raise InvalidConstructorParams, "params are not a dict"
+            else:
+                for key in Card.PARAMS.viewkeys() & params.viewkeys():
+                    self[key] = params[key]
+                for key in Card.PARAMS.viewkeys() - params.viewkeys():
+                    self[key] = Card.PARAMS[key]
+        else:
+            for (key,value) in Card.PARAMS.items():
+                self[key] = value
+
 
         #use dict _setitem_ since this is an __init__ and doesnt need to follow our workflow
         dict.__setitem__(self, "placeOnBoard", "Backlog")
