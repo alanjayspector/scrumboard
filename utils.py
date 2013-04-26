@@ -13,3 +13,8 @@ def getLocalizeDateTime(date_string, tz):
     loc_dt = utc_dt.astimezone(tz)
     return loc_dt.strftime(DATE_FORMAT)
 
+def getNumberOfHoursBasedUponDates(startDate,EndDate, hoursPerDay) :
+    pass
+
+
+
