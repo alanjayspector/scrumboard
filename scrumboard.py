@@ -30,6 +30,10 @@ class ScrumBoard(object):
     def getCardsAssignedToPerson(self,personID):
         pass
 
+    def getPerson(self,personID):
+        pass
+
+
 
 
 

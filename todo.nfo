@@ -5,3 +5,4 @@
 5. should scrumboard.cards and scrumboard.people be lists or dictionaries ? Need to check best practices for this. --- I'm think sets for this!
         sets aren't quite what I want boo....
 
+
