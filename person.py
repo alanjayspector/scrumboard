@@ -30,10 +30,10 @@ class Person(object):
         totalEstimatedHours = 0
         if self.isADeveloper:
             for card in cards:
-                totalEstimatedHours += card["estimatedDevHours"]
+                totalEstimatedHours += card.estimatedDevHours
         else:
             for card in cards:
-                totalEstimatedHours += card["estimatedQAHours"]
+                totalEstimatedHours += card.estimatedQAHours
 
         return totalEstimatedHours
 
@@ -58,10 +58,10 @@ class Person(object):
         outstandingStoryPoints = 0
 
         for card in cards:
-            if card["placeOnBoard"] == "Done":
-                doneStoryPoints += card["storyPoints"]
+            if card.placeOnBoard == "Done":
+                doneStoryPoints += card.storyPoints
             else:
-                outstandingStoryPoints += cards["storyPoints"]
+                outstandingStoryPoints += cards.storyPoints
 
         return (doneStoryPoints, outstandingStoryPoints )
 
