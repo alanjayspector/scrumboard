@@ -5,7 +5,7 @@ class Person(object):
     IDctr = 0
 
     def __init__(self):
-        self.personID = Person.getNextID()
+        self.__personID = Person.getNextID()
         self.isADeveloper = True
         self.firstName = None
         self.lastName = None
@@ -20,6 +20,15 @@ class Person(object):
     def getNextID():
         Person.IDctr += 1
         return Person.IDctr
+
+    @property
+    def personID(self):
+        return self.__personID
+
+    @personID.setter
+    def personID(self,value):
+        return self.__personID
+
 
     def getUnallocatedHoursInSprint(self):
         totalEstimatedHours = self.getAllocatedHoursInSprint()
