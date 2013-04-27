@@ -12,7 +12,7 @@ class datetimeChecks(unittest.TestCase):
 
     def testCreatedDate(self):
         testCard = Card()
-        dateString = testCard["createdDate"]
+        dateString = testCard.createdDate
         easternTZ = pytz.timezone("US/Eastern")
         westernTZ = pytz.timezone("US/Pacific")
         centralTZ = pytz.timezone("US/Central")
@@ -29,70 +29,74 @@ class datetimeChecks(unittest.TestCase):
 class cardColorChecks(unittest.TestCase):
     def isCardRed(self):
         testCard = Card()
-        testCard["estimatedDevHours"] = 8
-        testCard["spentDevHours"] = 4
+        testCard.estimatedDevHours = 8
+        testCard.spentDevHours = 4
         self.assertEqual(True, testCard.isCardRed(6), "Card should be red")
 
     def isCardGreen(self):
         testCard = Card()
-        testCard["estimatedDevHours"] = 8
-        testCard["spentDevHours"] = 4
+        testCard.estimatedDevHours = 8
+        testCard.spentDevHours = 4
         self.assertEqual(True, self.isCardGreen(10), "Card should be green")
 
     def isCardYellow(self):
         testCard = Card()
-        testCard["estimatedDevHours"] = 4
-        testCard["spentDevHours"] = 9
+        testCard.estimatedDevHours = 4
+        testCard.spentDevHours = 9
         self.assertEqual(True, self.isCardGreen(10), "Card should be yellow")
 
     def checkThatDoneCardsAreGreen(self):
         testCard = Card()
-        testCard.moveCard("QA")
-        testCard.moveCard("POReview")
-        testCard.moveCard("Done")
-        testCard["estimatedDevHours"] = 4
-        testCard["spentDevHours"] = 32
+        testCard.placeOnBoard = "QA"
+        testCard.placeOnBoard = "POReview"
+        testCard.placeOnBoard = "Done"
+        testCard.estimatedDevHours = 4
+        testCard.spentDevHours = 32
         self.assertEqual(True, testCard.isCardGreen(0), "Card should be green")
 
 
 class cardPlacementChecks(unittest.TestCase):
     def testDoneWithoutPoReview(self):
         testCard = Card()
-        testCard["needsCodeReview"] = False
-        testCard["needsQA"] = False
-        self.assertRaises(NeedsPOReviewError, testCard.moveCard, "Done")
+        testCard.needsCodeReview = False
+        testCard.needsQA = False
+        with self.assertRaises(NeedsPOReviewError):
+            testCard.placeOnBoard = "Done"
+
 
     def testDoneWithoutQA(self):
         testCard = Card()
-        testCard["needsCodeReview"] = False
-        self.assertRaises(NeedsQAError, testCard.moveCard, "Done")
+        testCard.needsCodeReview = False
+        with self.assertRaises(NeedsQAError):
+            testCard.placeOnBoard = "Done"
 
 
     def testInvalidPlacement(self):
         testCard = Card()
-        self.assertRaises(InvalidPlaceOnBoardError, testCard.moveCard, "HappyTown")
+        with self.assertRaises(InvalidPlaceOnBoardError):
+            testCard.placeOnBoard = "HappyTown"
 
     def testCardHadQA(self):
         testCard = Card()
-        testCard["needsPOReview"] = False
-        testCard["needsCodeReview"] = False
-        testCard.moveCard("QA")
-        self.assertEqual(True, testCard["hadQA"], "hadQA was not set to True")
+        testCard.needsPOReview = False
+        testCard.needsCodeReview = False
+        testCard.placeOnBoard = "QA"
+        self.assertEqual(True, testCard.hadQA, "hadQA was not set to True")
 
     def testCardIsInResearch(self):
         testCard = Card()
-        testCard.moveCard("Research")
-        self.assertEqual("Research", testCard["placeOnBoard"], "Card is not in Research")
+        testCard.placeOnBoard = "Research"
+        self.assertEqual("Research", testCard.placeOnBoard, "Card is not in Research")
 
 
     def testCardBeingSentBackToDevelopment(self):
         testCard = Card()
-        testCard.moveCard("Research")
-        testCard.moveCard("Development")
-        testCard.moveCard("CodeReview")
-        self.assertEqual(True, testCard["hadCodeReview"], "hadCodeReview was not set to True")
-        testCard.moveCard("Development")
-        self.assertEqual(False, testCard["hadCodeReview"], "hadCodeReview was not set to False")
+        testCard.placeOnBoard = "Research"
+        testCard.placeOnBoard = "Development"
+        testCard.placeOnBoard = "CodeReview"
+        self.assertEqual(True, testCard.hadCodeReview, "hadCodeReview was not set to True")
+        testCard.placeOnBoard = "Development"
+        self.assertEqual(False, testCard.hadCodeReview, "hadCodeReview was not set to False")
 
 
 if __name__ == "__main__":
