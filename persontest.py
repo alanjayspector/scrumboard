@@ -7,25 +7,43 @@ import card
 from card import *
 
 class personHourChecks(unittest.TestCase):
-    pass
+    def setUp(self):
+        self.person = Person()
+        cards = [Card() for x in range(0,3)]
 
+    def testValidEstimatedHours(self):
+        pass
 
+    def testValidValidSpentHours(self):
+        pass
 
+    def testAllocatedHours(self):
+        pass
 
-
-
-
+    def testUnallocatedHours(self):
+        pass
 
 class personVelocityChecks(unittest.TestCase):
-    pass
 
+    def testVelocityInCurrentSprint(self):
+        pass
 
-
-
-
-
+    def testVelocityInPastSprint(self):
+        pass
 
 class personColorCardChecks(unittest.TestCase):
-    pass
+
+    def testRedCards(self):
+        pass
+
+    def testGreenCards(self):
+        pass
+
+    def testYellowCards(self):
+        pass
 
 
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -13,8 +13,8 @@ class Person(object):
         self.currentSprintID = None
         #keys will be sprintIDs, values will be lists of cards
         self.cards = {}
-        self.estimatedSprintHours = 0
-        self.spentSprintHours = 0
+        self.__estimatedSprintHours = 0
+        self.__spentSprintHours = 0
 
     @staticmethod
     def getNextID():
@@ -28,7 +28,23 @@ class Person(object):
     @personID.setter
     def personID(self,value):
         return self.__personID
+    @property
+    def estimatedSprintHours(self):
+        return self.__estimatedSprintHours
 
+    @estimatedSprintHours.setter
+    def estimatedSprintHours(self,value):
+        assert value > 0, "estimatedSprintHours must be greater 0"
+        self.__estimatedSprintHours = value
+
+    @property
+    def spentSprintHours(self):
+        return self.__spentSprintHours
+
+    @spentSprintHours.setter
+    def spentSprintHours(self,value):
+        assert value > 0, "spentSprintHours must be greater 0"
+        self.__spentSprintHours = value
 
     def getUnallocatedHoursInSprint(self):
         totalEstimatedHours = self.getAllocatedHoursInSprint()
