@@ -5,6 +5,8 @@ import person
 from person import *
 import card
 from card import *
+import random
+
 
 class personHourChecks(unittest.TestCase):
     def setUp(self):
