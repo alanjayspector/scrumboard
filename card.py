@@ -255,6 +255,11 @@ class Card(object):
         self.__stateCheck(Card.cardDataMap["QAArgs"], \
                           previousPlaceOnBoard, newPlaceOnBoard)
 
+    def isCardUnderestimated(self):
+        if self.spentDevHours > self.estimatedDevHours:
+            return True
+        else:
+            return False
 
     def isCardRed(self, timeLeftInSprint):
         if self.placeOnBoard == "Done":

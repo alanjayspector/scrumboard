@@ -8,9 +8,21 @@ from card import *
 import random
 
 
+def generateCards():
+    pass
+
+
+
 class personHourChecks(unittest.TestCase):
     def setUp(self):
         self.person = Person()
+        self.person.firstName = "Alan"
+        self.person.lastName = "Spector"
+        self.person.currentSprintID = 1
+        self.person.estimatedSprintHours = 32
+
+
+
         cards = [Card() for x in range(0,3)]
 
     def testValidEstimatedHours(self):

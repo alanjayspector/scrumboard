@@ -1,6 +1,15 @@
 __author__ = 'alan'
 
 
+import card
+from card import *
+
+
+class PersonError(Exception): pass
+class PersonInvalidHour(PersonError) : pass
+class PersonInvalidCard(PersonError) : pass
+
+
 class Person(object):
     IDctr = 0
 
@@ -34,7 +43,8 @@ class Person(object):
 
     @estimatedSprintHours.setter
     def estimatedSprintHours(self,value):
-        assert value > 0, "estimatedSprintHours must be greater 0"
+        if not isinstance(value,int) or value <= 0:
+            raise PersonInvalidHour, "estimatedSprintHours must be greater than 0"
         self.__estimatedSprintHours = value
 
     @property
@@ -43,7 +53,9 @@ class Person(object):
 
     @spentSprintHours.setter
     def spentSprintHours(self,value):
-        assert value > 0, "spentSprintHours must be greater 0"
+        if not isinstance(value,int) or value <= 0:
+            raise PersonInvalidHour, "spentSprintHours must be greater than 0"
+
         self.__spentSprintHours = value
 
     def getUnallocatedHoursInSprint(self):
@@ -89,6 +101,11 @@ class Person(object):
                 outstandingStoryPoints += cards.storyPoints
 
         return (doneStoryPoints, outstandingStoryPoints )
+
+    def addCardToCurrentSprint(self,card):
+        if not isinstance(card, Card ):
+            raise PersonInvalidCard, "addCardToCurrentSprint must take a Card instance"
+        self.cards[self.currentSprintID] = card
 
 
 
