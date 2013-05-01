@@ -8,10 +8,12 @@ from card import *
 import random
 
 
-def generateCards():
-    pass
-
-
+def generateCards(personID):
+    card = Card()
+    card.storyPoints = Card.cardDataMap["storyPoints"][random.randint(0,5)]
+    card.estimatedDevHours = random.randint(1,16)
+    card.description = "Random Description:%d" % random.randint(1,375)
+    card.personID = personID
 
 class personHourChecks(unittest.TestCase):
     def setUp(self):
@@ -23,7 +25,6 @@ class personHourChecks(unittest.TestCase):
 
 
 
-        cards = [Card() for x in range(0,3)]
 
     def testValidEstimatedHours(self):
         pass
