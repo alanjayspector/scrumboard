@@ -1,46 +1,66 @@
 __author__ = 'alan'
 
 
-class ScrumBoard(object):
+class ScrumboardError(Exception) : pass
+class PersonNotFoundOnScrumboard(ScrumboardError) : pass
+class CardNotFoundOnScrumboard(ScrumboardError) : pass
+
+class Scrumboard(object):
     IDctr = 0
 
     def __init__(self):
-        self.scrumBoardID = ScrumBoard.getNextID()
-        self.cards = []
-        self.people = []
+        self.scrumBoardID = Scrumboard.getNextID()
+        self.cards = {}
+        self.people = {}
         self.sprintID = None
 
     @staticmethod
     def getNextID():
-        ScrumBoard.IDctr += 1
+        Scrumboard.IDctr += 1
         return ScrumBoard.IDctr
 
     def reportGreenCards(self,timeLeftInSprint):
-        return [ card for card in self.cards if card.isCardGreen(timeLeftInSprint) ]
+        return [ card for card in self.cards.values() if card.isCardGreen(timeLeftInSprint) ]
 
     def reportYellowCards(self,timeLeftInSprint):
-        return [ card for card in self.cards if card.isCardYellow(timeLeftInSprint) ]
+        return [ card for card in self.cards.values() if card.isCardYellow(timeLeftInSprint) ]
 
     def reportRedCards(self,timeLeftInSprint):
-        return [ card for card in self.cards if card.isCardRed(timeLeftInSprint) ]
+        return [ card for card in self.cards.values() if card.isCardRed(timeLeftInSprint) ]
 
     def getCardsInPlace(self,place):
-        pass
+        return [ card for card in self.cards.values() if card.placeOnBoard == place ]
 
     def getCardsAssignedToPerson(self,personID):
-        pass
+        person = self.getPerson(personID)
+        return person.getCurrentSprintCards()
 
     def getPerson(self,personID):
-        pass
+        if not self.people.has_key(personID):
+            raise PersonNotFoundOnScrumboard
+        return self.people[personID]
 
     def getCard(self,cardID):
-        pass
+        if not self.cards.has_key(cardID):
+            raise CardNotFoundOnScrumboard
+        return self.cards[cardID]
 
     def getTotalStoryPoints(self):
-        pass
+        totalStoryPoints = 0
+        for cards in self.cards.values():
+            totalStoryPoints += card.storyPoints
 
     def getVelocity(self):
-        pass
+        doneStoryPoints = 0
+        outstandingStoryPoints = 0
+        for card in self.cards.values():
+            if card.isCardGreen():
+                doneStoryPoints += card.storyPoints
+            else:
+                outstandingStoryPoints += card.storyPoints
+
+        return (doneStoryPoints, outstandingStoryPoints)
+
 
 
 

@@ -102,11 +102,19 @@ class Person(object):
 
         return (doneStoryPoints, outstandingStoryPoints )
 
+
     def addCardToCurrentSprint(self,card):
+        return self.addCardToSprint(card,self.currentSprintID)
+
+    def addCardToSprint(self,card,sprintID):
         if not isinstance(card, Card ):
             raise PersonInvalidCard, "addCardToCurrentSprint must take a Card instance"
-        self.cards[self.currentSprintID] = card
+        if not self.cards.has_key(sprintID):
+            self.cards[sprintID] = []
+        self.cards[sprintID].append(card)
 
+    def getCurrentSprintCards(self):
+        return self.card[self.currentSprintID]
 
 
 

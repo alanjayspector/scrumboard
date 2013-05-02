@@ -103,7 +103,7 @@ class Card(object):
             self.__estimatedQAHours = value
         else:
             raise InvalidHourError, \
-                    "Value must be an int not '%s'" % value
+                    "Value must be an positive int not '%s'" % value
 
     @property
     def estimatedDevHours(self):
@@ -116,7 +116,7 @@ class Card(object):
             self.__estimatedDevHours = value
         else:
             raise InvalidHourError, \
-                    "Value must be an int not '%s'" % value
+                    "Value must be an positive int not '%s'" % value
 
     @property
     def spentDevHours(self):
@@ -128,7 +128,7 @@ class Card(object):
             self.__spentDevHours = value
         else:
             raise InvalidHourError, \
-                    "Value must be an int not '%s'" % value
+                    "Value must be an positive int not '%s'" % value
 
     @property
     def needsPOReview(self):
