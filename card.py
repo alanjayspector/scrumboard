@@ -45,7 +45,23 @@ class Card(object):
         "placeOnBoard": ["Backlog", "Research", "Development", "CodeReview", "POReview", "QA", "Done"],
         "QAArgs": ( "QA", "needsQA", "hadQA", NeedsQAError),
         "POReviewArgs": ( "POReview", "needsPOReview", "hadPOReview", NeedsPOReviewError),
-        "CodeReviewArgs": ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError)
+        "CodeReviewArgs": ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError),
+        "defaultParams" : {
+            "storyPoints" : 1,
+            "completedDate" : None,
+            "estimatedDevHours" : 0,
+            "needsPOReview" : True,
+            "hadPOReview" : False,
+            "hadCodeReview" : False,
+            "needsCodeReview" : True,
+            "hadQA" : False,
+            "needsQA" : True,
+            "description" : None,
+            "spentDevHours" : 0,
+            "placeOnBoard" : "Backlog",
+            "qaID" : None,
+            "developerID" : None
+        }
     }
     STATE_NAME = 0
     NEEDS_STATE_NAME = 1
@@ -53,9 +69,11 @@ class Card(object):
     STATE_EXCEPTION = 3
     IDctr = 0
 
-    def __init__(self):
+    def __init__(self, params = None ):
+
+        self.__cardID = Card.getNextID()
+        self.__createdDate = datetime.datetime.now(pytz.utc).strftime(utils.DATE_FORMAT)
         self.__storyPoints = 1
-        self.createdDate = datetime.datetime.now(pytz.utc).strftime(utils.DATE_FORMAT)
         self.startDate = None
         self.completedDate = None
         self.__estimatedQAHours = 0
@@ -71,10 +89,21 @@ class Card(object):
         self.developerID = None
         self.qaID = None
         self.__placeOnBoard = "Backlog"
-        self.__cardID = Card.getNextID()
+        if isinstance(params,dict) :
+            for key in params:
+                setattr(self,key,params[key])
+
 
     def __eq__(self, other):
         return self["cardID"] == other["cardID"]
+
+    @property
+    def createdDate(self):
+        return self.__createdDate
+
+    @createdDate.setter
+    def createdDate(self,value):
+        pass
 
     @staticmethod
     def getNextID():
@@ -91,7 +120,7 @@ class Card(object):
             self.__storyPoints = value
         else:
             raise InvalidStoryPointError, \
-                "Invalid %s" % key, "Valid story point sizes are:%s" % ",".join(Card.cardDataMap[key])
+                "Invalid %s" % value, "Valid story point sizes are:%s" % ",".join(Card.cardDataMap["storyPoints"])
 
     @property
     def estimatedQAHours(self):
@@ -208,7 +237,7 @@ class Card(object):
 
     @cardID.setter
     def cardID(self,value):
-        return self.__cardID
+        pass
 
     @property
     def placeOnBoard(self):

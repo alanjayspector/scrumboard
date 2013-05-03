@@ -34,8 +34,6 @@ class personHourChecks(unittest.TestCase):
         for card in self.cards:
             self.totalEstimatedDevHours += card.estimatedDevHours
 
-
-
     def testValidEstimatedHours(self):
         with self.assertRaises(PersonInvalidHour):
             self.person.estimatedSprintHours = "Foo"

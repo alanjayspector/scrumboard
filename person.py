@@ -13,7 +13,7 @@ class PersonInvalidCard(PersonError) : pass
 class Person(object):
     IDctr = 0
 
-    def __init__(self):
+    def __init__(self, params = None):
         self.__personID = Person.getNextID()
         self.isADeveloper = True
         self.firstName = None
@@ -24,6 +24,9 @@ class Person(object):
         self.cards = {}
         self.__estimatedSprintHours = 0
         self.__spentSprintHours = 0
+        if isinstance(params,dict) :
+            for key in params:
+                setattr(self,key,params[key])
 
     @staticmethod
     def getNextID():

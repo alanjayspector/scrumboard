@@ -16,5 +16,6 @@ def getLocalizeDateTime(date_string, tz):
 def getNumberOfHoursBasedUponDates(startDate,EndDate, hoursPerDay) :
     pass
 
-
+def getRawInput(menu):
+    pass
 

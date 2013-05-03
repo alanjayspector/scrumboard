@@ -33,15 +33,6 @@ class Sprint(object):
     def assignPersonToCard(self):
         pass
 
-    def createCard(self,params):
-        pass
-
-    def createScrumboard(self,params):
-        pass
-
-    def createPerson(self,params):
-        pass
-
     def startSprint(self):
         pass
 

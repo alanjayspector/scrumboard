@@ -28,45 +28,33 @@ class datetimeChecks(unittest.TestCase):
 
 class cardColorChecks(unittest.TestCase):
     def isCardRed(self):
-        testCard = Card()
-        testCard.estimatedDevHours = 8
-        testCard.spentDevHours = 4
+        testCard = Card({ "estimatedDevHours" : 8, "spentDevHours": 4})
         self.assertEqual(True, testCard.isCardRed(6), "Card should be red")
 
     def isCardGreen(self):
-        testCard = Card()
-        testCard.estimatedDevHours = 8
-        testCard.spentDevHours = 4
+        testCard = Card({ "estimatedDevHours" : 8, "spentDevHours": 4})
         self.assertEqual(True, self.isCardGreen(10), "Card should be green")
 
     def isCardYellow(self):
-        testCard = Card()
-        testCard.estimatedDevHours = 4
-        testCard.spentDevHours = 9
+        testCard = Card({ "estimatedDevHours" : 4, "spentDevHours": 9})
         self.assertEqual(True, self.isCardGreen(10), "Card should be yellow")
 
     def checkThatDoneCardsAreGreen(self):
-        testCard = Card()
-        testCard.placeOnBoard = "QA"
+        testCard = Card({ "estimatedDevHours" : 4, "spentDevHours": 32, "placeOnBoard": "QA"})
         testCard.placeOnBoard = "POReview"
         testCard.placeOnBoard = "Done"
-        testCard.estimatedDevHours = 4
-        testCard.spentDevHours = 32
         self.assertEqual(True, testCard.isCardGreen(0), "Card should be green")
 
 
 class cardPlacementChecks(unittest.TestCase):
     def testDoneWithoutPoReview(self):
-        testCard = Card()
-        testCard.needsCodeReview = False
-        testCard.needsQA = False
+        testCard = Card({"needsCodeReview":False, "needsQA":False})
         with self.assertRaises(NeedsPOReviewError):
             testCard.placeOnBoard = "Done"
 
 
     def testDoneWithoutQA(self):
-        testCard = Card()
-        testCard.needsCodeReview = False
+        testCard = Card({"needsCodeReview":False})
         with self.assertRaises(NeedsQAError):
             testCard.placeOnBoard = "Done"
 
@@ -77,15 +65,14 @@ class cardPlacementChecks(unittest.TestCase):
             testCard.placeOnBoard = "HappyTown"
 
     def testCardHadQA(self):
-        testCard = Card()
-        testCard.needsPOReview = False
-        testCard.needsCodeReview = False
+        #note since dicts aren't ordered if I included placeOnBoard this could potentially raise an exception since the
+        #the needs* attributes need to be set first
+        testCard = Card({"needsCodeReview":False, "needsPOReview":False})
         testCard.placeOnBoard = "QA"
         self.assertEqual(True, testCard.hadQA, "hadQA was not set to True")
 
     def testCardIsInResearch(self):
-        testCard = Card()
-        testCard.placeOnBoard = "Research"
+        testCard = Card({"placeOnBoard":"Research"})
         self.assertEqual("Research", testCard.placeOnBoard, "Card is not in Research")
 
 
