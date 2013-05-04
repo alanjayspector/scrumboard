@@ -6,6 +6,8 @@ import scrumboard
 from scrumboard import Scrumboard
 import sprint
 from sprint import Sprint
+import person
+from person import Person
 
 
 class ScrumboardError(Exception): pass
@@ -18,6 +20,12 @@ class CardNotFoundOnScrumboard(ScrumboardError): pass
 
 
 class NotValidSprint(ScrumboardError): pass
+
+
+class NotValidPerson(ScrumboardError): pass
+
+
+class NotValidCard(ScrumboardError): pass
 
 
 class Scrumboard(object):
@@ -80,10 +88,14 @@ class Scrumboard(object):
         return (doneStoryPoints, outstandingStoryPoints)
 
     def assignPersonToScrumboard(self, person):
-        pass
+        if not isinstance(person, Person):
+            raise NotValidPerson
+        self.people[person.personID] = person
 
     def assignCardToScrumboard(self, card):
-        pass
+        if not isinstance(card, Card):
+            raise NotValidCard
+        self.cards[card.cardID] = card
 
 
 
