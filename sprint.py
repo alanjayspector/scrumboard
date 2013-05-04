@@ -7,7 +7,7 @@ from scrumboard import *
 class Sprint(object):
     IDctr = 0
 
-    def __init__(self):
+    def __init__(self, params):
         self.__sprintID = Sprint.getNextID()
         self.startDate = None
         self.endDate = None
@@ -32,13 +32,14 @@ class Sprint(object):
     def iterateDay(self):
         pass
 
+    def startSprint(self):
+        pass
 
-def startSprint(self):
-    pass
+    def endSprint(self):
+        pass
 
-
-def endSprint(self):
-    pass
+    def getTimeLeftInSprint(self):
+        pass
 
 
 if __name__ == "__main__":
