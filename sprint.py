@@ -43,5 +43,21 @@ class Sprint(object):
 
 
 if __name__ == "__main__":
-    pass
+    def createPersonMenu():
+        pass
+
+    def createCardMenu():
+        pass
+
+    def selectCardToMoveMenu():
+        pass
+
+    def assignPersonToCardMenu():
+        pass
+
+    def mainMenu():
+        pass
+
+    def reportMenu():
+        pass
 
