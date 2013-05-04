@@ -1,46 +1,64 @@
 __author__ = 'alan'
 
+import card
+from card import Card
+import scrumboard
+from scrumboard import Scrumboard
+import sprint
+from sprint import Sprint
 
-class ScrumboardError(Exception) : pass
-class PersonNotFoundOnScrumboard(ScrumboardError) : pass
-class CardNotFoundOnScrumboard(ScrumboardError) : pass
+
+class ScrumboardError(Exception): pass
+
+
+class PersonNotFoundOnScrumboard(ScrumboardError): pass
+
+
+class CardNotFoundOnScrumboard(ScrumboardError): pass
+
+
+class NotValidSprint(ScrumboardError): pass
+
 
 class Scrumboard(object):
     IDctr = 0
 
-    def __init__(self):
+    def __init__(self, sprint=None):
         self.scrumBoardID = Scrumboard.getNextID()
         self.cards = {}
         self.people = {}
-        self.sprintID = None
+        if not isinstance(sprint, Sprint):
+            raise NotValidSprint
+        else:
+            self.sprint = sprint
 
     @staticmethod
     def getNextID():
         Scrumboard.IDctr += 1
-        return ScrumBoard.IDctr
+        return Scrumboard.IDctr
 
-    def reportGreenCards(self,timeLeftInSprint):
-        return [ card for card in self.cards.values() if card.isCardGreen(timeLeftInSprint) ]
+    def reportGreenCards(self, timeLeftInSprint):
+        return [card for card in self.cards.values() if card.isCardGreen(timeLeftInSprint)]
 
-    def reportYellowCards(self,timeLeftInSprint):
-        return [ card for card in self.cards.values() if card.isCardYellow(timeLeftInSprint) ]
+    def reportYellowCards(self, timeLeftInSprint):
+        return [card for card in self.cards.values() if card.isCardYellow(timeLeftInSprint)]
 
-    def reportRedCards(self,timeLeftInSprint):
-        return [ card for card in self.cards.values() if card.isCardRed(timeLeftInSprint) ]
+    def reportRedCards(self, timeLeftInSprint):
+        return [card for card in self.cards.values() if card.isCardRed(timeLeftInSprint)]
 
-    def getCardsInPlace(self,place):
-        return [ card for card in self.cards.values() if card.placeOnBoard == place ]
+    def getCardsInPlace(self, place):
+        return [card for card in self.cards.values() if card.placeOnBoard == place]
 
-    def getCardsAssignedToPerson(self,personID):
+    def getCardsAssignedToPerson(self, personID):
         person = self.getPerson(personID)
         return person.getCurrentSprintCards()
 
-    def getPerson(self,personID):
+    def getPerson(self, personID):
         if not self.people.has_key(personID):
             raise PersonNotFoundOnScrumboard
         return self.people[personID]
 
-    def getCard(self,cardID):
+    def getCard(self, cardID):
         if not self.cards.has_key(cardID):
             raise CardNotFoundOnScrumboard
         return self.cards[cardID]
@@ -61,7 +79,11 @@ class Scrumboard(object):
 
         return (doneStoryPoints, outstandingStoryPoints)
 
+    def assignPersonToScrumboard(self, person):
+        pass
 
+    def assignCardToScrumboard(self, card):
+        pass
 
 
 
