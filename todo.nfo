@@ -3,7 +3,7 @@
 3. make datetime test on cardtest actually mean something
 4. generators for cardID, personID, sprintID, scrumboardID -- Done! Hello @staticmethod
 5. should scrumboard.cards and scrumboard.people be lists or dictionaries ? Need to check best practices for this. --- I'm think sets for this!
-        sets aren't quite what I want boo....
-
+        sets aren't quite what I want boo.... <--- using dicts
+6. install postgresql and figure out which python postgres driver to use... <--- done and using psycopg2
 
 

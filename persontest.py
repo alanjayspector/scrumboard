@@ -63,12 +63,13 @@ class personVelocityChecks(unittest.TestCase):
     def setUp(self):
         self.person = generatePerson()
 
-
     def testVelocityInCurrentSprint(self):
         pass
 
 
 class personColorCardChecks(unittest.TestCase):
+    def setUp(self):
+        self.person = generatePerson()
 
     def testRedCards(self):
         pass
