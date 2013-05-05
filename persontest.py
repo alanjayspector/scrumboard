@@ -45,11 +45,18 @@ class personHourChecks(unittest.TestCase):
         self.person.spentSprintHours = 5
         self.assertEqual((currentSpentHours+5),self.person.spentSprintHours)
 
-    def testAllocatedHours(self):
+    def testDevAllocatedHours(self):
         totalEstimatedDevHours = 0
         for card in self.person.getCurrentSprintCards() :
             totalEstimatedDevHours += card.estimatedDevHours
         self.assertEqual(totalEstimatedDevHours,self.person.getAllocatedHoursInSprint())
+
+    def testQAAllocatedHours(self):
+        totalEstimatedQAHours = 0
+        for card in self.person.getCurrentSprintCards() :
+            totalEstimatedQAHours += card.estimatedQAHours
+        self.assertNotEqual(totalEstimatedQAHours, self.person.getAllocatedHoursInSprint())
+
 
 class personVelocityChecks(unittest.TestCase):
     def setUp(self):
