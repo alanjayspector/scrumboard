@@ -51,9 +51,6 @@ class personHourChecks(unittest.TestCase):
             totalEstimatedDevHours += card.estimatedDevHours
         self.assertEqual(totalEstimatedDevHours,self.person.getAllocatedHoursInSprint())
 
-    def testUnallocatedHours(self):
-        pass
-
 class personVelocityChecks(unittest.TestCase):
     def setUp(self):
         self.person = generatePerson()

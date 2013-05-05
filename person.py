@@ -117,7 +117,7 @@ class Person(object):
         self.cards[sprintID].append(card)
 
     def getCurrentSprintCards(self):
-        return self.card[self.currentSprintID]
+        return self.cards[self.currentSprintID]
 
 
 
