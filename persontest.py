@@ -10,11 +10,12 @@ import random
 
 def generateCards(personID):
     card = Card()
-    card.storyPoints = Card.cardDataMap["storyPoints"][random.randint(0,5)]
-    card.estimatedDevHours = random.randint(1,16)
-    card.description = "Random Description:%d" % random.randint(1,375)
+    card.storyPoints = Card.cardDataMap["storyPoints"][random.randint(0, 5)]
+    card.estimatedDevHours = random.randint(1, 16)
+    card.description = "Random Description:%d" % random.randint(1, 375)
     card.personID = personID
     return card
+
 
 class personHourChecks(unittest.TestCase):
     def setUp(self):
@@ -25,7 +26,7 @@ class personHourChecks(unittest.TestCase):
         self.person.estimatedSprintHours = 32
         self.cards = []
 
-        for i in range(random.randint(2,10)):
+        for i in range(random.randint(2, 10)):
             card = generateCards(self.person.personID)
             self.person.addCardToCurrentSprint(card)
             self.cards.append(card)
@@ -45,22 +46,18 @@ class personHourChecks(unittest.TestCase):
     def testIncrementingValidSpentHours(self):
         currentSpentHours = self.person.spentSprintHours
         self.person.spentSprintHours = 5
-        self.assertEqual((currentSpentHours+5),self.person.spentSprintHours)
+        self.assertEqual((currentSpentHours + 5), self.person.spentSprintHours)
 
     def testAllocatedHours(self):
-       self.assertEqual(self.totalEstimatedDevHours,self.person.getAllocatedHoursInSprint())
+        self.assertEqual(self.totalEstimatedDevHours, self.person.getAllocatedHoursInSprint())
 
-    def testUnallocatedHours(self):
-        pass
 
 class personVelocityChecks(unittest.TestCase):
-
     def testVelocityInCurrentSprint(self):
         pass
 
 
 class personColorCardChecks(unittest.TestCase):
-
     def testRedCards(self):
         pass
 
@@ -69,8 +66,6 @@ class personColorCardChecks(unittest.TestCase):
 
     def testYellowCards(self):
         pass
-
-
 
 
 if __name__ == "__main__":
