@@ -55,7 +55,8 @@ class personHourChecks(unittest.TestCase):
         totalEstimatedQAHours = 0
         for card in self.person.getCurrentSprintCards() :
             totalEstimatedQAHours += card.estimatedQAHours
-        self.assertNotEqual(totalEstimatedQAHours, self.person.getAllocatedHoursInSprint())
+        self.person.isADeveloper = False
+        self.assertEqual(totalEstimatedQAHours, self.person.getAllocatedHoursInSprint())
 
 
 class personVelocityChecks(unittest.TestCase):
