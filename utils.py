@@ -17,3 +17,5 @@ def getLocalizeDateTime(date_string, tz):
 def getRawInput(menu):
     pass
 
+def findHoursBetweenTwoDates(dateStart,dateEnd) :
+    pass

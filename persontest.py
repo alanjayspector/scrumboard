@@ -62,6 +62,15 @@ class personHourChecks(unittest.TestCase):
 class personVelocityChecks(unittest.TestCase):
     def setUp(self):
         self.person = generatePerson()
+        cards = self.person.getCurrentSprintCards()
+        self.totalStoryPoints = 0;
+        for card in cards:
+            self.totalStoryPoints += card.storyPoints
+            card.placeOnBoard = "CodeReview"
+
+        cards[random.randint(0,cards.len())].placeOnBoard = "CodeReview"
+
+
 
     def testVelocityInCurrentSprint(self):
         pass
@@ -70,6 +79,7 @@ class personVelocityChecks(unittest.TestCase):
 class personColorCardChecks(unittest.TestCase):
     def setUp(self):
         self.person = generatePerson()
+
 
     def testRedCards(self):
         pass
