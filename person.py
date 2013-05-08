@@ -1,13 +1,13 @@
 __author__ = 'alan'
 
 
-import card
-from card import *
+from card import Card
 
 
 class PersonError(Exception): pass
 class PersonInvalidHour(PersonError) : pass
 class PersonInvalidCard(PersonError) : pass
+class PersonInvalidCardsParam(PersonError) : pass
 
 
 class Person(object):
@@ -26,7 +26,11 @@ class Person(object):
         self.__spentSprintHours = 0
         if isinstance(params,dict) :
             for key in params:
-                setattr(self,key,params[key])
+                if key != "cards":
+                    setattr(self,key,params[key])
+                else:
+                    raise PersonInvalidCardsParam
+
 
     @staticmethod
     def getNextID():

@@ -1,20 +1,20 @@
 __author__ = 'alanspector'
 
-import scrumboard
-from scrumboard import *
+from datetime import date
+from scrumboard import Scrumboard
 
 
 class Sprint(object):
     IDctr = 0
 
-    def __init__(self, params):
+    def __init__(self, params = None):
         self.__sprintID = Sprint.getNextID()
         self.startDate = None
         self.endDate = None
         self.hoursPerDay = 4
         self.name = None
         self.team = None
-        self.scrumBoard = Scrumboard({"sprint": self})
+        self.scrumBoard = Scrumboard({"sprintID":self.sprintID})
 
     @property
     def sprintID(self):
@@ -29,17 +29,9 @@ class Sprint(object):
         Sprint.IDctr += 1
         return Sprint.IDctr
 
-    def iterateDay(self):
+    def getTimeLeftInSprint(self,dateToCalculateFrom):
         pass
 
-    def startSprint(self):
-        pass
-
-    def endSprint(self):
-        pass
-
-    def getTimeLeftInSprint(self):
-        pass
 
 
 if __name__ == "__main__":

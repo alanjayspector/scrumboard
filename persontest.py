@@ -1,11 +1,10 @@
 __author__ = 'alanspector'
 
 import unittest
-import person
 from person import *
-import card
-from card import *
+from card import Card
 import random
+
 
 
 def generateCard(personID):

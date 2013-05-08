@@ -1,17 +1,10 @@
 __author__ = 'alan'
 
-import card
-from card import Card
-import scrumboard
-from scrumboard import Scrumboard
-import sprint
-from sprint import Sprint
-import person
 from person import Person
+from card import Card
 
 
 class ScrumboardError(Exception): pass
-
 
 class PersonNotFoundOnScrumboard(ScrumboardError): pass
 
@@ -31,19 +24,26 @@ class NotValidCard(ScrumboardError): pass
 class Scrumboard(object):
     IDctr = 0
 
-    def __init__(self, sprint=None):
-        self.scrumBoardID = Scrumboard.getNextID()
+    def __init__(self):
+        self.__scrumboardID = Scrumboard.getNextID()
         self.cards = {}
         self.people = {}
-        if not isinstance(sprint, Sprint):
-            raise NotValidSprint
-        else:
-            self.sprint = sprint
+        self.sprintID = None
+
 
     @staticmethod
     def getNextID():
         Scrumboard.IDctr += 1
         return Scrumboard.IDctr
+
+    @property
+    def scrumboardID(self):
+        return self.__scrumboardID
+
+    @scrumboardID.setter
+    def scrumboardID(self,value):
+        return self.__scrumboardID
+
 
     def reportGreenCards(self, timeLeftInSprint):
         return [card for card in self.cards.values() if card.isCardGreen(timeLeftInSprint)]
