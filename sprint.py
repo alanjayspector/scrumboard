@@ -34,13 +34,13 @@ class Sprint(object):
 
     def getDevTimeLeftInSprint(self,dateToCalculateFrom = datetime.datetime.today()):
         codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate,Sprint.DATE_FORMAT)
-        return self.getTimeLeftInSprint(dateToCalculateFrom,codeFreezeDate)
+        return self.__getTimeLeftInSprint(dateToCalculateFrom,codeFreezeDate)
 
     def getQATimeLeftInSprint(self,dateToCalculateFrom = datetime.datetime.today()):
         endQADate = datetime.datetime.strptime(self.endQADate,Sprint.DATE_FORMAT)
-        return self.getTimeLeftInSprint(dateToCalculateFrom,endQADate)
+        return self.__getTimeLeftInSprint(dateToCalculateFrom,endQADate)
 
-    def getTimeLeftInSprint(self, currentDate, endDate):
+    def __getTimeLeftInSprint(self, currentDate, endDate):
         delta = endDate - currentDate
         return delta.days * self.hoursPerDay
 
