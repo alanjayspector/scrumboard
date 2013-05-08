@@ -24,11 +24,11 @@ class NotValidCard(ScrumboardError): pass
 class Scrumboard(object):
     IDctr = 0
 
-    def __init__(self):
+    def __init__(self,sprintID):
         self.__scrumboardID = Scrumboard.getNextID()
         self.cards = {}
         self.people = {}
-        self.sprintID = None
+        self.sprintID = sprintID
 
 
     @staticmethod
@@ -73,7 +73,7 @@ class Scrumboard(object):
 
     def getTotalStoryPoints(self):
         totalStoryPoints = 0
-        for cards in self.cards.values():
+        for card in self.cards.values():
             totalStoryPoints += card.storyPoints
 
     def getVelocity(self):
@@ -96,6 +96,35 @@ class Scrumboard(object):
         if not isinstance(card, Card):
             raise NotValidCard
         self.cards[card.cardID] = card
+
+    def getTotalEstimatedDevHoursFromPeople(self):
+        totalHours = 0
+        for person in self.people.values():
+            if person.isADeveloper:
+                totalHours += person.estimatedSprintHours
+        return totalHours
+
+    def getTotalEstimatedQAHoursFromPeople(self):
+        totalHours = 0
+        for person in self.people.values():
+            if not person.isADeveloper:
+                totalHours += person.estimatedSprintHours
+        return totalHours
+
+    def getTotalEstimatedDevHoursForTasks(self):
+        totalHours = 0
+        for card in self.cards.values():
+            totalHours += card.estimatedDevHours
+        return totalHours
+
+    def getTotalEstimatedDevHoursForTasks(self):
+        totalHours = 0
+        for card in self.cards.values():
+                totalHours += card.estimatedQAHours
+        return totalHours
+
+
+
 
 
 
