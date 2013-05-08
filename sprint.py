@@ -40,7 +40,6 @@ class Sprint(object):
         endQADate = datetime.datetime.strptime(self.endQADate,Sprint.DATE_FORMAT)
         return self.getTimeLeftInSprint(dateToCalculateFrom,endQADate)
 
-
     def getTimeLeftInSprint(self, currentDate, endDate):
         delta = endDate - currentDate
         return delta.days * self.hoursPerDay
