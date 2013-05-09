@@ -91,7 +91,8 @@ class Card(object):
         self.__placeOnBoard = "Backlog"
         if isinstance(params,dict) :
             for key in params:
-                setattr(self,key,params[key])
+                if hasattr(self,key):
+                    setattr(self,key,params[key])
 
 
     def __eq__(self, other):
