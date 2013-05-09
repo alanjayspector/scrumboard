@@ -108,6 +108,7 @@ if __name__ == "__main__":
     from card import Card
     from person import Person
     from string import Template
+    import copy
 
     class CLI(object):
         createSprintMenuStr = """
@@ -144,7 +145,13 @@ You have the following options:
 5) Set Person as QA ($isQA)
 6) Save and return to Sprint Menu
 7) Cancel and return to Sprint Menu
+$message
         """)
+
+        defaultWorkingPerson = {"firstName":"unset", "lastName":"unset", \
+            "estimatedSprintHours":"unset", "isADeveloper":True,
+            "isQA": False, "message": ""
+                            }
 
         def __init__(self):
             self.termination_condition = False
@@ -159,18 +166,20 @@ You have the following options:
         def createPersonMenu(self, option = None):
             if not option:
                 if not self.workingPerson:
-                    self.workingPerson = {"firstName":"unset", "lastName":"unset", \
-                                          "estimatedSprintHours":"unset", "isADeveloper":True,
-                                          "isQA": False, "currentSprintId": self.sprint.sprintID
-                                          }
+                    self.workingPerson = copy.copy(CLI.defaultWorkingPerson)
+                    self.workingPerson["currentSprintID"] = self.sprint.sprintID
             else:
                     if option == 1:
                         self.workingPerson["firstName"] = raw_input("Please enter the Person's first name:")
                     elif option == 2:
                         self.workingPerson["lastName"] = raw_input("Please enter the Person's last name:")
                     elif option == 3:
-                        self.workingPerson["estimatedSprintHours"] \
-                            = int(raw_input("Please enter the Person's estimated sprint hours:"))
+                        try:
+                            self.workingPerson["estimatedSprintHours"] \
+                                 = int(raw_input("Please enter the Person's estimated sprint hours:"))
+                        except:
+                            self.workingPerson["message"] = "*****Estimated sprint hours must be a 1 or greater."
+                            return
                     elif option == 4:
                         self.workingPerson["isADeveloper"] = True
                         self.workingPerson["isQA"] = False
@@ -178,10 +187,15 @@ You have the following options:
                         self.workingPerson["isADeveloper"] = False
                         self.workingPerson["isQA"] = True
                     elif option == 6:
-                        person = Person(self.workingPerson)
-                        self.scrumboard.assignPersonToScrumboard(person)
-                        self.workingPerson = None
-                        self.menuStr = "createSprintMenu"
+                        try:
+                            person = Person(self.workingPerson)
+                            self.scrumboard.assignPersonToScrumboard(person)
+                            self.workingPerson = None
+                            self.menuStr = "createSprintMenu"
+                        except:
+                            self.workingPerson = copy.copy(CLI.defaultWorkingPerson)
+                            self.workingPerson["currentSprintID"] = self.sprint.sprintID
+                            self.workingPerson["message"] = "*****There was an error saving your person please try again."
                         return
                     elif option == 7:
                         pass
@@ -191,6 +205,7 @@ You have the following options:
 
 
             print CLI.createPersonMenuSTR.substitute(self.workingPerson)
+            self.workingPerson["message"] = ""
 
 
         def createCardMenu(self,option = None):
