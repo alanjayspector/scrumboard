@@ -149,6 +149,7 @@ You have the following options:
 
     createSprintMenu()
 
+    termination_condition = False
     option = None
     while not termination_condition:
         input = raw_input("Please input the number of an option:")
