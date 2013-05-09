@@ -161,7 +161,7 @@ You have the following options:
                 if not self.workingPerson:
                     self.workingPerson = {"firstName":"unset", "lastName":"unset", \
                                           "estimatedSprintHours":"unset", "isADeveloper":True,
-                                          "isQA": False
+                                          "isQA": False, "currentSprintId": self.sprint.sprintID
                                           }
             else:
                     if option == 1:
@@ -170,7 +170,7 @@ You have the following options:
                         self.workingPerson["lastName"] = raw_input("Please enter the Person's last name:")
                     elif option == 3:
                         self.workingPerson["estimatedSprintHours"] \
-                            = raw_input("Please enter the Person's estimated sprint hours:")
+                            = int(raw_input("Please enter the Person's estimated sprint hours:"))
                     elif option == 4:
                         self.workingPerson["isADeveloper"] = True
                         self.workingPerson["isQA"] = False
@@ -178,7 +178,11 @@ You have the following options:
                         self.workingPerson["isADeveloper"] = False
                         self.workingPerson["isQA"] = True
                     elif option == 6:
-                            pass
+                        person = Person(self.workingPerson)
+                        self.scrumboard.assignPersonToScrumboard(person)
+                        self.workingPerson = None
+                        self.menuStr = "createSprintMenu"
+                        return
                     elif option == 7:
                         pass
 

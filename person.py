@@ -26,10 +26,8 @@ class Person(object):
         self.__spentSprintHours = 0
         if isinstance(params,dict) :
             for key in params:
-                if key != "cards":
+                if key != "cards" and hasattr(self,key):
                     setattr(self,key,params[key])
-                else:
-                    raise PersonInvalidCardsParam
 
 
     @staticmethod
