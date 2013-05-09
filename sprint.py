@@ -105,6 +105,10 @@ class Sprint(object):
 
 if __name__ == "__main__":
 
+    from card import Card
+    from person import Person
+    from string import Template
+
     class CLI(object):
         createSprintMenuStr = """
 Welcome to the Scrumboard Project
@@ -129,17 +133,18 @@ You have the following options:
 5) End Sprint and Exit the Scrumboard
         """
 
-        createPersonMenuSTR = """
+        createPersonMenuSTR = Template("""
 Create a Person Menu
 --------------------------------
 You have the following options:
-1) Edit First Name
-2) Edit Last Name
-3) Edit Estimated Dev Hours
-4) Set Person as a developer
-5) Set Person as QA
+1) Set First Name ($firstName)
+2) Set Last Name ($lastName)
+3) Set Estimated Sprint Hours ($estimatedSprintHours)
+4) Set Person as a developer ($isADeveloper)
+5) Set Person as QA ($isQA)
 6) Save and return to Sprint Menu
-        """
+7) Cancel and return to Sprint Menu
+        """)
 
         def __init__(self):
             self.termination_condition = False
@@ -147,13 +152,42 @@ You have the following options:
             self.sprint = Sprint()
             self.scrumboard = self.sprint.scrumBoard
             self.option = None
+            self.workingPerson = None
+            self.workingCard = None
 
 
         def createPersonMenu(self, option = None):
             if not option:
-                print CLI.createPersonMenuSTR
+                if not self.workingPerson:
+                    self.workingPerson = {"firstName":"unset", "lastName":"unset", \
+                                          "estimatedSprintHours":"unset", "isADeveloper":True,
+                                          "isQA": False
+                                          }
             else:
-                pass
+                    if option == 1:
+                        self.workingPerson["firstName"] = raw_input("Please enter the Person's first name:")
+                    elif option == 2:
+                        self.workingPerson["lastName"] = raw_input("Please enter the Person's last name:")
+                    elif option == 3:
+                        self.workingPerson["estimatedSprintHours"] \
+                            = raw_input("Please enter the Person's estimated sprint hours:")
+                    elif option == 4:
+                        self.workingPerson["isADeveloper"] = True
+                        self.workingPerson["isQA"] = False
+                    elif option == 5:
+                        self.workingPerson["isADeveloper"] = False
+                        self.workingPerson["isQA"] = True
+                    elif option == 6:
+                            pass
+                    elif option == 7:
+                        pass
+
+
+
+
+
+            print CLI.createPersonMenuSTR.substitute(self.workingPerson)
+
 
         def createCardMenu(self,option = None):
             pass
@@ -169,9 +203,9 @@ You have the following options:
                 print CLI.createSprintMenuStr
             else:
                 if option == 7:
-                    return "mainMenu"
+                    self.menuStr = "mainMenu"
                 if option == 1:
-                    return "createPersonMenu"
+                    self.menuStr = "createPersonMenu"
 
         def mainMenu(self, option = None):
             if not option:
@@ -195,7 +229,7 @@ You have the following options:
             print "{} is not a valid choice.".format(input)
         else:
             print "You selected {}.".format(input)
-            cli.menuStr = menuFunc(cli.option)
+            menuFunc(cli.option)
 
 
 
