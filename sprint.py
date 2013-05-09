@@ -129,6 +129,18 @@ You have the following options:
 5) End Sprint and Exit the Scrumboard
         """
 
+        createPersonMenuSTR = """
+Create a Person Menu
+--------------------------------
+You have the following options:
+1) Edit First Name
+2) Edit Last Name
+3) Edit Estimated Dev Hours
+4) Set Person as a developer
+5) Set Person as QA
+6) Save and return to Sprint Menu
+        """
+
         def __init__(self):
             self.termination_condition = False
             self.menuStr = "createSprintMenu"
@@ -138,7 +150,10 @@ You have the following options:
 
 
         def createPersonMenu(self, option = None):
-            pass
+            if not option:
+                print CLI.createPersonMenuSTR
+            else:
+                pass
 
         def createCardMenu(self,option = None):
             pass
@@ -155,6 +170,8 @@ You have the following options:
             else:
                 if option == 7:
                     return "mainMenu"
+                if option == 1:
+                    return "createPersonMenu"
 
         def mainMenu(self, option = None):
             if not option:
