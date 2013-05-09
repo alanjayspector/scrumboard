@@ -14,6 +14,3 @@ def getLocalizeDateTime(date_string, tz):
     return loc_dt.strftime(DATE_FORMAT)
 
 
-def getRawInput(menu):
-    pass
-
