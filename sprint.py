@@ -104,22 +104,9 @@ class Sprint(object):
 
 
 if __name__ == "__main__":
-    def createPersonMenu():
-        pass
 
-    def createCardMenu():
-        pass
-
-    def selectCardToMoveMenu():
-        pass
-
-    def assignPersonToCardMenu():
-        pass
-
-
-
-    def createSprintMenu():
-        print """
+    class CLI(object):
+        createSprintMenuStr = """
 Welcome to the Scrumboard Project
 ---------------------------------
 You have the following options:
@@ -131,34 +118,67 @@ You have the following options:
 6) Assign QA to a card
 7) Exit to main Menu
         """
-
-    def mainMenu():
-        print """
+        mainMenuStr = """
 Scrumboard Main Menu
 --------------------------------
 You have the following options:
 1) Iterate a day
 2) Status Report
 3) Move card on board
-4) End Sprint and Exit the Scrumboard
-            """
+4) Add dev hours spent on card
+5) End Sprint and Exit the Scrumboard
+        """
+
+        def __init__(self):
+            self.termination_condition = False
+            self.menuStr = "createSprintMenu"
+            self.sprint = Sprint()
+            self.scrumboard = self.sprint.scrumBoard
+            self.option = None
 
 
-    sprint = Sprint()
-    scrumboard = sprint.scrumBoard
+        def createPersonMenu(self, option = None):
+            pass
 
-    createSprintMenu()
+        def createCardMenu(self,option = None):
+            pass
 
-    termination_condition = False
-    option = None
-    while not termination_condition:
+        def selectCardToMoveMenu(self, option = None):
+            pass
+
+        def assignPersonToCardMenu(self, option = None):
+            pass
+
+        def createSprintMenu(self, option = None ):
+            if not option:
+                print CLI.createSprintMenuStr
+            else:
+                if option == 7:
+                    return "mainMenu"
+
+        def mainMenu(self, option = None):
+            if not option:
+                print CLI.mainMenuStr
+            else:
+                if option == 5:
+                    self.termination_condition = True
+                    print "Thank you for trying the Scrumboard Project. exiting...."
+
+    cli = CLI()
+    menuFunc = None
+
+    while not cli.termination_condition:
+
+        menuFunc = getattr(cli,cli.menuStr)
+        menuFunc()
         input = raw_input("Please input the number of an option:")
         try:
-            option = int(input)
+            cli.option = int(input)
         except ValueError:
             print "{} is not a valid choice.".format(input)
         else:
             print "You selected {}.".format(input)
+            cli.menuStr = menuFunc(cli.option)
 
 
 
