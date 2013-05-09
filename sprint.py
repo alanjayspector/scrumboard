@@ -198,10 +198,8 @@ $message
                             self.workingPerson["message"] = "*****There was an error saving your person please try again."
                         return
                     elif option == 7:
-                        pass
-
-
-
+                        self.workingPerson = None
+                        self.menuStr = "createSprintMenu"
 
 
             print CLI.createPersonMenuSTR.substitute(self.workingPerson)
