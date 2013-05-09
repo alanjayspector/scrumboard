@@ -200,6 +200,7 @@ $message
                     elif option == 7:
                         self.workingPerson = None
                         self.menuStr = "createSprintMenu"
+                        return
 
 
             print CLI.createPersonMenuSTR.substitute(self.workingPerson)
