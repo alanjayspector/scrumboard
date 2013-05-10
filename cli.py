@@ -19,9 +19,7 @@ You have the following options:
 6) Enter Sprint's code freeze date ($codeFreezeDate)
 7) Enter Sprint's QA's end date ($endQADate)
 8) Enter the sprint name ($name)
-9) Assign a developer to a card
-10) Assign QA to a card
-11) Begin Sprint
+9) Begin Sprint
 $message""")
 
     mainMenuStr = """
@@ -193,7 +191,7 @@ $message""")
                           "name": self.sprint.name, "message":""
             }
         if option:
-            if option == 11:
+            if option == 9:
                 self.menuStr = "mainMenu"
             elif option == 1:
                 self.menuStr = "createPersonMenu"
