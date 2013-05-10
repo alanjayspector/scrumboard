@@ -61,6 +61,7 @@ $message
         self.sprint = Sprint()
         self.scrumboard = self.sprint.scrumBoard
         self.option = None
+        self.workingSprint = None
         self.workingPerson = None
         self.workingCard = None
 
@@ -119,25 +120,32 @@ $message
         pass
 
     def createSprintMenu(self, option = None ):
-        workingSprint = { "endDate": self.sprint.endDate, "endQADate": self.sprint.endQADate, \
+        if not self.workingSprint:
+            self.workingSprint = { "endDate": self.sprint.endDate, "endQADate": self.sprint.endQADate, \
                           "codeFreezeDate": self.sprint.codeFreezeDate, "startDate": self.sprint.startDate, \
                           "name": self.sprint.name, "message":""
             }
-        if not option:
-            print CLI.createSprintMenuStr.substitute(workingSprint)
-        else:
+        if option:
             if option == 11:
                 self.menuStr = "mainMenu"
             elif option == 1:
                 self.menuStr = "createPersonMenu"
             elif option == 4:
-                pass
+                try:
+                    self.sprint.startDate = raw_input("Please enter start date in format YYYY/MM/DD:")
+                    self.workingSprint["startDate"] = self.sprint.startDate
+                except:
+                    self.workingSprint["message"] = "*****Invalid date format. Please use YYYY/MM/DD"
+                return
             elif option == 5:
                 pass
             elif option == 6:
                 pass
             elif option == 7:
                 pass
+
+        print CLI.createSprintMenuStr.substitute(self.workingSprint)
+        self.workingSprint["message"] = ""
 
 
     def mainMenu(self, option = None):
