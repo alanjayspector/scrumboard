@@ -121,8 +121,8 @@ class Card(object):
             self.__storyPoints = value
         else:
             raise InvalidStoryPointError, \
-                "Invalid %s" % value, "Valid story point sizes are:%s" % ",".join(Card.cardDataMap["storyPoints"])
-
+                 "Valid story point sizes are:%s" % \
+                                      ",".join([str(points) for points in Card.cardDataMap["storyPoints"]])
     @property
     def estimatedQAHours(self):
         return self.__estimatedQAHours

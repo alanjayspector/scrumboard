@@ -22,8 +22,7 @@ You have the following options:
 9) Assign a developer to a card
 10) Assign QA to a card
 11) Begin Sprint
-$message
-        """)
+$message""")
 
     mainMenuStr = """
 Scrumboard Main Menu
@@ -35,10 +34,9 @@ You have the following options:
 4) Add dev hours spent on card
 5) Assign developer to a card
 6) Assign QA to a card
-7) End Sprint and Exit the Scrumboard
-        """
+7) End Sprint and Exit the Scrumboard"""
 
-    createPersonMenuSTR = Template("""
+    createPersonMenuStr = Template("""
 Create a Person Menu
 --------------------------------
 You have the following options:
@@ -49,13 +47,31 @@ You have the following options:
 5) Set Person as QA ($isQA)
 6) Save and return to Sprint Menu
 7) Cancel and return to Sprint Menu
-$message
-        """)
+$message""")
+
+
+    createCardMenuStr = Template("""
+Create a Card Menu
+--------------------------------
+You have the following options:
+1) Set Description ($description)
+2) Set Story Points ($storyPoints)
+3) Set Estimated Dev Hours ($estimatedDevHours)
+4) Set Estimated QA Hours ($estimatedQAHours)
+5) Toggle Code Review Required ($needsCodeReview)
+6) Toggle PO Review Required ($needsPOReview)
+7) Save and return to Sprint Menu
+8) Cancel and return to Sprint Menu
+$message""")
 
     defaultWorkingPerson = {"firstName":"unset", "lastName":"unset", \
             "estimatedSprintHours":"unset", "isADeveloper":True,
             "isQA": False, "message": ""
                             }
+    defaultWorkingCard = {"description":"unset", "storyPoints":"unset", \
+                          "estimatedDevHours":"unset", "estimatedQAHours":"unset", \
+                          "needsCodeReview":True, "needsPOReview":True, "message":""
+                          }
 
     def __init__(self):
         self.termination_condition = False
@@ -67,6 +83,58 @@ $message
         self.workingPerson = None
         self.workingCard = None
 
+
+    def createCardMenu(self, option = None):
+        if not option:
+            if not self.workingCard:
+                self.workingCard= copy.copy(CLI.defaultWorkingCard)
+        else:
+                if option == 1:
+                    self.workingCard["description"] = raw_input("Please enter the card's description:")
+                elif option == 2:
+                    print
+                    try:
+                        self.workingCard["storyPoints"] \
+                            = int(raw_input("Please enter story points({}):".format(\
+                            ",".join([str(points) for points in Card.cardDataMap["storyPoints"]]))))
+                    except:
+                        self.workingCard["message"] = "*****Invalid story points"
+                    return
+                elif option == 3:
+                    try:
+                        self.workingCard["estimatedDevHours"] \
+                             = int(raw_input("Please enter the card's estimated dev hours:"))
+                    except:
+                        self.workingCard["message"] = "*****Estimated dev hours must be a 1 or greater."
+                    return
+                elif option == 4:
+                    try:
+                        self.workingCard["estimatedQAHours"] \
+                             = int(raw_input("Please enter the card's estimated QA hours:"))
+                    except:
+                        self.workingCard["message"] = "*****Estimated QA hours must be a 1 or greater."
+                    return
+                elif option == 5:
+                    self.workingCard["needsCodeReview"] = not self.workingCard["needsCodeReview"]
+                elif option == 6:
+                    self.workingCard["needsPOReview"] = not self.workingCard["needsPOReview"]
+                elif option == 7:
+                    try:
+                        card = Card(self.workingCard)
+                        self.scrumboard.assignCardToScrumboard(card)
+                        self.workingCard = None
+                        self.menuStr = "createSprintMenu"
+                    except:
+                        self.workingCard = copy.copy(CLI.defaultWorkingCard)
+                        self.workingCard["message"] = "*****There was an error saving your card please try again."
+                    return
+                elif option == 8:
+                    self.workingCard = None
+                    self.menuStr = "createSprintMenu"
+                    return
+
+        print CLI.createCardMenuStr.substitute(self.workingCard)
+        self.workingCard["message"] = ""
 
     def createPersonMenu(self, option = None):
         if not option:
@@ -84,7 +152,7 @@ $message
                              = int(raw_input("Please enter the Person's estimated sprint hours:"))
                     except:
                         self.workingPerson["message"] = "*****Estimated sprint hours must be a 1 or greater."
-                        return
+                    return
                 elif option == 4:
                     self.workingPerson["isADeveloper"] = True
                     self.workingPerson["isQA"] = False
@@ -108,12 +176,9 @@ $message
                     return
 
 
-        print CLI.createPersonMenuSTR.substitute(self.workingPerson)
+        print CLI.createPersonMenuStr.substitute(self.workingPerson)
         self.workingPerson["message"] = ""
 
-
-    def createCardMenu(self,option = None):
-        pass
 
     def selectCardToMoveMenu(self, option = None):
         pass
@@ -164,7 +229,7 @@ $message
                 self.sprint.name = raw_input("Please enter the name for this sprint:")
                 self.workingSprint["name"] = self.sprint.name
             elif option == 2:
-                self.menuStr ="createPersonMenu"
+                self.menuStr ="createCardMenu"
 
         print CLI.createSprintMenuStr.substitute(self.workingSprint)
         self.workingSprint["message"] = ""
