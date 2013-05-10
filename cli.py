@@ -33,7 +33,9 @@ You have the following options:
 2) Status Report
 3) Move card on board
 4) Add dev hours spent on card
-5) End Sprint and Exit the Scrumboard
+5) Assign developer to a card
+6) Assign QA to a card
+7) End Sprint and Exit the Scrumboard
         """
 
     createPersonMenuSTR = Template("""
@@ -135,32 +137,34 @@ $message
                     self.sprint.startDate = raw_input("Please enter start date in format YYYY/MM/DD:")
                     self.workingSprint["startDate"] = self.sprint.startDate
                 except:
-                    self.workingSprint["message"] = "*****Invalid date format. Please use YYYY/MM/DD"
+                    self.workingSprint["message"] = "*****Invalid date"
                 return
             elif option == 5:
                 try:
                     self.sprint.endDate = raw_input("Please enter end date in format YYYY/MM/DD:")
                     self.workingSprint["endDate"] = self.sprint.endDate
                 except:
-                    self.workingSprint["message"] = "*****Invalid date format. Please use YYYY/MM/DD"
+                    self.workingSprint["message"] = "*****Invalid date"
                 return
             elif option == 6:
                 try:
                     self.sprint.codeFreezeDate = raw_input("Please enter code freeze date in format YYYY/MM/DD:")
                     self.workingSprint["codeFreezeDate"] = self.sprint.codeFreezeDate
                 except:
-                    self.workingSprint["message"] = "*****Invalid date format. Please use YYYY/MM/DD"
+                    self.workingSprint["message"] = "*****Invalid date"
                 return
             elif option == 7:
                 try:
                     self.sprint.endQADate = raw_input("Please enter QA's end date in format YYYY/MM/DD:")
                     self.workingSprint["endQADate"] = self.sprint.endQADate
                 except:
-                    self.workingSprint["message"] = "*****Invalid date format. Please use YYYY/MM/DD"
+                    self.workingSprint["message"] = "*****Invalid date"
                 return
             elif option == 8:
                 self.sprint.name = raw_input("Please enter the name for this sprint:")
                 self.workingSprint["name"] = self.sprint.name
+            elif option == 2:
+                self.menuStr ="createPersonMenu"
 
         print CLI.createSprintMenuStr.substitute(self.workingSprint)
         self.workingSprint["message"] = ""
@@ -170,7 +174,7 @@ $message
         if not option:
             print CLI.mainMenuStr
         else:
-            if option == 5:
+            if option == 7:
                 self.termination_condition = True
                 print "Thank you for trying the Scrumboard Project. exiting...."
 
