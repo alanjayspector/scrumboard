@@ -128,8 +128,17 @@ $message
         else:
             if option == 11:
                 self.menuStr = "mainMenu"
-            if option == 1:
+            elif option == 1:
                 self.menuStr = "createPersonMenu"
+            elif option == 4:
+                pass
+            elif option == 5:
+                pass
+            elif option == 6:
+                pass
+            elif option == 7:
+                pass
+
 
     def mainMenu(self, option = None):
         if not option:
