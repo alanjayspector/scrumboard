@@ -90,6 +90,7 @@ Status Report Menu
         self.workingSprint = None
         self.workingPerson = None
         self.workingCard = None
+        self.selectedCard = None
 
 
     def createCardMenu(self, option = None):
