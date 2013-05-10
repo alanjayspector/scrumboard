@@ -138,11 +138,29 @@ $message
                     self.workingSprint["message"] = "*****Invalid date format. Please use YYYY/MM/DD"
                 return
             elif option == 5:
-                pass
+                try:
+                    self.sprint.endDate = raw_input("Please enter end date in format YYYY/MM/DD:")
+                    self.workingSprint["endDate"] = self.sprint.endDate
+                except:
+                    self.workingSprint["message"] = "*****Invalid date format. Please use YYYY/MM/DD"
+                return
             elif option == 6:
-                pass
+                try:
+                    self.sprint.codeFreezeDate = raw_input("Please enter code freeze date in format YYYY/MM/DD:")
+                    self.workingSprint["codeFreezeDate"] = self.sprint.codeFreezeDate
+                except:
+                    self.workingSprint["message"] = "*****Invalid date format. Please use YYYY/MM/DD"
+                return
             elif option == 7:
-                pass
+                try:
+                    self.sprint.endQADate = raw_input("Please enter QA's end date in format YYYY/MM/DD:")
+                    self.workingSprint["endQADate"] = self.sprint.endQADate
+                except:
+                    self.workingSprint["message"] = "*****Invalid date format. Please use YYYY/MM/DD"
+                return
+            elif option == 8:
+                self.sprint.name = raw_input("Please enter the name for this sprint:")
+                self.workingSprint["name"] = self.sprint.name
 
         print CLI.createSprintMenuStr.substitute(self.workingSprint)
         self.workingSprint["message"] = ""
