@@ -62,6 +62,16 @@ You have the following options:
 8) Cancel and return to Sprint Menu
 $message""")
 
+    statusReportMenuStr = Template("""
+Status Report Menu
+--------------------------------
+1) Show Red Cards
+2) Show Yellow Cards
+3) Show Green Cards
+4) Show Current Velocity
+5) Show All Cards
+6) Main Menu""")
+
     defaultWorkingPerson = {"firstName":"unset", "lastName":"unset", \
             "estimatedSprintHours":"unset", "isADeveloper":True,
             "isQA": False, "message": ""
@@ -177,6 +187,8 @@ $message""")
         print CLI.createPersonMenuStr.substitute(self.workingPerson)
         self.workingPerson["message"] = ""
 
+    def statusReportMenu(self, option = None ):
+        pass
 
     def selectCardToMoveMenu(self, option = None):
         pass
