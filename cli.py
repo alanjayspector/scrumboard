@@ -72,13 +72,6 @@ Status Report Menu
 5) Show All Cards
 6) Main Menu"""
 
-    __cardStatusTemplate = Template("""
---------------------------------
-    description:$description
-    status:$status story points:$storyPoints
-developer:$developer estimated hours:$estimatedDevHours spent hours:$spentDevHours
-qa:$qa  estimated hours:$estimatedQAHours
-    place on board:$placeOnBoard""")
 
     defaultWorkingPerson = {"firstName":"unset", "lastName":"unset", \
             "estimatedSprintHours":"unset", "isADeveloper":True,
@@ -207,13 +200,8 @@ qa:$qa  estimated hours:$estimatedQAHours
         scrumboardMethod = getattr(self.scrumboard, cardColor)
         if callable(scrumboardMethod):
             for card in scrumboardMethod(self.sprint.getDevTimeLeftInSprint()):
-                cardInfo = { "storyPoints":card.storyPoints, "description":card.description, \
-                             "estimatedDevHours":card.estimatedDevHours, "estimatedQAHours":card.estimatedQAHours, \
-                            "qa":"{} {}".format(card.qa.firstName, card.qa.lastName), \
-                            "developer":"{} {}".format(card.developer.firstName,card.developer.lastName), \
-                            "placeOnBoard" : card.placeOnBoard, "status":card.status
-                }
-                print CLI.__cardStatusTemplate.substitute(cardInfo)
+                print card
+
 
 
 

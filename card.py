@@ -2,7 +2,7 @@ __author__ = 'alan'
 
 import datetime
 import pytz
-
+from string import Template
 
 class CardError(Exception): pass
 
@@ -68,6 +68,12 @@ class Card(object):
     STATE_EXCEPTION = 3
     IDctr = 0
     DATE_FORMAT = "%Y/%m/%d"
+    __printTemplate = Template("""
+--------------------------------
+$description
+dev:$developer $spentDevHours out of $estimatedDevHours hours
+qa:$qa  $estimatedQAHours hours
+In $placeOnBoard    $storyPoints SP""")
 
     def __init__(self, params = None ):
 
@@ -110,6 +116,23 @@ class Card(object):
     def getNextID():
         Card.IDctr += 1
         return Card.IDctr
+
+    def __str__(self):
+        developerName = "not assigned"
+        qaName = "not assigned"
+        if self.developer:
+            developerName = "{} {}".format(self.developer.firstName,self.developer.lastName)
+        if self.qa:
+            qaName =  "{} {}".format(self.qa.firstName, self.qa.lastName)
+
+        cardInfo = { "storyPoints":self.storyPoints, "description":self.description, \
+                             "estimatedDevHours":self.estimatedDevHours, "estimatedQAHours":self.estimatedQAHours, \
+                            "qa": qaName, "developer": developerName, "spentDevHours" : self.spentDevHours, \
+                            "placeOnBoard" : self.placeOnBoard
+                }
+        return Card.__printTemplate.substitute(cardInfo)
+
+
 
     @property
     def storyPoints(self):
@@ -310,19 +333,14 @@ class Card(object):
             return True
         else:
             return False
-    @property
-    def status(self):
-        if self.isCardRed():
+
+    def status(self, timeLeftInSprint):
+        if self.isCardRed(timeLeftInSprint):
             return "Red"
-        elif self.isCardYellow():
+        elif self.isCardYellow(timeLeftInSprint):
             return "Yellow"
-        elif self.isCardGreen():
+        elif self.isCardGreen(timeLeftInSprint):
             return "Green"
-
-    @status.setter
-    def status(self,value):
-        return self.status
-
 
     def isCardGreen(self, timeLeftInSprint):
         if self.placeOnBoard == "Done":
