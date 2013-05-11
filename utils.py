@@ -37,7 +37,7 @@ def timeZoneChangeExample():
 
 def generateCard(person):
     card = Card()
-    card.storyPoints = Card.cardDataMap["storyPoints"][random.randint(0,5)]
+    card.storyPoints = Card.cardDataMap["storyPoints"][random.randint(0,(len(Card.cardDataMap["storyPoints"])-1))]
     card.estimatedDevHours = random.randint(1,16)
     card.estimatedQAHours= random.randint(2,6)
     card.description = "Random Description:%d" % random.randint(1,375)

@@ -13,6 +13,7 @@ import random
 class personHourChecks(unittest.TestCase):
     def setUp(self):
         self.person = generatePerson()
+        print self.person
 
 
     def testValidEstimatedHours(self):
@@ -51,7 +52,7 @@ class personVelocityChecks(unittest.TestCase):
             self.totalStoryPoints += card.storyPoints
             card.placeOnBoard = "CodeReview"
 
-        cards[random.randint(0,len(cards))].placeOnBoard = "CodeReview"
+        cards[random.randint(0,(len(cards)-1))].placeOnBoard = "CodeReview"
 
 
 

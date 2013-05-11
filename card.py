@@ -74,6 +74,7 @@ class Card(object):
     DATE_FORMAT = "%Y/%m/%d"
     __printTemplate = Template("""
 --------------------------------
+$cardID
 $description
 Dev:$developer, $spentDevHours/$estimatedDevHours hours
 QA:$qa, $estimatedQAHours hours
@@ -134,7 +135,7 @@ In:$placeOnBoard, $storyPoints SP
         cardInfo = { "storyPoints":self.storyPoints, "description":self.description, \
                              "estimatedDevHours":self.estimatedDevHours, "estimatedQAHours":self.estimatedQAHours, \
                             "qa": qaName, "developer": developerName, "spentDevHours" : self.spentDevHours, \
-                            "placeOnBoard" : self.placeOnBoard
+                            "placeOnBoard" : self.placeOnBoard, "cardID":self.cardID
                 }
         return Card.__printTemplate.substitute(cardInfo)
 

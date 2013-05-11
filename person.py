@@ -2,6 +2,7 @@ __author__ = 'alan'
 
 
 from card import Card
+from string import Template
 
 
 class PersonError(Exception): pass
@@ -12,6 +13,14 @@ class PersonInvalidCardsParam(PersonError) : pass
 
 class Person(object):
     IDctr = 0
+    __printTemplate = Template("""
+--------------------------------
+$personID
+$firstName $lastName
+Developer: $isADeveloper
+$spentSprintHours/$estimatedSprintHours hours
+--------------------------------
+    """)
 
     def __init__(self, params = None):
         self.__personID = Person.getNextID()
@@ -29,6 +38,13 @@ class Person(object):
                 if key != "cards" and hasattr(self,key):
                     setattr(self,key,params[key])
 
+
+    def __str__(self):
+        personInfo = { "personID": self.personID, "firstName": self.firstName, \
+                       "lastName":self.lastName, "isADeveloper":self.isADeveloper, \
+                       "spentSprintHours":self.spentSprintHours, "estimatedSprintHours": self.estimatedSprintHours
+                       }
+        return Person.__printTemplate.substitute(personInfo)
 
     @staticmethod
     def getNextID():
