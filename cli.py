@@ -47,6 +47,15 @@ Card Selected:$cardSelected
 4) Back to Main Menu
 $message""")
 
+    __updateSpentDevHoursMenu = Template("""
+Update spent dev hours on Card Menu
+---------------------------------
+Card Selected:$cardSelected
+1) Select a card
+2) Add spent dev hours ($spentDevHours)
+3) Back to Main Menu
+    """)
+
     __mainMenuStr = """
 Scrumboard Main Menu
 --------------------------------
@@ -55,9 +64,8 @@ You have the following options:
 2) Status Report
 3) Move card on board
 4) Add dev hours spent on card
-5) Assign developer to a card
-6) Assign QA to a card
-7) End Sprint and Exit the Scrumboard"""
+5) Assign person to a card
+6) End Sprint and Exit the Scrumboard"""
 
     __createPersonMenuStr = Template("""
 Create a Person Menu
@@ -298,7 +306,7 @@ $completedPoints/$totalPoints completed SP
         if not option:
             print CLI.__mainMenuStr
         else:
-            if option == 7:
+            if option == 6:
                 self.termination_condition = True
                 print "Thank you for trying the Scrumboard Project. exiting...."
             elif option == 2:
