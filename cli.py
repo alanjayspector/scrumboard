@@ -264,10 +264,31 @@ $completedPoints/$totalPoints completed SP
                 print card
                 raw_input("Press any key to continue:")
 
+    def selectACard(self):
+        selectCard = None
+        for card in self.scrumboard.cards.values():
+            print card
+            selectCard = raw_input('Enter "Y" to select this card or hit any key to continue:').lower()
+            if selectCard == "y":
+                self.selectedCard = card
+                return
+
+
+    def selectAPersonForSelectedCard(self, isADeveloper = True):
+        selectPerson = None
+        for person in self.scrumboard.getAllPeople(isADeveloper):
+            print person
+            selectPerson = raw_input('Enter "Y" to select this person or hit any key to continue:').lower()
+            if selectPerson == "y":
+                person.addCardToCurrentSprint(self.selectedCard)
+                return
+
+
     def moveCardOnBoardMenu(self, option = None):
         pass
 
     def assignPersonToCardMenu(self, option = None):
+
         pass
 
     def addSpentDevHoursToCardMenu(self, option = None):

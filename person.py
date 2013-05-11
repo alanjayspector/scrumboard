@@ -117,6 +117,10 @@ class Person(object):
         if not self.cards.has_key(sprintID):
             self.cards[sprintID] = []
         self.cards[sprintID].append(card)
+        if self.isADeveloper:
+            card.developer = self
+        else:
+            card.qa = self
 
     def getCurrentSprintCards(self):
         return self.cards[self.currentSprintID]

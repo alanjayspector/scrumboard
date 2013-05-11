@@ -67,6 +67,14 @@ class Scrumboard(object):
             raise PersonNotFoundOnScrumboard
         return self.people[personID]
 
+    def getAllPeople(self,isADeveloper = True):
+        people = []
+        for person in self.people.values():
+            if person.isADeveloper == isADeveloper:
+                people.append(person)
+        return people
+
+
     def getCard(self, cardID):
         if not self.cards.has_key(cardID):
             raise CardNotFoundOnScrumboard
