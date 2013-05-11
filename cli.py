@@ -65,7 +65,7 @@ $message""")
     __statusReportMenuStr = Template("""
 Status Report Menu
 --------------------------------
-$completedPoints out of $totalPoints completed SP
+$completedPoints/$totalPoints completed SP
 1) Show Red Cards
 2) Show Yellow Cards
 3) Show Green Cards
