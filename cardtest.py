@@ -35,36 +35,34 @@ class cardPlacementChecks(unittest.TestCase):
         self.card = Card({"description": "My Test Card", "qa": qa, "developer": developer})
 
     def testDoneWithoutPoReview(self):
-        testCard = Card({"needsCodeReview": False, "needsQA": False})
+        self.card.needsCodeReview = False
+        self.card.needsQA = False
         with self.assertRaises(NeedsPOReviewError):
-            testCard.placeOnBoard = "Done"
-
+            self.card.placeOnBoard = "Done"
 
     def testDoneWithoutQA(self):
         self.card.needsCodeReview = False
         with self.assertRaises(NeedsQAError):
             self.card.placeOnBoard = "Done"
 
-
     def testInvalidPlacement(self):
-        testCard = Card()
+        testCard = self.card
         with self.assertRaises(InvalidPlaceOnBoardError):
             testCard.placeOnBoard = "HappyTown"
 
     def testCardHadQA(self):
-        #note since dicts aren't ordered if I included placeOnBoard this could potentially raise an exception since the
-        #the needs* attributes need to be set first
-        testCard = Card({"needsCodeReview": False, "needsPOReview": False})
-        testCard.placeOnBoard = "QA"
-        self.assertEqual(True, testCard.hadQA, "hadQA was not set to True")
+        self.card.needsCodeReview = False
+        self.card.needsPOReview = False
+        self.card.placeOnBoard = "QA"
+        self.assertEqual(True, self.card.hadQA, "hadQA was not set to True")
 
     def testCardIsInResearch(self):
-        testCard = Card({"placeOnBoard": "Research"})
-        self.assertEqual("Research", testCard.placeOnBoard, "Card is not in Research")
-
+        self.card.placeOnBoard = "Research"
+        self.assertEqual("Research", self.card.placeOnBoard,
+                         "Card is in {} not Research".format(self.card.placeOnBoard))
 
     def testCardBeingSentBackToDevelopment(self):
-        testCard = Card()
+        testCard = self.card
         testCard.placeOnBoard = "Research"
         testCard.placeOnBoard = "Development"
         testCard.placeOnBoard = "CodeReview"
