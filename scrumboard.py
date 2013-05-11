@@ -76,17 +76,17 @@ class Scrumboard(object):
         totalStoryPoints = 0
         for card in self.cards.values():
             totalStoryPoints += card.storyPoints
+        return totalStoryPoints
 
     def getVelocity(self, timeLeftInSprint):
         doneStoryPoints = 0
         outstandingStoryPoints = 0
         for card in self.cards.values():
-            if card.isCardGreen(timeLeftInSprint):
+            if card.placeOnBoard == "Done":
                 doneStoryPoints += card.storyPoints
             else:
                 outstandingStoryPoints += card.storyPoints
-
-        return (doneStoryPoints, outstandingStoryPoints, self.getTotalStoryPoints())
+        return doneStoryPoints, outstandingStoryPoints, self.getTotalStoryPoints()
 
     def assignPersonToScrumboard(self, person):
         if not isinstance(person, Person):
