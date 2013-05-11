@@ -108,7 +108,7 @@ class Sprint(object):
     def codeFreezeDate(self,value):
         newDate = None
         try:
-            datetime.datetime.strptime(value,Sprint.DATE_FORMAT)
+            newDate = datetime.datetime.strptime(value,Sprint.DATE_FORMAT)
         except ValueError:
             raise InvalidSprintDateFormat, "codeFreezeDate must be in format:%s" % Sprint.DATE_FORMAT
 

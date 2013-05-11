@@ -5,6 +5,7 @@ from card import Card
 from person import Person
 from string import Template
 from sprint import Sprint
+import datetime
 import copy
 
 class CLI(object):
@@ -56,16 +57,17 @@ Card Selected:$cardSelected
 3) Back to Main Menu
     """)
 
-    __mainMenuStr = """
+    __mainMenuStr = Template("""
 Scrumboard Main Menu
 --------------------------------
+Current Sprint Date:$currentDate
 You have the following options:
 1) Iterate a day
 2) Status Report
 3) Move card on board
 4) Add dev hours spent on card
 5) Assign person to a card
-6) End Sprint and Exit the Scrumboard"""
+6) End Sprint and Exit the Scrumboard""")
 
     __createPersonMenuStr = Template("""
 Create a Person Menu
@@ -125,7 +127,11 @@ $completedPoints/$totalPoints completed SP
         self.workingPerson = None
         self.workingCard = None
         self.selectedCard = None
+        self.currentDate= self.sprint.startDate
 
+    def iterateDay(self):
+            currentDate = datetime.datetime.strptime(self.currentDate,Sprint.DATE_FORMAT)
+            self.currentDate = (currentDate + datetime.timedelta(days=1)).strftime(Sprint.DATE_FORMAT)
 
     def createCardMenu(self, option = None):
         if not option:
@@ -237,13 +243,13 @@ $completedPoints/$totalPoints completed SP
             elif option == 5:
                 self.menuStr = "mainMenu"
         else:
-            completed, outstanding, total = self.scrumboard.getVelocity(self.sprint.getDevTimeLeftInSprint())
+            completed, outstanding, total = self.scrumboard.getVelocity(self.sprint.getDevTimeLeftInSprint(self.currentDate))
             print CLI.__statusReportMenuStr.substitute({"completedPoints":completed, "totalPoints":total})
 
     def generateCardStatuses(self, cardColor = "reportRedCards"):
         scrumboardMethod = getattr(self.scrumboard, cardColor)
         if callable(scrumboardMethod):
-            for card in scrumboardMethod(self.sprint.getDevTimeLeftInSprint()):
+            for card in scrumboardMethod(self.sprint.getDevTimeLeftInSprint(self.currentDate)):
                 print card
                 raw_input("Press any key to continue:")
 
@@ -251,6 +257,9 @@ $completedPoints/$totalPoints completed SP
         pass
 
     def assignPersonToCardMenu(self, option = None):
+        pass
+
+    def addSpentDevHoursToCardMenu(self, option = None):
         pass
 
     def createSprintMenu(self, option = None ):
@@ -268,6 +277,7 @@ $completedPoints/$totalPoints completed SP
                 try:
                     self.sprint.startDate = raw_input("Please enter start date in format YYYY/MM/DD:")
                     self.workingSprint["startDate"] = self.sprint.startDate
+                    self.currentDate = self.sprint.startDate
                 except:
                     self.workingSprint["message"] = "*****Invalid date"
                 return
@@ -304,7 +314,7 @@ $completedPoints/$totalPoints completed SP
 
     def mainMenu(self, option = None):
         if not option:
-            print CLI.__mainMenuStr
+            print CLI.__mainMenuStr.substitute({"currentDate":self.currentDate})
         else:
             if option == 6:
                 self.termination_condition = True
@@ -313,6 +323,15 @@ $completedPoints/$totalPoints completed SP
                 self.menuStr = "statusReportMenu"
             elif option == 3:
                 self.menuStr = "moveCardOnBoardMenu"
+            elif option == 5:
+                self.menuStr = "assignCardToPersonMenu"
+            elif option == 4:
+                self.menuStr = "addSpentDevHoursToCardMenu"
+            elif option == 1:
+                self.iterateDay()
+
+
+
 
 
 if __name__ == "__main__":
