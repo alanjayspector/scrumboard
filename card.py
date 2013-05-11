@@ -9,6 +9,10 @@ class CardError(Exception): pass
 
 class InvalidPlaceOnBoardError(CardError): pass
 
+class NoQAAssignedError(CardError): pass
+
+
+class NoDeveloperAssignedError(CardError): pass
 
 class InvalidHourError(CardError): pass
 
@@ -273,13 +277,21 @@ In:$placeOnBoard, $storyPoints SP
     def placeOnBoard(self, value):
         current_place = self.__placeOnBoard
         if value in Card.cardDataMap["placeOnBoard"]:
-            self.__CodeReviewCheck(current_place, value)
-            self.__QACheck(current_place, value)
-            self.__POReviewCheck(current_place, value)
-            self.__placeOnBoard = value
+            if value == self.placeOnBoard:
+                return None
+            elif value == "QA" and not self.qa:
+                raise NoQAAssignedError
+            elif value != "Backlog" and not self.developer:
+                raise NoDeveloperAssignedError
+            else:
+                self.__CodeReviewCheck(current_place, value)
+                self.__QACheck(current_place, value)
+                self.__POReviewCheck(current_place, value)
+                self.__placeOnBoard = value
         else:
             raise InvalidPlaceOnBoardError, \
                 "Valid placements are:%s" % ",".join(Card.cardDataMap["placeOnBoard"])
+        return None
 
 
     def __CodeReviewCheck(self, previousPlaceOnBoard, newPlaceOnBoard):
