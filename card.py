@@ -4,15 +4,18 @@ import datetime
 import pytz
 from string import Template
 
+
 class CardError(Exception): pass
 
 
 class InvalidPlaceOnBoardError(CardError): pass
 
+
 class NoQAAssignedError(CardError): pass
 
 
 class NoDeveloperAssignedError(CardError): pass
+
 
 class InvalidHourError(CardError): pass
 
@@ -40,7 +43,9 @@ class InvalidCardAttribute(CardError): pass
 
 class InvalidAccessOfDict(CardError): pass
 
+
 class InvalidConstructorParams(CardError): pass
+
 
 class Card(object):
     cardDataMap = {
@@ -49,21 +54,21 @@ class Card(object):
         "QAArgs": ( "QA", "needsQA", "hadQA", NeedsQAError),
         "POReviewArgs": ( "POReview", "needsPOReview", "hadPOReview", NeedsPOReviewError),
         "CodeReviewArgs": ( "CodeReview", "needsCodeReview", "hadCodeReview", NeedsCodeReviewError),
-        "defaultParams" : {
-            "storyPoints" : 1,
-            "completedDate" : None,
-            "estimatedDevHours" : 0,
-            "needsPOReview" : True,
-            "hadPOReview" : False,
-            "hadCodeReview" : False,
-            "needsCodeReview" : True,
-            "hadQA" : False,
-            "needsQA" : True,
-            "description" : None,
-            "spentDevHours" : 0,
-            "placeOnBoard" : "Backlog",
-            "qa" : None,
-            "developer" : None
+        "defaultParams": {
+            "storyPoints": 1,
+            "completedDate": None,
+            "estimatedDevHours": 0,
+            "needsPOReview": True,
+            "hadPOReview": False,
+            "hadCodeReview": False,
+            "needsCodeReview": True,
+            "hadQA": False,
+            "needsQA": True,
+            "description": None,
+            "spentDevHours": 0,
+            "placeOnBoard": "Backlog",
+            "qa": None,
+            "developer": None
         }
     }
     STATE_NAME = 0
@@ -82,7 +87,7 @@ In:$placeOnBoard, $storyPoints SP
 --------------------------------
 """)
 
-    def __init__(self, params = None ):
+    def __init__(self, params=None):
 
         self.__cardID = Card.getNextID()
         self.__createdDate = datetime.datetime.now().strftime(Card.DATE_FORMAT)
@@ -99,13 +104,17 @@ In:$placeOnBoard, $storyPoints SP
         self.__needsQA = True
         self.description = None
         self.__spentDevHours = 0
-        self.developer= None
+        self.developer = None
         self.qa = None
         self.__placeOnBoard = "Backlog"
-        if isinstance(params,dict) :
+
+        if isinstance(params, dict):
+            placeOnBoard = dict.pop("placeOnBoard", None)
             for key in params:
-                if hasattr(self,key):
-                    setattr(self,key,params[key])
+                if hasattr(self, key):
+                    setattr(self, key, params[key])
+            if placeOnBoard:
+                self.placeOnBoard = placeOnBoard
 
 
     def __eq__(self, other):
@@ -116,7 +125,7 @@ In:$placeOnBoard, $storyPoints SP
         return self.__createdDate
 
     @createdDate.setter
-    def createdDate(self,value):
+    def createdDate(self, value):
         pass
 
     @staticmethod
@@ -128,17 +137,16 @@ In:$placeOnBoard, $storyPoints SP
         developerName = "not assigned"
         qaName = "not assigned"
         if self.developer:
-            developerName = "{} {}".format(self.developer.firstName,self.developer.lastName)
+            developerName = "{} {}".format(self.developer.firstName, self.developer.lastName)
         if self.qa:
-            qaName =  "{} {}".format(self.qa.firstName, self.qa.lastName)
+            qaName = "{} {}".format(self.qa.firstName, self.qa.lastName)
 
-        cardInfo = { "storyPoints":self.storyPoints, "description":self.description, \
-                             "estimatedDevHours":self.estimatedDevHours, "estimatedQAHours":self.estimatedQAHours, \
-                            "qa": qaName, "developer": developerName, "spentDevHours" : self.spentDevHours, \
-                            "placeOnBoard" : self.placeOnBoard, "cardID":self.cardID
-                }
+        cardInfo = {"storyPoints": self.storyPoints, "description": self.description, \
+                    "estimatedDevHours": self.estimatedDevHours, "estimatedQAHours": self.estimatedQAHours, \
+                    "qa": qaName, "developer": developerName, "spentDevHours": self.spentDevHours, \
+                    "placeOnBoard": self.placeOnBoard, "cardID": self.cardID
+        }
         return Card.__printTemplate.substitute(cardInfo)
-
 
 
     @property
@@ -146,24 +154,25 @@ In:$placeOnBoard, $storyPoints SP
         return self.__storyPoints
 
     @storyPoints.setter
-    def storyPoints(self,value):
+    def storyPoints(self, value):
         if value in Card.cardDataMap["storyPoints"]:
             self.__storyPoints = value
         else:
             raise InvalidStoryPointError, \
-                 "Valid story point sizes are:%s" % \
-                                      ",".join([str(points) for points in Card.cardDataMap["storyPoints"]])
+                "Valid story point sizes are:%s" % \
+                ",".join([str(points) for points in Card.cardDataMap["storyPoints"]])
+
     @property
     def estimatedQAHours(self):
         return self.__estimatedQAHours
 
     @estimatedQAHours.setter
-    def estimatedQAHours(self,value):
+    def estimatedQAHours(self, value):
         if isinstance(value, int) is True and value >= 0:
             self.__estimatedQAHours = value
         else:
             raise InvalidHourError, \
-                    "Value must be an positive int not '%s'" % value
+                "Value must be an positive int not '%s'" % value
 
     @property
     def estimatedDevHours(self):
@@ -171,103 +180,103 @@ In:$placeOnBoard, $storyPoints SP
 
 
     @estimatedDevHours.setter
-    def estimatedDevHours(self,value):
+    def estimatedDevHours(self, value):
         if isinstance(value, int) is True and value >= 0:
             self.__estimatedDevHours = value
         else:
             raise InvalidHourError, \
-                    "Value must be an positive int not '%s'" % value
+                "Value must be an positive int not '%s'" % value
 
     @property
     def spentDevHours(self):
         return self.__spentDevHours
 
     @spentDevHours.setter
-    def spentDevHours(self,value):
+    def spentDevHours(self, value):
         if isinstance(value, int) is True and value >= 0:
             self.__spentDevHours = value
         else:
             raise InvalidHourError, \
-                    "Value must be an positive int not '%s'" % value
+                "Value must be an positive int not '%s'" % value
 
     @property
     def needsPOReview(self):
         return self.__needsPOReview
 
     @needsPOReview.setter
-    def needsPOReview(self,value):
+    def needsPOReview(self, value):
         if isinstance(value, bool):
             self.__needsPOReview = value
         else:
             raise InvalidValueError, \
-                    "needsPOReview must be a bool not '%s" % value
+                "needsPOReview must be a bool not '%s" % value
 
     @property
     def hadPOReview(self):
         return self.__hadPOReview
 
     @hadPOReview.setter
-    def hadPOReview(self,value):
+    def hadPOReview(self, value):
         if isinstance(value, bool):
             self.__hadPOReview = value
         else:
             raise InvalidValueError, \
-                    "hadPOReview must be a bool not '%s" % value
+                "hadPOReview must be a bool not '%s" % value
 
     @property
     def needsQA(self):
         return self.__needsQA
 
     @needsQA.setter
-    def needsQA(self,value):
+    def needsQA(self, value):
         if isinstance(value, bool):
             self.__needsQA = value
         else:
             raise InvalidValueError, \
-                    "needsQA must be a bool not '%s" % value
+                "needsQA must be a bool not '%s" % value
 
     @property
     def hadQA(self):
         return self.__hadQA
 
     @hadQA.setter
-    def hadQA(self,value):
+    def hadQA(self, value):
         if isinstance(value, bool):
             self.__hadQA = value
         else:
             raise InvalidValueError, \
-                    "hadQA must be a bool not '%s" % value
+                "hadQA must be a bool not '%s" % value
 
     @property
     def needsCodeReview(self):
         return self.__needsCodeReview
 
     @needsCodeReview.setter
-    def needsCodeReview(self,value):
+    def needsCodeReview(self, value):
         if isinstance(value, bool):
             self.__needsCodeReview = value
         else:
             raise InvalidValueError, \
-                    "needsCodeReview must be a bool not '%s" % value
+                "needsCodeReview must be a bool not '%s" % value
 
     @property
     def hadCodeReview(self):
         return self.__hadCodeReview
 
     @hadCodeReview.setter
-    def hadCodeReview(self,value):
+    def hadCodeReview(self, value):
         if isinstance(value, bool):
             self.__hadCodeReview = value
         else:
             raise InvalidValueError, \
-                    "hadCodeReview must be a bool not '%s" % value
+                "hadCodeReview must be a bool not '%s" % value
 
     @property
     def cardID(self):
         return self.__cardID
 
     @cardID.setter
-    def cardID(self,value):
+    def cardID(self, value):
         pass
 
     @property
@@ -300,17 +309,16 @@ In:$placeOnBoard, $storyPoints SP
                           previousPlaceOnBoard, newPlaceOnBoard)
 
     def __stateCheck(self, stateArgs, previousPlaceOnBoard, newPlaceOnBoard):
-        condition = getattr(self,stateArgs[Card.NEEDS_STATE_NAME])
-        if condition :
+        condition = getattr(self, stateArgs[Card.NEEDS_STATE_NAME])
+        if condition:
             stateIndex = Card.cardDataMap["placeOnBoard"].index(stateArgs[Card.STATE_NAME])
             previousIndex = Card.cardDataMap["placeOnBoard"].index(previousPlaceOnBoard)
             newIndex = Card.cardDataMap["placeOnBoard"].index(newPlaceOnBoard)
 
-
             if newIndex < previousIndex:
                 setattr(self, stateArgs[Card.HAD_STATE_NAME], False)
             elif newIndex > previousIndex and \
-                            stateIndex < newIndex and not getattr(self,stateArgs[Card.HAD_STATE_NAME]):
+                            stateIndex < newIndex and not getattr(self, stateArgs[Card.HAD_STATE_NAME]):
                 raise stateArgs[Card.STATE_EXCEPTION]
             elif newIndex == stateIndex:
                 setattr(self, stateArgs[Card.HAD_STATE_NAME], True)
