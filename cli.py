@@ -61,6 +61,7 @@ Card Selected:$cardSelected
 Scrumboard Main Menu
 --------------------------------
 Current Sprint Date:$currentDate
+Sprint Completed: $isSprintOver
 You have the following options:
 1) Iterate a day
 2) Status Report
@@ -128,10 +129,20 @@ $completedPoints/$totalPoints completed SP
         self.workingCard = None
         self.selectedCard = None
         self.currentDate= self.sprint.startDate
+        self.isSprintOver = False
 
     def iterateDay(self):
+            if self.isSprintOver:
+                return
             currentDate = datetime.datetime.strptime(self.currentDate,Sprint.DATE_FORMAT)
-            self.currentDate = (currentDate + datetime.timedelta(days=1)).strftime(Sprint.DATE_FORMAT)
+            newDate = (currentDate + datetime.timedelta(days=1)).strftime(Sprint.DATE_FORMAT)
+            endDate = datetime.datetime.strptime(self.sprint.endDate,Sprint.DATE_FORMAT)
+            if endDate <= newDate:
+                self.isSprintOver = True
+                self.currentDate = self.sprint.endDate
+                return
+            else:
+                self.currentDate = (currentDate + datetime.timedelta(days=1)).strftime(Sprint.DATE_FORMAT)
 
     def createCardMenu(self, option = None):
         if not option:
@@ -314,7 +325,7 @@ $completedPoints/$totalPoints completed SP
 
     def mainMenu(self, option = None):
         if not option:
-            print CLI.__mainMenuStr.substitute({"currentDate":self.currentDate})
+            print CLI.__mainMenuStr.substitute({"currentDate":self.currentDate, "isSprintOver":self.isSprintOver})
         else:
             if option == 6:
                 self.termination_condition = True
