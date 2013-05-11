@@ -3,42 +3,47 @@ __author__ = 'alan'
 import unittest
 import card
 from card import *
+from person import Person
 import pytz
 import utils
 
 
-
 class cardColorChecks(unittest.TestCase):
     def isCardRed(self):
-        testCard = Card({ "estimatedDevHours" : 8, "spentDevHours": 4})
+        testCard = Card({"estimatedDevHours": 8, "spentDevHours": 4})
         self.assertEqual(True, testCard.isCardRed(6), "Card should be red")
 
     def isCardGreen(self):
-        testCard = Card({ "estimatedDevHours" : 8, "spentDevHours": 4})
+        testCard = Card({"estimatedDevHours": 8, "spentDevHours": 4})
         self.assertEqual(True, self.isCardGreen(10), "Card should be green")
 
     def isCardYellow(self):
-        testCard = Card({ "estimatedDevHours" : 4, "spentDevHours": 9})
+        testCard = Card({"estimatedDevHours": 4, "spentDevHours": 9})
         self.assertEqual(True, self.isCardGreen(10), "Card should be yellow")
 
     def checkThatDoneCardsAreGreen(self):
-        testCard = Card({ "estimatedDevHours" : 4, "spentDevHours": 32, "placeOnBoard": "QA"})
+        testCard = Card({"estimatedDevHours": 4, "spentDevHours": 32, "placeOnBoard": "QA"})
         testCard.placeOnBoard = "POReview"
         testCard.placeOnBoard = "Done"
         self.assertEqual(True, testCard.isCardGreen(0), "Card should be green")
 
 
 class cardPlacementChecks(unittest.TestCase):
+    def setUp(self):
+        qa = Person({"firstName": "Bob", "lastName": "Smith", "isADeveloper": False})
+        developer = Person({"firstName": "Alan", "lastName": "Spector"})
+        self.card = Card({"description": "My Test Card", "qa": qa, "developer": developer})
+
     def testDoneWithoutPoReview(self):
-        testCard = Card({"needsCodeReview":False, "needsQA":False})
+        testCard = Card({"needsCodeReview": False, "needsQA": False})
         with self.assertRaises(NeedsPOReviewError):
             testCard.placeOnBoard = "Done"
 
 
     def testDoneWithoutQA(self):
-        testCard = Card({"needsCodeReview":False})
+        self.card.needsCodeReview = False
         with self.assertRaises(NeedsQAError):
-            testCard.placeOnBoard = "Done"
+            self.card.placeOnBoard = "Done"
 
 
     def testInvalidPlacement(self):
@@ -49,12 +54,12 @@ class cardPlacementChecks(unittest.TestCase):
     def testCardHadQA(self):
         #note since dicts aren't ordered if I included placeOnBoard this could potentially raise an exception since the
         #the needs* attributes need to be set first
-        testCard = Card({"needsCodeReview":False, "needsPOReview":False})
+        testCard = Card({"needsCodeReview": False, "needsPOReview": False})
         testCard.placeOnBoard = "QA"
         self.assertEqual(True, testCard.hadQA, "hadQA was not set to True")
 
     def testCardIsInResearch(self):
-        testCard = Card({"placeOnBoard":"Research"})
+        testCard = Card({"placeOnBoard": "Research"})
         self.assertEqual("Research", testCard.placeOnBoard, "Card is not in Research")
 
 

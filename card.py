@@ -109,7 +109,7 @@ In:$placeOnBoard, $storyPoints SP
         self.__placeOnBoard = "Backlog"
 
         if isinstance(params, dict):
-            placeOnBoard = dict.pop("placeOnBoard", None)
+            placeOnBoard = params.pop("placeOnBoard", None)
             for key in params:
                 if hasattr(self, key):
                     setattr(self, key, params[key])
