@@ -9,13 +9,14 @@ Phase I
         Create a scrumboard  <--- done
         Create Cards  <--- done
         Create Person <--- done
-        Assign Person to Cards
-        Start Sprint
-        Assign Person to Cards
-        Move Cards on Board to different places
-        Display Status on each Card on the Board
-        simulate days passing to calculate statuses on Cards
-        End Sprint
+        Assign Person to Cards <-- done
+        Edit Sprint <--- done
+        Assign Person to Cards <--- done
+        Move Cards on Board to different places <-- done
+        Display Status on each Card on the Board <-- done
+        simulate days passing to calculate statuses on Cards <-- done
+        End Sprint <-- done
+        *** need to fully exercise the simulation still though
 
 3. learn how to use Postgres with Python
 4. setup up DDL for project
