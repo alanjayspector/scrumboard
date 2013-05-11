@@ -200,6 +200,7 @@ $completedPoints out of $totalPoints completed SP
             elif option == 4:
                 for card in self.scrumboard.cards.values():
                     print card
+                    raw_input("Press any key to continue:")
             elif option == 5:
                 self.menuStr = "mainMenu"
         else:
@@ -211,6 +212,7 @@ $completedPoints out of $totalPoints completed SP
         if callable(scrumboardMethod):
             for card in scrumboardMethod(self.sprint.getDevTimeLeftInSprint()):
                 print card
+                raw_input("Press any key to continue:")
 
 
 
