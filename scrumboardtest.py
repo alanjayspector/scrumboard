@@ -8,7 +8,7 @@ import datetime
 
 class checkScrumboardColors(unittest.TestCase):
     def setUp(self):
-        self.scrumboard = Scrumboard(1)
+        self.scrumboard = Scrumboard()
         self.person = generatePerson()
         for card in self.person.getCurrentSprintCards():
             self.scrumboard.assignCardToScrumboard(card)

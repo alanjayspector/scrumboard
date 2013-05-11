@@ -3,6 +3,8 @@ __author__ = 'alanspector'
 import datetime
 from person import Person
 from card import Card
+from sprint import Sprint
+from scrumboard import Scrumboard
 import random
 import pytz
 
@@ -42,7 +44,7 @@ def generateCard(person):
     card.person = person
     return card
 
-def generatePerson():
+def generatePerson(sprintID = 1):
     person = Person({ "firstName":"Alan", "lastName": "Spector", \
                       "currentSprintID":1, "estimatedSprintHours":32 })
 
@@ -51,3 +53,10 @@ def generatePerson():
         person.addCardToCurrentSprint(card)
 
     return person
+
+def generateSprint():
+    sprint = Sprint()
+    scrumboard = Scrumboard(sprint)
+
+
+

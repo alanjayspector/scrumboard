@@ -62,15 +62,15 @@ You have the following options:
 8) Cancel and return to Sprint Menu
 $message""")
 
-    __statusReportMenuStr = """
+    __statusReportMenuStr = Template("""
 Status Report Menu
 --------------------------------
+$completedPoints out of $totalPoints completed SP
 1) Show Red Cards
 2) Show Yellow Cards
 3) Show Green Cards
-4) Show Current Velocity
-5) Show All Cards
-6) Main Menu"""
+4) Show All Cards
+5) Main Menu""")
 
 
     defaultWorkingPerson = {"firstName":"unset", "lastName":"unset", \
@@ -193,8 +193,18 @@ Status Report Menu
         if option:
             if option == 1:
                 self.generateCardStatuses("reportRedCards")
+            elif option == 2:
+                self.generateCardStatuses("reportYellowCards")
+            elif option == 3:
+                self.generateCardStatuses("reportGreenCards")
+            elif option == 4:
+                for card in self.scrumboard.cards.values():
+                    print card
+            elif option == 5:
+                self.menuStr = "mainMenu"
         else:
-            print CLI.__statusReportMenuStr
+            completed, outstanding, total = self.scrumboard.getVelocity(self.sprint.getDevTimeLeftInSprint())
+            print CLI.__statusReportMenuStr.substitute({"completedPoints":completed, "totalPoints":total})
 
     def generateCardStatuses(self, cardColor = "reportRedCards"):
         scrumboardMethod = getattr(self.scrumboard, cardColor)

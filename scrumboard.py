@@ -24,11 +24,12 @@ class NotValidCard(ScrumboardError): pass
 class Scrumboard(object):
     IDctr = 0
 
-    def __init__(self,sprintID):
+    def __init__(self,sprint = None):
         self.__scrumboardID = Scrumboard.getNextID()
         self.cards = {}
         self.people = {}
-        self.sprintID = sprintID
+        if sprint:
+            self.sprint = sprint
 
 
     @staticmethod
@@ -76,16 +77,16 @@ class Scrumboard(object):
         for card in self.cards.values():
             totalStoryPoints += card.storyPoints
 
-    def getVelocity(self):
+    def getVelocity(self, timeLeftInSprint):
         doneStoryPoints = 0
         outstandingStoryPoints = 0
         for card in self.cards.values():
-            if card.isCardGreen():
+            if card.isCardGreen(timeLeftInSprint):
                 doneStoryPoints += card.storyPoints
             else:
                 outstandingStoryPoints += card.storyPoints
 
-        return (doneStoryPoints, outstandingStoryPoints)
+        return (doneStoryPoints, outstandingStoryPoints, self.getTotalStoryPoints())
 
     def assignPersonToScrumboard(self, person):
         if not isinstance(person, Person):

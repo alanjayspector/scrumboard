@@ -71,9 +71,9 @@ class Card(object):
     __printTemplate = Template("""
 --------------------------------
 $description
-dev:$developer $spentDevHours out of $estimatedDevHours hours
-qa:$qa  $estimatedQAHours hours
-In $placeOnBoard    $storyPoints SP""")
+dev:$developer, $spentDevHours out of $estimatedDevHours hours
+qa:$qa, $estimatedQAHours hours
+In $placeOnBoard, $storyPoints SP""")
 
     def __init__(self, params = None ):
 

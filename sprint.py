@@ -21,7 +21,7 @@ class Sprint(object):
         self.__codeFreezeDate = (startDate + datetime.timedelta(days=7)).strftime(Sprint.DATE_FORMAT)
         self.__endQADate =  (startDate + datetime.timedelta(days=12)).strftime(Sprint.DATE_FORMAT)
         self.name = None
-        self.scrumBoard = Scrumboard(self.sprintID)
+        self.scrumBoard = Scrumboard(self)
 
     @property
     def startDate(self):
