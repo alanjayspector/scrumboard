@@ -15,12 +15,13 @@ Welcome to the Scrumboard Project
 You have the following options:
 1) Create a person
 2) Create a card
-4) Enter Sprint's start date ($startDate)
-5) Enter Sprint's end date ($endDate)
-6) Enter Sprint's code freeze date ($codeFreezeDate)
-7) Enter Sprint's QA's end date ($endQADate)
-8) Enter the sprint name ($name)
-9) Begin Sprint
+4) Set Sprint's start date ($startDate)
+5) Set Sprint's end date ($endDate)
+6) Set Sprint's code freeze date ($codeFreezeDate)
+7) Set Sprint's QA's end date ($endQADate)
+8) Set Sprint's name ($name)
+9) Set Hours/Day in Sprint ($hoursPerDay)
+10) Begin Sprint
 $message""")
 
     __moveCardOnBoardMenuStr = Template("""
@@ -44,8 +45,8 @@ Assign a Person to a Card
 ---------------------------------
 Card Selected:$selectedCard
 1) Select a card
-2) Assign QA
-3) Assign a Developer
+2) Assign QA ($qa)
+3) Assign a Developer ($developer)
 4) Back to Main Menu
 $message""")
 
@@ -311,9 +312,16 @@ $completedPoints/$totalPoints completed SP
         print CLI.__updateSpentDevHoursMenuStr.substitute(selectedCardInfo)
 
     def assignPersonToCardMenu(self, option = None):
-        selectedCardInfo = { "selectedCard":"unset", "message":""}
+        selectedCardInfo = { "selectedCard":"unset", "message":"", "qa":"unset", "developer":"unset"}
         if self.selectedCard:
-            selectedCardInfo = {"selectedCard":self.selectedCard.description}
+            qa = "unset"
+            developer = "unset"
+
+            if self.selectedCard.qa:
+                qa = self.selectedCard.qa.fullName
+            if self.selectedCard.developer:
+                developer = self.selectedCard.developer.fullName
+            selectedCardInfo = {"selectedCard":self.selectedCard.description, "qa":qa, "developer":developer}
         if option:
             if option == 1:
                 self.selectedACard()
@@ -321,8 +329,10 @@ $completedPoints/$totalPoints completed SP
                 selectedCardInfo["message"] = "*****Please select a card first."
             elif option == 2:
                 person = self.selectAPersonForSelectedCard(False)
+                selectedCardInfo["qa"] = person.fullName
             elif option == 3:
                 person = self.selectAPersonForSelectedCard()
+                selectedCardInfo["developer"] = person.fullName
             elif option == 4:
                 self.menuStr = "mainMenu"
 
@@ -333,11 +343,17 @@ $completedPoints/$totalPoints completed SP
         if not self.workingSprint:
             self.workingSprint = { "endDate": self.sprint.endDate, "endQADate": self.sprint.endQADate, \
                           "codeFreezeDate": self.sprint.codeFreezeDate, "startDate": self.sprint.startDate, \
-                          "name": self.sprint.name, "message":""
+                          "name": self.sprint.name, "message":"", "hoursPerDay":self.sprint.hoursPerDay
             }
         if option:
-            if option == 9:
+            if option == 10:
                 self.menuStr = "mainMenu"
+            elif option == 9:
+                try:
+                    self.sprint.hoursPerDay = int(raw_input("Please enter a positive whole number:"))
+                    self.workingSprint["hoursPerDay"] = self.sprint.hoursPerDay
+                except Exception as message:
+                    self.workingSprint["message"] = message
             elif option == 1:
                 self.menuStr = "createPersonMenu"
             elif option == 4:

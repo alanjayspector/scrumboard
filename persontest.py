@@ -13,6 +13,7 @@ import random
 class personHourChecks(unittest.TestCase):
     def setUp(self):
         self.person = generatePerson()
+        print self.person.fullName
 
 
     def testValidEstimatedHours(self):

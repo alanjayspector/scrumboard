@@ -69,6 +69,14 @@ $spentSprintHours/$estimatedSprintHours hours
         self.__estimatedSprintHours = value
 
     @property
+    def fullName(self):
+        return "{} {}".format(self.firstName, self.lastName)
+
+    @fullName.setter
+    def fullName(self,value):
+        return "{} {}".format(self.firstName, self.lastName)
+
+    @property
     def spentSprintHours(self):
         return self.__spentSprintHours
 
