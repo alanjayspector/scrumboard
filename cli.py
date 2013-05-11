@@ -186,6 +186,7 @@ $completedPoints/$totalPoints completed SP
                         self.scrumboard.assignCardToScrumboard(card)
                         self.workingCard = None
                         self.menuStr = "createSprintMenu"
+                        return
                     except Exception as message:
                         self.workingCard = copy.copy(CLI.defaultWorkingCard)
                         self.workingCard["message"] = "*****{}".format(message)
@@ -227,6 +228,7 @@ $completedPoints/$totalPoints completed SP
                         self.scrumboard.assignPersonToScrumboard(person)
                         self.workingPerson = None
                         self.menuStr = "createSprintMenu"
+                        return
                     except Exception as message:
                         self.workingPerson = copy.copy(CLI.defaultWorkingPerson)
                         self.workingPerson["currentSprintID"] = self.sprint.sprintID
@@ -255,6 +257,7 @@ $completedPoints/$totalPoints completed SP
                     raw_input("Press any key to continue:")
             elif option == 5:
                 self.menuStr = "mainMenu"
+                return
         else:
             completed, outstanding, total = self.scrumboard.getVelocity(self.sprint.getDevTimeLeftInSprint(self.currentDate))
             print CLI.__statusReportMenuStr.substitute({"completedPoints":completed, "totalPoints":total})
@@ -286,7 +289,37 @@ $completedPoints/$totalPoints completed SP
                 return person
 
     def moveCardOnBoardMenu(self, option = None):
-        pass
+        selectedCardInfo = { "selectedCard":"unset", "message":"", "placeOnBoard":"unset"}
+        if self.selectedCard:
+            selectedCardInfo = {"selectedCard":self.selectedCard.description, \
+                                "placeOnBoard":self.selectedCard.placeOnBoard
+            }
+        if option:
+            if option == 1:
+                self.selectedACard()
+                if self.selectedCard:
+                    selectedCardInfo["selectedCard"] = self.selectedCard.description
+                    selectedCardInfo["placeOnBoard"] = self.selectedCard.placeOnBoard
+            elif option >= 2 and option <= 8 and not self.selectedCard:
+                selectedCardInfo["message"] = "*****Please select a card first."
+            elif option == 3:
+                pass
+            elif option == 4:
+                pass
+            elif option == 5:
+                pass
+            elif option == 6:
+                pass
+            elif option == 7:
+                pass
+            elif option == 8:
+                pass
+            elif option == 9:
+                self.menuStr = "mainMenu"
+                return
+
+
+        print CLI.__moveCardOnBoardMenuStr.substitute(selectedCardInfo)
 
     def addSpentDevHoursToCardMenu(self, option = None):
         selectedCardInfo = { "selectedCard":"unset", "message":"", "spentDevHours":"unset"}
@@ -308,6 +341,7 @@ $completedPoints/$totalPoints completed SP
                     selectedCardInfo["message"] = message
             elif option == 3:
                 self.menuStr = "mainMenu"
+                return
 
         print CLI.__updateSpentDevHoursMenuStr.substitute(selectedCardInfo)
 
@@ -335,6 +369,7 @@ $completedPoints/$totalPoints completed SP
                 selectedCardInfo["developer"] = person.fullName
             elif option == 4:
                 self.menuStr = "mainMenu"
+                return
 
         print CLI.__assignPersonToCardMenuStr.substitute(selectedCardInfo)
 
@@ -348,14 +383,16 @@ $completedPoints/$totalPoints completed SP
         if option:
             if option == 10:
                 self.menuStr = "mainMenu"
+                return
             elif option == 9:
                 try:
-                    self.sprint.hoursPerDay = int(raw_input("Please enter a positive whole number:"))
+                    self.sprint.hoursPerDay = int(raw_input("Please enter a positive whole number between 1 and 24:"))
                     self.workingSprint["hoursPerDay"] = self.sprint.hoursPerDay
                 except Exception as message:
                     self.workingSprint["message"] = message
             elif option == 1:
                 self.menuStr = "createPersonMenu"
+                return
             elif option == 4:
                 try:
                     self.sprint.startDate = raw_input("Please enter start date in format YYYY/MM/DD:")
@@ -390,6 +427,7 @@ $completedPoints/$totalPoints completed SP
                 self.workingSprint["name"] = self.sprint.name
             elif option == 2:
                 self.menuStr ="createCardMenu"
+                return
 
         print CLI.__createSprintMenuStr.substitute(self.workingSprint)
         self.workingSprint["message"] = ""
