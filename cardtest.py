@@ -75,10 +75,15 @@ class cardPlacementChecks(unittest.TestCase):
         testCard.placeOnBoard = "Development"
         self.assertEqual(False, testCard.hadCodeReview, "hadCodeReview was not set to False")
 
-    def testCardGoingToQAWithoutQAAssigned(self):
+    def testCardMovedToQAWithoutQAAssigned(self):
         self.card.qa = None
         with self.assertRaises(NoQAAssignedError):
             self.card.placeOnBoard = "QA"
+
+    def testCardMovedOutOfBacklogWithoutDev(self):
+        self.card.developer = None
+        with self.assertRaises(NoDeveloperAssignedError):
+            self.card.placeOnBoard = "Research"
 
 
 if __name__ == "__main__":
