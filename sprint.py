@@ -6,6 +6,7 @@ from scrumboard import Scrumboard
 class SprintException(Exception) : pass
 class InvalidSprintDateFormat(SprintException) : pass
 class InvalidSprintDate(SprintException) : pass
+class InvalidHoursPerDay(SprintException) : pass
 
 class Sprint(object):
     IDctr = 0
@@ -17,11 +18,21 @@ class Sprint(object):
         self.__sprintID = Sprint.getNextID()
         self.__startDate = startDate.strftime(Sprint.DATE_FORMAT)
         self.__endDate = (startDate + datetime.timedelta(days=13)).strftime(Sprint.DATE_FORMAT)
-        self.hoursPerDay = 4
+        self.__hoursPerDay = 4
         self.__codeFreezeDate = (startDate + datetime.timedelta(days=7)).strftime(Sprint.DATE_FORMAT)
         self.__endQADate =  (startDate + datetime.timedelta(days=12)).strftime(Sprint.DATE_FORMAT)
         self.name = None
         self.scrumBoard = Scrumboard(self)
+
+    @property
+    def hoursPerDay(self):
+        return self.__hoursPerDay
+    @hoursPerDay.setter
+    def hoursPerDay(self,value):
+        if isinstance(value, int) is True and value >= 1 and value <= 24:
+            self.__hoursPerDay = value
+        else:
+            raise InvalidHoursPerDay, "{} must be between 1 and 24.".format(value)
 
     @property
     def startDate(self):
