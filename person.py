@@ -15,7 +15,7 @@ class Person(object):
     IDctr = 0
     __printTemplate = Template("""
 --------------------------------
-$personID
+ID:$personID
 $firstName $lastName
 Developer: $isADeveloper
 $spentSprintHours/$estimatedSprintHours hours

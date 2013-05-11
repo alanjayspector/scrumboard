@@ -74,7 +74,7 @@ class Card(object):
     DATE_FORMAT = "%Y/%m/%d"
     __printTemplate = Template("""
 --------------------------------
-$cardID
+ID:$cardID
 $description
 Dev:$developer, $spentDevHours/$estimatedDevHours hours
 QA:$qa, $estimatedQAHours hours
