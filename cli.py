@@ -8,7 +8,7 @@ from sprint import Sprint
 import copy
 
 class CLI(object):
-    createSprintMenuStr = Template("""
+    __createSprintMenuStr = Template("""
 Welcome to the Scrumboard Project
 ---------------------------------
 You have the following options:
@@ -22,7 +22,32 @@ You have the following options:
 9) Begin Sprint
 $message""")
 
-    mainMenuStr = """
+    __moveCardOnBoardMenu = Template("""
+Move a Card on the Board Menu
+---------------------------------
+Card Selected:$cardSelected
+1) Select a card
+2) Move card to Backlog
+3) Move card to Research
+4) Move card to Development
+5) Move card to Code Review
+6) Move card to PO Review
+7) Move card to QA
+8) Move card to Done
+9) Back to Main Menu
+$message""")
+
+    __assignPersonToCardMenu = Template("""
+Assign a Person to a Card
+---------------------------------
+Card Selected:$cardSelected
+1) Select a card
+2) Assign QA
+3) Assign a Developer
+4) Back to Main Menu
+$message""")
+
+    __mainMenuStr = """
 Scrumboard Main Menu
 --------------------------------
 You have the following options:
@@ -34,7 +59,7 @@ You have the following options:
 6) Assign QA to a card
 7) End Sprint and Exit the Scrumboard"""
 
-    createPersonMenuStr = Template("""
+    __createPersonMenuStr = Template("""
 Create a Person Menu
 --------------------------------
 You have the following options:
@@ -48,7 +73,7 @@ You have the following options:
 $message""")
 
 
-    createCardMenuStr = Template("""
+    __createCardMenuStr = Template("""
 Create a Card Menu
 --------------------------------
 You have the following options:
@@ -143,7 +168,7 @@ $completedPoints/$totalPoints completed SP
                     self.menuStr = "createSprintMenu"
                     return
 
-        print CLI.createCardMenuStr.substitute(self.workingCard)
+        print CLI.__createCardMenuStr.substitute(self.workingCard)
         self.workingCard["message"] = ""
 
     def createPersonMenu(self, option = None):
@@ -186,7 +211,7 @@ $completedPoints/$totalPoints completed SP
                     return
 
 
-        print CLI.createPersonMenuStr.substitute(self.workingPerson)
+        print CLI.__createPersonMenuStr.substitute(self.workingPerson)
         self.workingPerson["message"] = ""
 
     def statusReportMenu(self, option = None ):
@@ -214,10 +239,7 @@ $completedPoints/$totalPoints completed SP
                 print card
                 raw_input("Press any key to continue:")
 
-
-
-
-    def selectCardToMoveMenu(self, option = None):
+    def moveCardOnBoardMenu(self, option = None):
         pass
 
     def assignPersonToCardMenu(self, option = None):
@@ -268,19 +290,22 @@ $completedPoints/$totalPoints completed SP
             elif option == 2:
                 self.menuStr ="createCardMenu"
 
-        print CLI.createSprintMenuStr.substitute(self.workingSprint)
+        print CLI.__createSprintMenuStr.substitute(self.workingSprint)
         self.workingSprint["message"] = ""
 
 
     def mainMenu(self, option = None):
         if not option:
-            print CLI.mainMenuStr
+            print CLI.__mainMenuStr
         else:
             if option == 7:
                 self.termination_condition = True
                 print "Thank you for trying the Scrumboard Project. exiting...."
-            if option == 2:
+            elif option == 2:
                 self.menuStr = "statusReportMenu"
+            elif option == 3:
+                self.menuStr = "moveCardOnBoardMenu"
+
 
 if __name__ == "__main__":
 
