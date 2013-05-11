@@ -2,7 +2,6 @@ __author__ = 'alan'
 
 import datetime
 import pytz
-import utils
 
 
 class CardError(Exception): pass
@@ -59,8 +58,8 @@ class Card(object):
             "description" : None,
             "spentDevHours" : 0,
             "placeOnBoard" : "Backlog",
-            "qaID" : None,
-            "developerID" : None
+            "qa" : None,
+            "developer" : None
         }
     }
     STATE_NAME = 0
@@ -68,11 +67,12 @@ class Card(object):
     HAD_STATE_NAME = 2
     STATE_EXCEPTION = 3
     IDctr = 0
+    DATE_FORMAT = "%Y/%m/%d"
 
     def __init__(self, params = None ):
 
         self.__cardID = Card.getNextID()
-        self.__createdDate = datetime.datetime.now(pytz.utc).strftime(utils.DATE_FORMAT)
+        self.__createdDate = datetime.datetime.now().strftime(Card.DATE_FORMAT)
         self.__storyPoints = 1
         self.startDate = None
         self.completedDate = None
@@ -86,8 +86,8 @@ class Card(object):
         self.__needsQA = True
         self.description = None
         self.__spentDevHours = 0
-        self.developerID = None
-        self.qaID = None
+        self.developer= None
+        self.qa = None
         self.__placeOnBoard = "Backlog"
         if isinstance(params,dict) :
             for key in params:
@@ -310,6 +310,18 @@ class Card(object):
             return True
         else:
             return False
+    @property
+    def status(self):
+        if self.isCardRed():
+            return "Red"
+        elif self.isCardYellow():
+            return "Yellow"
+        elif self.isCardGreen():
+            return "Green"
+
+    @status.setter
+    def status(self,value):
+        return self.status
 
 
     def isCardGreen(self, timeLeftInSprint):

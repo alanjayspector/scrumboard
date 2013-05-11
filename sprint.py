@@ -13,7 +13,7 @@ class Sprint(object):
 
 
     def __init__(self, params = None):
-        startDate = datetime.datetime.now() + datetime.timedelta(days=1)
+        startDate = datetime.datetime.now()
         self.__sprintID = Sprint.getNextID()
         self.__startDate = startDate.strftime(Sprint.DATE_FORMAT)
         self.__endDate = (startDate + datetime.timedelta(days=13)).strftime(Sprint.DATE_FORMAT)

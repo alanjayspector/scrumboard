@@ -3,28 +3,12 @@ __author__ = 'alanspector'
 import unittest
 from person import *
 from card import Card
+from utils import generateCard,generatePerson
 import random
 
 
 
-def generateCard(personID):
-    card = Card()
-    card.storyPoints = Card.cardDataMap["storyPoints"][random.randint(0,5)]
-    card.estimatedDevHours = random.randint(1,16)
-    card.estimatedQAHours= random.randint(2,6)
-    card.description = "Random Description:%d" % random.randint(1,375)
-    card.personID = personID
-    return card
 
-def generatePerson():
-    person = Person({ "firstName":"Alan", "lastName": "Spector", \
-                      "currentSprintID":1, "estimatedSprintHours":32 })
-
-    for i in range(random.randint(2,10)):
-        card = generateCard(person.personID)
-        person.addCardToCurrentSprint(card)
-
-    return person
 
 class personHourChecks(unittest.TestCase):
     def setUp(self):
@@ -67,7 +51,7 @@ class personVelocityChecks(unittest.TestCase):
             self.totalStoryPoints += card.storyPoints
             card.placeOnBoard = "CodeReview"
 
-        cards[random.randint(0,cards.len())].placeOnBoard = "CodeReview"
+        cards[random.randint(0,len(cards))].placeOnBoard = "CodeReview"
 
 
 
