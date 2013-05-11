@@ -57,7 +57,7 @@ Card Selected:$selectedCard
 1) Select a card
 2) Add spent dev hours ($spentDevHours)
 3) Back to Main Menu
-    """)
+$message""")
 
     __mainMenuStr = Template("""
 Scrumboard Main Menu
@@ -123,6 +123,7 @@ $completedPoints/$totalPoints completed SP
     def __init__(self):
         self.termination_condition = False
         self.menuStr = "createSprintMenu"
+        self.menuBuffer = None
         self.sprint = Sprint()
         self.scrumboard = self.sprint.scrumBoard
         self.option = None
@@ -186,7 +187,6 @@ $completedPoints/$totalPoints completed SP
                         self.scrumboard.assignCardToScrumboard(card)
                         self.workingCard = None
                         self.menuStr = "createSprintMenu"
-                        return
                     except Exception as message:
                         self.workingCard = copy.copy(CLI.defaultWorkingCard)
                         self.workingCard["message"] = "*****{}".format(message)
@@ -228,7 +228,6 @@ $completedPoints/$totalPoints completed SP
                         self.scrumboard.assignPersonToScrumboard(person)
                         self.workingPerson = None
                         self.menuStr = "createSprintMenu"
-                        return
                     except Exception as message:
                         self.workingPerson = copy.copy(CLI.defaultWorkingPerson)
                         self.workingPerson["currentSprintID"] = self.sprint.sprintID
@@ -288,65 +287,83 @@ $completedPoints/$totalPoints completed SP
                 person.addCardToCurrentSprint(self.selectedCard)
                 return person
 
+    def moveCard(self, placeOnBoard):
+        message = None
+        try:
+            self.selectedCard.placeOnBoard = placeOnBoard
+        except Exception as error:
+            message = error
+
+        return message
+
     def moveCardOnBoardMenu(self, option = None):
-        selectedCardInfo = { "selectedCard":"unset", "message":"", "placeOnBoard":"unset"}
+        message = None
+        if not self.menuBuffer:
+            self.menuBuffer = { "selectedCard":"unset", "message":"", "placeOnBoard":"unset"}
         if self.selectedCard:
-            selectedCardInfo = {"selectedCard":self.selectedCard.description, \
-                                "placeOnBoard":self.selectedCard.placeOnBoard
-            }
+            self.menuBuffer["selectedCard"] = self.selectedCard.description
+            self.menuBuffer["placeOnBoard"] = self.selectedCard.placeOnBoard
         if option:
             if option == 1:
-                self.selectedACard()
+                self.selectACard()
                 if self.selectedCard:
-                    selectedCardInfo["selectedCard"] = self.selectedCard.description
-                    selectedCardInfo["placeOnBoard"] = self.selectedCard.placeOnBoard
+                    self.menuBuffer["selectedCard"] = self.selectedCard.description
+                    self.menuBuffer["placeOnBoard"] = self.selectedCard.placeOnBoard
             elif option >= 2 and option <= 8 and not self.selectedCard:
-                selectedCardInfo["message"] = "*****Please select a card first."
+                message = "*****Please select a card first."
+            elif option == 2:
+                message = self.moveCard("Backlog")
             elif option == 3:
-                pass
+                message = self.moveCard("Research")
             elif option == 4:
-                pass
+                message = self.moveCard("Development")
             elif option == 5:
-                pass
+                message = self.moveCard("PO Review")
             elif option == 6:
-                pass
+                message = self.moveCard("Code Review")
             elif option == 7:
-                pass
+                message = self.moveCard("QA")
             elif option == 8:
-                pass
+                message = self.moveCard("Done")
             elif option == 9:
                 self.menuStr = "mainMenu"
-                return
 
+            if message:
+                self.menuBuffer["message"] = message
+            else:
+                self.menuBuffer["placeOnBoard"] = self.selectedCard.placeOnBoard
+            return
 
-        print CLI.__moveCardOnBoardMenuStr.substitute(selectedCardInfo)
+        print CLI.__moveCardOnBoardMenuStr.substitute(self.menuBuffer)
 
     def addSpentDevHoursToCardMenu(self, option = None):
-        selectedCardInfo = { "selectedCard":"unset", "message":"", "spentDevHours":"unset"}
+        if not self.menuBuffer:
+            self.menuBuffer = { "selectedCard":"unset", "message":"", "spentDevHours":"unset"}
         if self.selectedCard:
-            selectedCardInfo = {"selectedCard":self.selectedCard.description, \
-                                "spentDevHours":self.selectedCard.spentDevHours}
+            self.menuBuffer["selectedCard"] = self.selectedCard.description
+            self.menuBuffer["spentDevHours"]  = self.selectedCard.spentDevHours
         if option:
             if option == 1:
                 self.selectedACard()
                 if self.selectedCard:
-                    selectedCardInfo["selectedCard"] = self.selectedCard.description
+                    self.menuBuffer["selectedCard"] = self.selectedCard.description
             elif option == 2 and not self.selectedCard:
-                selectedCardInfo["message"] = "*****Please select a card first."
+                self.menuBuffer["message"] = "*****Please select a card first."
             elif option == 2:
                 try:
                     self.selectedCard.spentDevHours += int(raw_input("Please enter a positive whole number:"))
-                    selectedCardInfo["spentDevHours"] = self.selectedCard.spentDevHours
+                    self.menuBuffer["spentDevHours"] = self.selectedCard.spentDevHours
                 except Exception as message:
-                    selectedCardInfo["message"] = message
+                    self.menuBuffer["message"] = message
             elif option == 3:
                 self.menuStr = "mainMenu"
-                return
+            return
 
-        print CLI.__updateSpentDevHoursMenuStr.substitute(selectedCardInfo)
+        print CLI.__updateSpentDevHoursMenuStr.substitute(self.menuBuffer)
 
     def assignPersonToCardMenu(self, option = None):
-        selectedCardInfo = { "selectedCard":"unset", "message":"", "qa":"unset", "developer":"unset"}
+        if not self.menuBuffer:
+            self.menuBuffer = { "selectedCard":"unset", "message":"", "qa":"unset", "developer":"unset"}
         if self.selectedCard:
             qa = "unset"
             developer = "unset"
@@ -355,23 +372,23 @@ $completedPoints/$totalPoints completed SP
                 qa = self.selectedCard.qa.fullName
             if self.selectedCard.developer:
                 developer = self.selectedCard.developer.fullName
-            selectedCardInfo = {"selectedCard":self.selectedCard.description, "qa":qa, "developer":developer}
+                self.menuBuffer = {"selectedCard":self.selectedCard.description, "qa":qa, "developer":developer, "message":""}
         if option:
             if option == 1:
                 self.selectedACard()
             elif (option == 2 or option == 3) and not self.selectedCard:
-                selectedCardInfo["message"] = "*****Please select a card first."
+                self.menuBuffer["message"] = "*****Please select a card first."
             elif option == 2:
                 person = self.selectAPersonForSelectedCard(False)
-                selectedCardInfo["qa"] = person.fullName
+                self.menuBuffer["qa"] = person.fullName
             elif option == 3:
                 person = self.selectAPersonForSelectedCard()
-                selectedCardInfo["developer"] = person.fullName
+                self.menuBuffer["developer"] = person.fullName
             elif option == 4:
                 self.menuStr = "mainMenu"
                 return
 
-        print CLI.__assignPersonToCardMenuStr.substitute(selectedCardInfo)
+        print CLI.__assignPersonToCardMenuStr.substitute(self.menuBuffer)
 
 
     def createSprintMenu(self, option = None ):
@@ -464,6 +481,7 @@ if __name__ == "__main__":
 
         menuFunc = getattr(cli,cli.menuStr)
         menuFunc()
+        cli.menuBuffer = None
         input = raw_input("Please input the number of an option:")
         try:
             cli.option = int(input)
