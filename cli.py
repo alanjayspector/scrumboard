@@ -283,7 +283,7 @@ $completedPoints/$totalPoints completed SP
             selectPerson = raw_input('Enter "Y" to select this person or hit any key to continue:').lower()
             if selectPerson == "y":
                 person.assignCardToSelf(self.selectedCard)
-                allocated_hours = person.getAllocatedHoursInSprint()
+                allocated_hours = person.getAssignedHoursInSprint()
                 if person.estimatedSprintHours < allocated_hours:
                     difference = allocated_hours - person.estimatedSprintHours
                     self.menuBuffer["message"] = "*****Warning selecting {} will exceed {} hours by {} hour(s)" \
