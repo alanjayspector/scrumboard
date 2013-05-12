@@ -2,16 +2,12 @@ __author__ = 'alan'
 
 import unittest
 from scrumboard import Scrumboard
-from utils import generateCard, generatePerson
 import datetime
 
 
 class scrumboardTests(unittest.TestCase):
     def setUp(self):
         self.scrumboard = Scrumboard()
-        self.person = generatePerson()
-        for card in self.person.getCurrentSprintCards():
-            self.scrumboard.assignCardToScrumboard(card)
 
 
     def testRedCards(self):
