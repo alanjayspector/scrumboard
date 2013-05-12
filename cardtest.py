@@ -34,11 +34,6 @@ class cardPlacementChecks(unittest.TestCase):
         developer = Person({"firstName": "Alan", "lastName": "Spector"})
         self.card = Card({"description": "My Test Card", "qa": qa, "developer": developer})
 
-    def tearDown(self):
-        self.card.qa = None
-        self.card.developer = None
-        self.card = None
-
     def testDoneWithoutPoReview(self):
         self.card.needsCodeReview = False
         self.card.needsQA = False
@@ -74,16 +69,6 @@ class cardPlacementChecks(unittest.TestCase):
         self.assertEqual(True, testCard.hadCodeReview, "hadCodeReview was not set to True")
         testCard.placeOnBoard = "Development"
         self.assertEqual(False, testCard.hadCodeReview, "hadCodeReview was not set to False")
-
-    def testCardMovedToQAWithoutQAAssigned(self):
-        self.card.qa = None
-        with self.assertRaises(NoQAAssignedError):
-            self.card.placeOnBoard = "QA"
-
-    def testCardMovedOutOfBacklogWithoutDev(self):
-        self.card.developer = None
-        with self.assertRaises(NoDeveloperAssignedError):
-            self.card.placeOnBoard = "Research"
 
 
 if __name__ == "__main__":

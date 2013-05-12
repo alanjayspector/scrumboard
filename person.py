@@ -23,7 +23,8 @@ class Person(object):
 ID:$personID
 $firstName $lastName
 Developer: $isADeveloper
-$spentSprintHours/$estimatedSprintHours hours
+Spent Hours/Estimated Hours/Assigned Hours
+$spentSprintHours/$estimatedSprintHours/$allocatedHours
 --------------------------------
     """)
 
@@ -93,11 +94,11 @@ $spentSprintHours/$estimatedSprintHours hours
 
         self.__spentSprintHours = value
 
-    def getUnallocatedHoursInSprint(self):
-        totalEstimatedHours = self.getAllocatedHoursInSprint()
+    def getUnassignedHoursInSprint(self):
+        totalEstimatedHours = self.getAssignedHoursInSprint()
         return self.estimatedSprintHours - totalEstimatedHours
 
-    def getAllocatedHoursInSprint(self):
+    def getAssignedHoursInSprint(self):
         cards = self.cards[self.currentSprintID]
         totalEstimatedHours = 0
         if self.isADeveloper:

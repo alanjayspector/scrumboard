@@ -8,7 +8,7 @@ import random
 
 class personHourChecks(unittest.TestCase):
     def setUp(self):
-        self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatatedSprintHours": 32})
+        self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatedSprintHours": 32})
         self.developer.assignCardToSelf(Card({
             "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
         }))
@@ -26,19 +26,19 @@ class personHourChecks(unittest.TestCase):
         totalEstimatedDevHours = 0
         for card in self.developer.getCurrentSprintCards():
             totalEstimatedDevHours += card.estimatedDevHours
-        self.assertEqual(totalEstimatedDevHours, self.developer.getAllocatedHoursInSprint())
+        self.assertEqual(totalEstimatedDevHours, self.developer.getAssignedHoursInSprint())
 
     def testQAAllocatedHours(self):
         totalEstimatedQAHours = 0
         for card in self.developer.getCurrentSprintCards():
             totalEstimatedQAHours += card.estimatedQAHours
         self.developer.isADeveloper = False
-        self.assertEqual(totalEstimatedQAHours, self.developer.getAllocatedHoursInSprint())
+        self.assertEqual(totalEstimatedQAHours, self.developer.getAssignedHoursInSprint())
 
 
 class personVelocityChecks(unittest.TestCase):
     def setUp(self):
-        self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatatedSprintHours": 32})
+        self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatedSprintHours": 32})
         self.developer.assignCardToSelf(Card({
             "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
         }))
@@ -57,7 +57,7 @@ class personVelocityChecks(unittest.TestCase):
 
 class personColorCardChecks(unittest.TestCase):
     def setUp(self):
-        self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatatedSprintHours": 32})
+        self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatedSprintHours": 32})
         self.card = Card({
             "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
         })

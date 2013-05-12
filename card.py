@@ -402,6 +402,9 @@ In:$placeOnBoard, $storyPoints SP
             return False
         elif self.spentDevHours >= self.estimatedDevHours:
             return True
+        #this is a set case if a developer is committing to more time that allowed in sprint. All tickets are at risk
+        elif self.developer.estimatedSprintHours < self.developer.getAssignedHoursInSprint():
+            return True
         else:
             return False
 
