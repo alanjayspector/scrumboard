@@ -58,13 +58,14 @@ class personVelocityChecks(unittest.TestCase):
 class personColorCardChecks(unittest.TestCase):
     def setUp(self):
         self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatatedSprintHours": 32})
-        self.developer.addCardToCurrentSprint(Card({
+        self.card = Card({
             "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
-        }))
+        })
+        self.developer.addCardToCurrentSprint(self.card)
 
 
     def testRedCards(self):
-        pass
+        self.assertEqual(self.developer.getCurrentRedCards(1)[0], self.card)
 
     def testGreenCards(self):
         pass

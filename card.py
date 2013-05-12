@@ -118,7 +118,7 @@ In:$placeOnBoard, $storyPoints SP
 
 
     def __eq__(self, other):
-        return self["cardID"] == other["cardID"]
+        return self.cardID == other.cardID
 
     @property
     def createdDate(self):
