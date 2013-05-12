@@ -128,14 +128,16 @@ $spentSprintHours/$estimatedSprintHours hours
         cards = self.cards[sprintID]
         doneStoryPoints = 0
         outstandingStoryPoints = 0
+        totalStoryPoints = 0
 
         for card in cards:
+            totalStoryPoints += card.storyPoints
             if card.placeOnBoard == "Done":
                 doneStoryPoints += card.storyPoints
             else:
-                outstandingStoryPoints += cards.storyPoints
+                outstandingStoryPoints += card.storyPoints
 
-        return (doneStoryPoints, outstandingStoryPoints )
+        return (doneStoryPoints, outstandingStoryPoints, totalStoryPoints )
 
 
     def addCardToCurrentSprint(self, card):

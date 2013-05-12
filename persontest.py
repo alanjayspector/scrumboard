@@ -45,7 +45,14 @@ class personVelocityChecks(unittest.TestCase):
 
 
     def testVelocityInCurrentSprint(self):
-        pass
+        card = self.developer.getCurrentSprintCards()[0]
+        card.needsCodeReview = False
+        card.needsQA = False
+        card.needsPOReview = False
+        card.placeOnBoard = "Done"
+        self.assertEqual(card.storyPoints, self.developer.getVelocityForCurrentSprint()[0])
+        card.placeOnBoard = "Backlog"
+        self.assertEqual(0, self.developer.getVelocityForCurrentSprint()[0])
 
 
 class personColorCardChecks(unittest.TestCase):
