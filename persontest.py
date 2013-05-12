@@ -3,56 +3,45 @@ __author__ = 'alanspector'
 import unittest
 from person import *
 from card import Card
-from utils import generateCard,generatePerson
 import random
-
-
-
 
 
 class personHourChecks(unittest.TestCase):
     def setUp(self):
-        self.person = generatePerson()
+        self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatatedSprintHours": 32})
+        self.developer.addCardToCurrentSprint(Card({
+            "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
+        }))
 
 
     def testValidEstimatedHours(self):
         with self.assertRaises(PersonInvalidHour):
-            self.person.estimatedSprintHours = "Foo"
+            self.developer.estimatedSprintHours = "Foo"
 
     def testValidValidSpentHours(self):
         with self.assertRaises(PersonInvalidHour):
-            self.person.spentSprintHours = -5
-
-    def testIncrementingValidSpentHours(self):
-        currentSpentHours = self.person.spentSprintHours
-        self.person.spentSprintHours = 5
-        self.assertEqual((currentSpentHours+5),self.person.spentSprintHours)
+            self.developer.spentSprintHours = -5
 
     def testDevAllocatedHours(self):
         totalEstimatedDevHours = 0
-        for card in self.person.getCurrentSprintCards() :
+        for card in self.developer.getCurrentSprintCards():
             totalEstimatedDevHours += card.estimatedDevHours
-        self.assertEqual(totalEstimatedDevHours,self.person.getAllocatedHoursInSprint())
+        self.assertEqual(totalEstimatedDevHours, self.developer.getAllocatedHoursInSprint())
 
     def testQAAllocatedHours(self):
         totalEstimatedQAHours = 0
-        for card in self.person.getCurrentSprintCards() :
+        for card in self.developer.getCurrentSprintCards():
             totalEstimatedQAHours += card.estimatedQAHours
-        self.person.isADeveloper = False
-        self.assertEqual(totalEstimatedQAHours, self.person.getAllocatedHoursInSprint())
+        self.developer.isADeveloper = False
+        self.assertEqual(totalEstimatedQAHours, self.developer.getAllocatedHoursInSprint())
 
 
 class personVelocityChecks(unittest.TestCase):
     def setUp(self):
-        self.person = generatePerson()
-        cards = self.person.getCurrentSprintCards()
-        self.totalStoryPoints = 0;
-        for card in cards:
-            self.totalStoryPoints += card.storyPoints
-            card.placeOnBoard = "CodeReview"
-
-        cards[random.randint(0,(len(cards)-1))].placeOnBoard = "CodeReview"
-
+        self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatatedSprintHours": 32})
+        self.developer.addCardToCurrentSprint(Card({
+            "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
+        }))
 
 
     def testVelocityInCurrentSprint(self):
@@ -61,7 +50,10 @@ class personVelocityChecks(unittest.TestCase):
 
 class personColorCardChecks(unittest.TestCase):
     def setUp(self):
-        self.person = generatePerson()
+        self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatatedSprintHours": 32})
+        self.developer.addCardToCurrentSprint(Card({
+            "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
+        }))
 
 
     def testRedCards(self):
@@ -72,8 +64,6 @@ class personColorCardChecks(unittest.TestCase):
 
     def testYellowCards(self):
         pass
-
-
 
 
 if __name__ == "__main__":

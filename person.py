@@ -1,14 +1,19 @@
 __author__ = 'alan'
 
-
 from card import Card
 from string import Template
 
 
 class PersonError(Exception): pass
-class PersonInvalidHour(PersonError) : pass
-class PersonInvalidCard(PersonError) : pass
-class PersonInvalidCardsParam(PersonError) : pass
+
+
+class PersonInvalidHour(PersonError): pass
+
+
+class PersonInvalidCard(PersonError): pass
+
+
+class PersonInvalidCardsParam(PersonError): pass
 
 
 class Person(object):
@@ -22,28 +27,28 @@ $spentSprintHours/$estimatedSprintHours hours
 --------------------------------
     """)
 
-    def __init__(self, params = None):
+    def __init__(self, params=None):
         self.__personID = Person.getNextID()
         self.isADeveloper = True
         self.firstName = None
         self.lastName = None
         self.avatar = None
-        self.currentSprintID = None
+        self.currentSprintID = "currentSprint"
         #keys will be sprintIDs, values will be lists of cards
         self.cards = {}
         self.__estimatedSprintHours = 0
         self.__spentSprintHours = 0
-        if isinstance(params,dict) :
+        if isinstance(params, dict):
             for key in params:
-                if key != "cards" and hasattr(self,key):
-                    setattr(self,key,params[key])
+                if key != "cards" and hasattr(self, key):
+                    setattr(self, key, params[key])
 
 
     def __str__(self):
-        personInfo = { "personID": self.personID, "firstName": self.firstName, \
-                       "lastName":self.lastName, "isADeveloper":self.isADeveloper, \
-                       "spentSprintHours":self.spentSprintHours, "estimatedSprintHours": self.estimatedSprintHours
-                       }
+        personInfo = {"personID": self.personID, "firstName": self.firstName, \
+                      "lastName": self.lastName, "isADeveloper": self.isADeveloper, \
+                      "spentSprintHours": self.spentSprintHours, "estimatedSprintHours": self.estimatedSprintHours
+        }
         return Person.__printTemplate.substitute(personInfo)
 
     @staticmethod
@@ -56,15 +61,16 @@ $spentSprintHours/$estimatedSprintHours hours
         return self.__personID
 
     @personID.setter
-    def personID(self,value):
+    def personID(self, value):
         return self.__personID
+
     @property
     def estimatedSprintHours(self):
         return self.__estimatedSprintHours
 
     @estimatedSprintHours.setter
-    def estimatedSprintHours(self,value):
-        if not isinstance(value,int) or value <= 0:
+    def estimatedSprintHours(self, value):
+        if not isinstance(value, int) or value <= 0:
             raise PersonInvalidHour, "estimatedSprintHours must be greater than 0"
         self.__estimatedSprintHours = value
 
@@ -73,7 +79,7 @@ $spentSprintHours/$estimatedSprintHours hours
         return "{} {}".format(self.firstName, self.lastName)
 
     @fullName.setter
-    def fullName(self,value):
+    def fullName(self, value):
         return "{} {}".format(self.firstName, self.lastName)
 
     @property
@@ -81,8 +87,8 @@ $spentSprintHours/$estimatedSprintHours hours
         return self.__spentSprintHours
 
     @spentSprintHours.setter
-    def spentSprintHours(self,value):
-        if not isinstance(value,int) or value <= 0:
+    def spentSprintHours(self, value):
+        if not isinstance(value, int) or value <= 0:
             raise PersonInvalidHour, "spentSprintHours must be greater than 0"
 
         self.__spentSprintHours = value
@@ -103,22 +109,22 @@ $spentSprintHours/$estimatedSprintHours hours
 
         return totalEstimatedHours
 
-    def getCurrentRedCards(self,timeLeftInSprint):
+    def getCurrentRedCards(self, timeLeftInSprint):
         cards = self.cards[self.currentSprintID]
-        return [ card for card in cards if card.isCardRed(timeLeftInSprint)]
+        return [card for card in cards if card.isCardRed(timeLeftInSprint)]
 
-    def getCurrentGreenCards(self,timeLeftInSprint):
+    def getCurrentGreenCards(self, timeLeftInSprint):
         cards = self.cards[self.currentSprintID]
-        return [ card for card in cards if card.isCardGreen(timeLeftInSprint)]
+        return [card for card in cards if card.isCardGreen(timeLeftInSprint)]
 
     def getCurrentYellowCards(self, timeLeftInSprint):
         cards = self.cards[self.currentSprintID]
-        return [ card for card in cards if card.isCardYellow(timeLeftInSprint)]
+        return [card for card in cards if card.isCardYellow(timeLeftInSprint)]
 
     def getVelocityForCurrentSprint(self):
         return self.getVelocityForSprint(self.currentSprintID)
 
-    def getVelocityForSprint(self,sprintID):
+    def getVelocityForSprint(self, sprintID):
         cards = self.cards[sprintID]
         doneStoryPoints = 0
         outstandingStoryPoints = 0
@@ -132,11 +138,11 @@ $spentSprintHours/$estimatedSprintHours hours
         return (doneStoryPoints, outstandingStoryPoints )
 
 
-    def addCardToCurrentSprint(self,card):
-        return self.addCardToSprint(card,self.currentSprintID)
+    def addCardToCurrentSprint(self, card):
+        return self.addCardToSprint(card, self.currentSprintID)
 
-    def addCardToSprint(self,card,sprintID):
-        if not isinstance(card, Card ):
+    def addCardToSprint(self, card, sprintID):
+        if not isinstance(card, Card):
             raise PersonInvalidCard, "addCardToCurrentSprint must take a Card instance"
         if not self.cards.has_key(sprintID):
             self.cards[sprintID] = []
