@@ -390,7 +390,7 @@ $completedPoints/$totalPoints completed SP
                 self.menuBuffer["developer"] = person.fullName
             elif option == 4:
                 self.menuStr = "mainMenu"
-                return
+            return
 
         print CLI.__assignPersonToCardMenuStr.substitute(self.menuBuffer)
 
