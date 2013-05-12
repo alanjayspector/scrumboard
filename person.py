@@ -24,7 +24,7 @@ ID:$personID
 $firstName $lastName
 Developer: $isADeveloper
 Spent Hours/Estimated Hours/Assigned Hours
-$spentSprintHours/$estimatedSprintHours/$allocatedHours
+$spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
 --------------------------------
     """)
 
@@ -34,7 +34,7 @@ $spentSprintHours/$estimatedSprintHours/$allocatedHours
         self.firstName = None
         self.lastName = None
         self.avatar = None
-        self.currentSprintID = "currentSprint"
+        self.currentSprintID = None
         #keys will be sprintIDs, values will be lists of cards
         self.cards = {}
         self.__estimatedSprintHours = 0
@@ -43,12 +43,15 @@ $spentSprintHours/$estimatedSprintHours/$allocatedHours
             for key in params:
                 if key != "cards" and hasattr(self, key):
                     setattr(self, key, params[key])
-
+        if not self.currentSprintID:
+            self.currentSprintID = "currentSprint"
+        self.cards[self.currentSprintID] = []
 
     def __str__(self):
         personInfo = {"personID": self.personID, "firstName": self.firstName, \
                       "lastName": self.lastName, "isADeveloper": self.isADeveloper, \
-                      "spentSprintHours": self.spentSprintHours, "estimatedSprintHours": self.estimatedSprintHours
+                      "spentSprintHours": self.spentSprintHours, "estimatedSprintHours": self.estimatedSprintHours,
+                      "assignedHoursInSprint": self.getAssignedHoursInSprint()
         }
         return Person.__printTemplate.substitute(personInfo)
 

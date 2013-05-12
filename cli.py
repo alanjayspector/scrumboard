@@ -347,7 +347,7 @@ $completedPoints/$totalPoints completed SP
             self.menuBuffer["spentDevHours"] = self.selectedCard.spentDevHours
         if option:
             if option == 1:
-                self.selectedACard()
+                self.selectACard()
                 if self.selectedCard:
                     self.menuBuffer["selectedCard"] = self.selectedCard.description
             elif option == 2 and not self.selectedCard:
@@ -379,7 +379,7 @@ $completedPoints/$totalPoints completed SP
                                    "message": ""}
         if option:
             if option == 1:
-                self.selectedACard()
+                self.selectACard()
             elif (option == 2 or option == 3) and not self.selectedCard:
                 self.menuBuffer["message"] = "*****Please select a card first."
             elif option == 2:
