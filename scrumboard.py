@@ -6,6 +6,7 @@ from card import Card
 
 class ScrumboardError(Exception): pass
 
+
 class PersonNotFoundOnScrumboard(ScrumboardError): pass
 
 
@@ -24,7 +25,7 @@ class NotValidCard(ScrumboardError): pass
 class Scrumboard(object):
     IDctr = 0
 
-    def __init__(self,sprint = None):
+    def __init__(self, sprint=None):
         self.__scrumboardID = Scrumboard.getNextID()
         self.cards = {}
         self.people = {}
@@ -42,7 +43,7 @@ class Scrumboard(object):
         return self.__scrumboardID
 
     @scrumboardID.setter
-    def scrumboardID(self,value):
+    def scrumboardID(self, value):
         return self.__scrumboardID
 
 
@@ -67,7 +68,7 @@ class Scrumboard(object):
             raise PersonNotFoundOnScrumboard
         return self.people[personID]
 
-    def getAllPeople(self,isADeveloper = True):
+    def getAllPeople(self, isADeveloper=True):
         people = []
         for person in self.people.values():
             if person.isADeveloper == isADeveloper:
@@ -126,11 +127,21 @@ class Scrumboard(object):
             totalHours += card.estimatedDevHours
         return totalHours
 
-    def getTotalEstimatedDevHoursForTasks(self):
+    def getTotalEstimatedQAHoursForTasks(self):
         totalHours = 0
         for card in self.cards.values():
-                totalHours += card.estimatedQAHours
+            totalHours += card.estimatedQAHours
         return totalHours
+
+    def getTotalAssigned(self, isADeveloper=True):
+        totalHours = 0
+        for person in self.people.values():
+            if person.isADeveloper:
+                totalHours += person.getAssignedHoursInSprint()
+        return totalHours
+
+
+
 
 
 
