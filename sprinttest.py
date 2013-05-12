@@ -4,13 +4,11 @@ import unittest
 from sprint import *
 
 
-class dateFormatChecks(unittest.TestCase):
-
+class sprintTests(unittest.TestCase):
     def testFormatOfStartDate(self):
         sprint = Sprint()
         with self.assertRaises(InvalidSprintDateFormat):
             sprint.startDate = "foobar"
-
 
 
     def testFormatOfEndDate(self):
@@ -30,10 +28,8 @@ class dateFormatChecks(unittest.TestCase):
             sprint.codeFreezeDate = "Dec 20th 2001"
 
 
+suite = unittest.TestLoader().loadTestsFromTestCase(sprintTests)
+unittest.TextTestRunner(verbosity=2).run(suite)
 
 
-
-
-if __name__ == "__main__":
-    unittest.main()
 

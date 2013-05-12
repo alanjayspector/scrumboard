@@ -1,12 +1,12 @@
 __author__ = 'alan'
 
-
 import unittest
 from scrumboard import Scrumboard
-from utils import generateCard,generatePerson
+from utils import generateCard, generatePerson
 import datetime
 
-class checkScrumboardColors(unittest.TestCase):
+
+class scrumboardTests(unittest.TestCase):
     def setUp(self):
         self.scrumboard = Scrumboard()
         self.person = generatePerson()
@@ -19,8 +19,5 @@ class checkScrumboardColors(unittest.TestCase):
             print card
 
 
-
-
-
-if __name__ == "__main__":
-    unittest.main()
+suite = unittest.TestLoader().loadTestsFromTestCase(scrumboardTests)
+unittest.TextTestRunner(verbosity=2).run(suite)
