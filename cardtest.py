@@ -1,38 +1,37 @@
 __author__ = 'alan'
 
 import unittest
-import card
 from card import *
 from person import Person
-import pytz
-import utils
 
 
-class cardColorChecks(unittest.TestCase):
-    def isCardRed(self):
-        testCard = Card({"estimatedDevHours": 8, "spentDevHours": 4})
-        self.assertEqual(True, testCard.isCardRed(6), "Card should be red")
-
-    def isCardGreen(self):
-        testCard = Card({"estimatedDevHours": 8, "spentDevHours": 4})
-        self.assertEqual(True, self.isCardGreen(10), "Card should be green")
-
-    def isCardYellow(self):
-        testCard = Card({"estimatedDevHours": 4, "spentDevHours": 9})
-        self.assertEqual(True, self.isCardGreen(10), "Card should be yellow")
-
-    def checkThatDoneCardsAreGreen(self):
-        testCard = Card({"estimatedDevHours": 4, "spentDevHours": 32, "placeOnBoard": "QA"})
-        testCard.placeOnBoard = "POReview"
-        testCard.placeOnBoard = "Done"
-        self.assertEqual(True, testCard.isCardGreen(0), "Card should be green")
-
-
-class cardPlacementChecks(unittest.TestCase):
+class cardChecks(unittest.TestCase):
     def setUp(self):
         qa = Person({"firstName": "Bob", "lastName": "Smith", "isADeveloper": False})
         developer = Person({"firstName": "Alan", "lastName": "Spector"})
         self.card = Card({"description": "My Test Card", "qa": qa, "developer": developer})
+
+    def testIsCardRed(self):
+        self.card.estimatedDevHours = 8
+        self.card.spentDevHours = 4
+        self.assertEqual(True, self.card.isCardRed(2), "Card should be red")
+
+    def testIsCardGreen(self):
+        self.card.estimatedDevHours = 8
+        self.card.spentDevHours = 4
+        self.assertEqual(True, self.card.isCardGreen(10), "Card should be green")
+
+    def testIsCardYellow(self):
+        self.card.estimatedDevHours = 4
+        self.card.spentDevHours = 9
+        self.assertEqual(True, self.card.isCardYellow(10), "Card should be yellow")
+
+    def testThatDoneCardsAreGreen(self):
+        self.card.placeOnBoard = "CodeReview"
+        self.card.placeOnBoard = "POReview"
+        self.card.placeOnBoard = "QA"
+        self.card.placeOnBoard = "Done"
+        self.assertEqual(True, self.card.isCardGreen(0), "Card should be green")
 
     def testDoneWithoutPoReview(self):
         self.card.needsCodeReview = False
@@ -71,5 +70,5 @@ class cardPlacementChecks(unittest.TestCase):
         self.assertEqual(False, testCard.hadCodeReview, "hadCodeReview was not set to False")
 
 
-if __name__ == "__main__":
-    unittest.main()
+suite = unittest.TestLoader().loadTestsFromTestCase(cardChecks)
+unittest.TextTestRunner(verbosity=2).run(suite)

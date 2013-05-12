@@ -36,6 +36,10 @@ class personHourChecks(unittest.TestCase):
         self.assertEqual(totalEstimatedQAHours, self.developer.getAssignedHoursInSprint())
 
 
+suite = unittest.TestLoader().loadTestsFromTestCase(personHourChecks)
+unittest.TextTestRunner(verbosity=2).run(suite)
+
+
 class personVelocityChecks(unittest.TestCase):
     def setUp(self):
         self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatedSprintHours": 32})
@@ -53,6 +57,10 @@ class personVelocityChecks(unittest.TestCase):
         self.assertEqual(card.storyPoints, self.developer.getVelocityForCurrentSprint()[0])
         card.placeOnBoard = "Backlog"
         self.assertEqual(0, self.developer.getVelocityForCurrentSprint()[0])
+
+
+suite = unittest.TestLoader().loadTestsFromTestCase(personVelocityChecks)
+unittest.TextTestRunner(verbosity=2).run(suite)
 
 
 class personColorCardChecks(unittest.TestCase):
@@ -75,5 +83,5 @@ class personColorCardChecks(unittest.TestCase):
         self.assertEqual(self.developer.getCurrentYellowCards(32)[0], self.card)
 
 
-if __name__ == "__main__":
-    unittest.main()
+suite = unittest.TestLoader().loadTestsFromTestCase(personColorCardChecks)
+unittest.TextTestRunner(verbosity=2).run(suite)
