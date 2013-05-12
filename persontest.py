@@ -9,7 +9,7 @@ import random
 class personHourChecks(unittest.TestCase):
     def setUp(self):
         self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatatedSprintHours": 32})
-        self.developer.addCardToCurrentSprint(Card({
+        self.developer.assignCardToSelf(Card({
             "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
         }))
 
@@ -39,7 +39,7 @@ class personHourChecks(unittest.TestCase):
 class personVelocityChecks(unittest.TestCase):
     def setUp(self):
         self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatatedSprintHours": 32})
-        self.developer.addCardToCurrentSprint(Card({
+        self.developer.assignCardToSelf(Card({
             "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
         }))
 
@@ -61,17 +61,18 @@ class personColorCardChecks(unittest.TestCase):
         self.card = Card({
             "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18
         })
-        self.developer.addCardToCurrentSprint(self.card)
+        self.developer.assignCardToSelf(self.card)
 
 
     def testRedCards(self):
         self.assertEqual(self.developer.getCurrentRedCards(1)[0], self.card)
 
     def testGreenCards(self):
-        pass
+        self.assertEqual(self.developer.getCurrentGreenCards(32)[0], self.card)
 
     def testYellowCards(self):
-        pass
+        self.card.spentDevHours = 19
+        self.assertEqual(self.developer.getCurrentYellowCards(32)[0], self.card)
 
 
 if __name__ == "__main__":

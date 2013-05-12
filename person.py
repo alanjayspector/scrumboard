@@ -140,15 +140,12 @@ $spentSprintHours/$estimatedSprintHours hours
         return (doneStoryPoints, outstandingStoryPoints, totalStoryPoints )
 
 
-    def addCardToCurrentSprint(self, card):
-        return self.addCardToSprint(card, self.currentSprintID)
-
-    def addCardToSprint(self, card, sprintID):
+    def assignCardToSelf(self, card):
         if not isinstance(card, Card):
             raise PersonInvalidCard, "addCardToCurrentSprint must take a Card instance"
-        if not self.cards.has_key(sprintID):
-            self.cards[sprintID] = []
-        self.cards[sprintID].append(card)
+        if not self.cards.has_key(self.currentSprintID):
+            self.cards[self.currentSprintID] = []
+        self.cards[self.currentSprintID].append(card)
         if self.isADeveloper:
             card.developer = self
         else:

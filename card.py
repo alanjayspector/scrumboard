@@ -8,6 +8,12 @@ from string import Template
 class CardError(Exception): pass
 
 
+class NotADeveloperError(CardError): pass
+
+
+class NotQAError(CardError): pass
+
+
 class InvalidPlaceOnBoardError(CardError): pass
 
 
@@ -66,6 +72,7 @@ class Card(object):
             "needsQA": True,
             "description": None,
             "spentDevHours": 0,
+            "spentQAHours": 0,
             "placeOnBoard": "Backlog",
             "qa": None,
             "developer": None
@@ -104,8 +111,9 @@ In:$placeOnBoard, $storyPoints SP
         self.__needsQA = True
         self.description = None
         self.__spentDevHours = 0
-        self.developer = None
-        self.qa = None
+        self.__spentQAHours = 0
+        self.__developer = None
+        self.__qa = None
         self.__placeOnBoard = "Backlog"
 
         if isinstance(params, dict):
@@ -116,6 +124,27 @@ In:$placeOnBoard, $storyPoints SP
             if placeOnBoard:
                 self.placeOnBoard = placeOnBoard
 
+    @property
+    def developer(self):
+        return self.__developer
+
+    @developer.setter
+    def developer(self, person):
+        if not hasattr(person, "isADeveloper") or not person.isADeveloper:
+            raise NotADeveloperError
+        else:
+            self.__developer = person
+
+    @property
+    def qa(self):
+        return self.__qa
+
+    @qa.setter
+    def qa(self, person):
+        if not hasattr(person, "isADeveloper") or person.isADeveloper:
+            raise NotQAError
+        else:
+            self.__qa = person
 
     def __eq__(self, other):
         return self.cardID == other.cardID
@@ -137,9 +166,9 @@ In:$placeOnBoard, $storyPoints SP
         developerName = "not assigned"
         qaName = "not assigned"
         if self.developer:
-            developerName = "{} {}".format(self.developer.firstName, self.developer.lastName)
+            developerName = self.developer.fullName
         if self.qa:
-            qaName = "{} {}".format(self.qa.firstName, self.qa.lastName)
+            qaName = self.qa.fullName
 
         cardInfo = {"storyPoints": self.storyPoints, "description": self.description, \
                     "estimatedDevHours": self.estimatedDevHours, "estimatedQAHours": self.estimatedQAHours, \
@@ -193,8 +222,27 @@ In:$placeOnBoard, $storyPoints SP
 
     @spentDevHours.setter
     def spentDevHours(self, value):
-        if isinstance(value, int) is True and value >= 0:
+        if not self.developer:
+            raise NoDeveloperAssignedError
+        elif isinstance(value, int) is True and value >= 0:
             self.__spentDevHours = value
+            self.developer.spentSprintHours += value
+        else:
+            raise InvalidHourError, \
+                "Value must be an positive int not '%s'" % value
+
+
+    @property
+    def spentQAHours(self):
+        return self.__spentQAHours
+
+    @spentQAHours.setter
+    def spentQAHours(self, value):
+        if not self.qa:
+            raise NoQAAssignedError
+        elif isinstance(value, int) is True and value >= 0:
+            self.__spentQAHours = value
+            self.qa.spentSprintHours += value
         else:
             raise InvalidHourError, \
                 "Value must be an positive int not '%s'" % value
