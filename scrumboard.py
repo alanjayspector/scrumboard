@@ -87,7 +87,7 @@ class Scrumboard(object):
             totalStoryPoints += card.storyPoints
         return totalStoryPoints
 
-    def getVelocity(self, timeLeftInSprint):
+    def getVelocity(self):
         doneStoryPoints = 0
         outstandingStoryPoints = 0
         for card in self.cards.values():

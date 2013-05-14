@@ -255,8 +255,7 @@ $completedPoints/$totalPoints completed SP
                 self.menuStr = "mainMenu"
                 return
         else:
-            completed, outstanding, total = self.scrumboard.getVelocity(
-                self.sprint.getDevTimeLeftInSprint(self.currentDate))
+            completed, outstanding, total = self.scrumboard.getVelocity()
             print CLI.__statusReportMenuStr.substitute({"completedPoints": completed, "totalPoints": total})
 
     def generateCardStatuses(self, cardColor="reportRedCards"):
