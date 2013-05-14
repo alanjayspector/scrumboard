@@ -130,7 +130,7 @@ In:$placeOnBoard, $storyPoints SP
 
     @developer.setter
     def developer(self, person):
-        if not hasattr(person, "isADeveloper") or not person.isADeveloper:
+        if person != None and (not hasattr(person, "isADeveloper") or not person.isADeveloper):
             raise NotADeveloperError
         else:
             self.__developer = person
@@ -141,7 +141,7 @@ In:$placeOnBoard, $storyPoints SP
 
     @qa.setter
     def qa(self, person):
-        if not hasattr(person, "isADeveloper") or person.isADeveloper:
+        if person != None and (not hasattr(person, "isADeveloper") or person.isADeveloper):
             raise NotQAError
         else:
             self.__qa = person
