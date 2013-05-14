@@ -11,7 +11,7 @@ class scrumboardTests(unittest.TestCase):
     def setUp(self):
         self.scrumboard = Scrumboard()
         self.developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatedSprintHours": 32})
-        self.qa = Person({"firstName": "Bob", "lastName": "Smith", "estimatedSprintHours": 16})
+        self.qa = Person({"firstName": "Bob", "lastName": "Smith", "estimatedSprintHours": 16, "isADeveloper": False})
         self.cards = [
             Card({
                 "description": "As a user I want to fly.", "storyPoints": 5, "estimatedDevHours": 18,
@@ -51,8 +51,13 @@ class scrumboardTests(unittest.TestCase):
         self.assertEqual(5, velocity, "Velocity should be 5 not {}".format(velocity))
 
     def testGetTotalEstimatedHoursForPeople(self):
-        pass
+        totalDevHours = self.scrumboard.getTotalEstimatedDevHoursFromPeople()
+        self.assertEqual(self.developer.estimatedSprintHours, totalDevHours, \
+                         "Total Estimated Hours should be 32 but is {}".format(totalDevHours))
 
+        totalQAHours = self.scrumboard.getTotalEstimatedQAHoursFromPeople()
+        self.assertEqual(self.qa.estimatedSprintHours, totalQAHours, \
+                         "Total Estimated Hours should be 32 but is {}".format(totalQAHours))
 
     def testGetTotalEstimatedHoursForCards(self):
         pass
