@@ -60,19 +60,22 @@ class Sprint(object):
         except ValueError:
             raise InvalidSprintDateFormat, "startDate must be in format:%s" % Sprint.DATE_FORMAT
 
-        codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate, Sprint.DATE_FORMAT)
-        endDate = datetime.datetime.strptime(self.endDate, Sprint.DATE_FORMAT)
-        endQADate = datetime.datetime.strptime(self.endQADate, Sprint.DATE_FORMAT)
+        if self.codeFreezeDate:
+            codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate, Sprint.DATE_FORMAT)
+            if newDate >= codeFreezeDate:
+                raise InvalidSprintDate, "{} is greater than or equal to code freeze of {}".format(value,
+                                                                                                   self.codeFreezeDate)
+        if self.endDate:
+            endDate = datetime.datetime.strptime(self.endDate, Sprint.DATE_FORMAT)
+            if newDate >= endDate:
+                raise InvalidSprintDate, "{} is greater than or equal to end date of {}".format(value, self.endDate)
+        if self.endQADate:
+            endQADate = datetime.datetime.strptime(self.endQADate, Sprint.DATE_FORMAT)
+            if newDate >= endQADate:
+                raise InvalidSprintDate, "{} is greater than or equal to end QA date of {}".format(value,
+                                                                                                   self.endQADate)
 
-        if newDate >= codeFreezeDate:
-            raise InvalidSprintDate, "{} is greater than or equal to code freeze of {}".format(value,
-                                                                                               self.codeFreezeDate)
-        elif newDate >= endDate:
-            raise InvalidSprintDate, "{} is greater than or equal to end date of {}".format(value, self.endDate)
-        elif newDate >= endQADate:
-            raise InvalidSprintDate, "{} is greater than or equal to end QA date of {}".format(value, self.endQADate)
-        else:
-            self.__startDate = value
+        self.__startDate = value
 
 
     @property
@@ -87,19 +90,22 @@ class Sprint(object):
         except ValueError:
             raise InvalidSprintDateFormat, "endDate must be in format:%s" % Sprint.DATE_FORMAT
 
-        codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate, Sprint.DATE_FORMAT)
-        startDate = datetime.datetime.strptime(self.startDate, Sprint.DATE_FORMAT)
-        endQADate = datetime.datetime.strptime(self.endQADate, Sprint.DATE_FORMAT)
+        if self.codeFreezeDate:
+            codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate, Sprint.DATE_FORMAT)
+            if newDate <= codeFreezeDate:
+                raise InvalidSprintDate, "{} is less than than or equal to code freeze of {}".format(value,
+                                                                                                     self.codeFreezeDate)
+        if self.startDate:
+            startDate = datetime.datetime.strptime(self.startDate, Sprint.DATE_FORMAT)
+            if newDate <= startDate:
+                raise InvalidSprintDate, "{} is less than or equal to start date of {}".format(value, self.startDate)
 
-        if newDate <= codeFreezeDate:
-            raise InvalidSprintDate, "{} is less than than or equal to code freeze of {}".format(value,
-                                                                                                 self.codeFreezeDate)
-        elif newDate <= startDate:
-            raise InvalidSprintDate, "{} is less than or equal to start date of {}".format(value, self.startDate)
-        elif newDate <= endQADate:
-            raise InvalidSprintDate, "{} is less than or equal to QA's end date of {}".format(value, self.endQADate)
-        else:
-            self.__endDate = value
+        if self.endQADate:
+            endQADate = datetime.datetime.strptime(self.endQADate, Sprint.DATE_FORMAT)
+            if newDate <= endQADate:
+                raise InvalidSprintDate, "{} is less than or equal to QA's end date of {}".format(value, self.endQADate)
+
+        self.__endDate = value
 
 
     @property
@@ -114,19 +120,22 @@ class Sprint(object):
         except ValueError:
             raise InvalidSprintDateFormat, "endQADate must be in format:%s" % Sprint.DATE_FORMAT
 
-        codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate, Sprint.DATE_FORMAT)
-        startDate = datetime.datetime.strptime(self.startDate, Sprint.DATE_FORMAT)
-        endDate = datetime.datetime.strptime(self.endDate, Sprint.DATE_FORMAT)
+        if self.codeFreezeDate:
+            codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate, Sprint.DATE_FORMAT)
+            if newDate <= codeFreezeDate:
+                raise InvalidSprintDate, "{} is less than than or equal to code freeze of {}".format(value,
+                                                                                                     self.codeFreezeDate)
+        if self.startDate:
+            startDate = datetime.datetime.strptime(self.startDate, Sprint.DATE_FORMAT)
+            if newDate <= startDate:
+                raise InvalidSprintDate, "{} is less than or equal to start date of {}".format(value, self.startDate)
 
-        if newDate <= codeFreezeDate:
-            raise InvalidSprintDate, "{} is less than than or equal to code freeze of {}".format(value,
-                                                                                                 self.codeFreezeDate)
-        elif newDate <= startDate:
-            raise InvalidSprintDate, "{} is less than or equal to start date of {}".format(value, self.startDate)
-        elif newDate >= endDate:
-            raise InvalidSprintDate, "{} is great than or equal to QA's end date of {}".format(value, self.endDate)
-        else:
-            self.__endQADate = value
+        if self.endDate:
+            endDate = datetime.datetime.strptime(self.endDate, Sprint.DATE_FORMAT)
+            if newDate >= endDate:
+                raise InvalidSprintDate, "{} is great than or equal to QA's end date of {}".format(value, self.endDate)
+
+        self.__endQADate = value
 
     @property
     def codeFreezeDate(self):
