@@ -76,6 +76,9 @@ class sprintTests(unittest.TestCase):
         self.assertEquals(52, devTimeLeftInSprint,
                           "Dev Time left in sprint was {} it should had been 52".format(devTimeLeftInSprint))
 
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.getDevTimeLeftInSprint("2013/1/2")
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(sprintTests)
 unittest.TextTestRunner(verbosity=2).run(suite)
