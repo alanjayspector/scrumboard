@@ -50,6 +50,17 @@ class scrumboardTests(unittest.TestCase):
         velocity = self.scrumboard.getVelocity()[0]
         self.assertEqual(5, velocity, "Velocity should be 5 not {}".format(velocity))
 
+    def testGetTotalEstimatedHoursForPeople(self):
+        pass
+
+
+    def testGetTotalEstimatedHoursForCards(self):
+        pass
+
+
+    def testGetTotalAssigned(self):
+        pass
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(scrumboardTests)
 unittest.TextTestRunner(verbosity=2).run(suite)
