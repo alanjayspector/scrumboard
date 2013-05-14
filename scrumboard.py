@@ -121,13 +121,13 @@ class Scrumboard(object):
                 totalHours += person.estimatedSprintHours
         return totalHours
 
-    def getTotalEstimatedDevHoursForTasks(self):
+    def getTotalEstimatedDevHoursForCards(self):
         totalHours = 0
         for card in self.cards.values():
             totalHours += card.estimatedDevHours
         return totalHours
 
-    def getTotalEstimatedQAHoursForTasks(self):
+    def getTotalEstimatedQAHoursForCards(self):
         totalHours = 0
         for card in self.cards.values():
             totalHours += card.estimatedQAHours
