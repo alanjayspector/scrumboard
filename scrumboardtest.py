@@ -53,18 +53,24 @@ class scrumboardTests(unittest.TestCase):
     def testGetTotalEstimatedHoursForPeople(self):
         totalDevHours = self.scrumboard.getTotalEstimatedDevHoursFromPeople()
         self.assertEqual(self.developer.estimatedSprintHours, totalDevHours, \
-                         "Total Estimated Hours should be 32 but is {}".format(totalDevHours))
+                         "Total Estimated Dev Hours should be 32 but is {}".format(totalDevHours))
 
         totalQAHours = self.scrumboard.getTotalEstimatedQAHoursFromPeople()
         self.assertEqual(self.qa.estimatedSprintHours, totalQAHours, \
-                         "Total Estimated Hours should be 16 but is {}".format(totalQAHours))
+                         "Total Estimated QA Hours should be 16 but is {}".format(totalQAHours))
 
     def testGetTotalEstimatedHoursForCards(self):
-        pass
-
+        totalDevHours = self.scrumboard.getTotalEstimatedDevHoursForCards()
+        totalQAHours = self.scrumboard.getTotalEstimatedQAHoursForCards()
+        self.assertEqual(totalDevHours, 30, "Total Estimated Dev Hours should be 30 but is {}".format(totalDevHours))
+        self.assertEqual(totalQAHours, 9, "Total Estimated Dev Hours should be 9 but is {}".format(totalQAHours))
 
     def testGetTotalAssigned(self):
-        pass
+        qaAssignedHours = self.scrumboard.getTotalAssigned(False)
+        devAssignedHours = self.scrumboard.getTotalAssigned(True)
+
+        self.assertEqual(qaAssignedHours, 9, "QA assigned hours should be 9 but is {}".format(qaAssignedHours))
+        self.assertEqual(devAssignedHours, 30, "Dev assigned hours should be 9 but is {}".format(devAssignedHours))
 
 
 suite = unittest.TestLoader().loadTestsFromTestCase(scrumboardTests)

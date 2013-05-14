@@ -136,7 +136,7 @@ class Scrumboard(object):
     def getTotalAssigned(self, isADeveloper=True):
         totalHours = 0
         for person in self.people.values():
-            if person.isADeveloper:
+            if person.isADeveloper == isADeveloper:
                 totalHours += person.getAssignedHoursInSprint()
         return totalHours
 
