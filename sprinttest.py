@@ -71,7 +71,10 @@ class sprintTests(unittest.TestCase):
             self.sprint.codeFreezeDate = '2013/6/22'
 
     def testTimeLeftInSprintCalculations(self):
-        pass
+        devTimeLeftInSprint = self.sprint.getDevTimeLeftInSprint("2013/6/2")
+
+        self.assertEquals(52, devTimeLeftInSprint,
+                          "Dev Time left in sprint was {} it should had been 52".format(devTimeLeftInSprint))
 
 
 suite = unittest.TestLoader().loadTestsFromTestCase(sprintTests)

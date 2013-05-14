@@ -219,6 +219,13 @@ class Sprint(object):
         elif not self.codeFreezeDate:
             raise DateNotSetError, "codeFreezeDate on sprint was not set."
 
+        if currentDate >= endDate:
+            raise ValueError, "{} is >= {}".format(currentDate.strftime(Sprint.DATE_FORMAT), \
+                                                   endDate.strftime(Sprint.DATE_FORMAT))
+        elif currentDate < datetime.datetime.strptime(self.startDate, Sprint.DATE_FORMAT):
+            raise ValueError, "{} is < {}".format(currentDate.strftime(Sprint.DATE_FORMAT), \
+                                                  self.startDate)
+
         delta = endDate - currentDate
         return delta.days * self.hoursPerDay
 
