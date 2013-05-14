@@ -27,6 +27,12 @@ class sprintTests(unittest.TestCase):
         with self.assertRaises(InvalidSprintDateFormat):
             sprint.codeFreezeDate = "Dec 20th 2001"
 
+    def testDatesAreInAppropriateOrder(self):
+        pass
+
+    def testTimeLeftInSprintCalculations(self):
+        pass
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(sprintTests)
 unittest.TextTestRunner(verbosity=2).run(suite)
