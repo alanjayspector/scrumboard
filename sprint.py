@@ -57,6 +57,10 @@ class Sprint(object):
 
     @startDate.setter
     def startDate(self, value):
+        if value is None:
+            self.__startDate = None
+            return
+
         newDate = None
         try:
             newDate = datetime.datetime.strptime(value, Sprint.DATE_FORMAT)
@@ -88,6 +92,10 @@ class Sprint(object):
     @endDate.setter
     def endDate(self, value):
         newDate = None
+        if value is None:
+            self.__endDate = None
+            return
+
         try:
             newDate = datetime.datetime.strptime(value, Sprint.DATE_FORMAT)
         except ValueError:
@@ -117,6 +125,10 @@ class Sprint(object):
 
     @endQADate.setter
     def endQADate(self, value):
+        if value is None:
+            self.__endQADate = None
+            return
+
         newDate = None
         try:
             newDate = datetime.datetime.strptime(value, Sprint.DATE_FORMAT)
@@ -146,6 +158,10 @@ class Sprint(object):
 
     @codeFreezeDate.setter
     def codeFreezeDate(self, value):
+        if value is None:
+            self.__codeFreezeDate = None
+            return
+
         newDate = None
         try:
             newDate = datetime.datetime.strptime(value, Sprint.DATE_FORMAT)

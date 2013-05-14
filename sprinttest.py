@@ -29,7 +29,16 @@ class sprintTests(unittest.TestCase):
 
     def testDatesAreInAppropriateOrder(self):
         sprint = Sprint()
-        pass
+        sprint.endDate = '2013/6/02'
+        with self.assertRaises(InvalidSprintDate):
+            sprint.startDate = '2013/6/03'
+
+        sprint.endDate = None
+        sprint.startDate = '2013/6/02'
+
+        with self.assertRaises(InvalidSprintDate):
+            sprint.endDate = '2013/6/01'
+
 
     def testTimeLeftInSprintCalculations(self):
         pass
