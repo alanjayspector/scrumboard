@@ -5,47 +5,76 @@ from sprint import *
 
 
 class sprintTests(unittest.TestCase):
+    def setUp(self):
+        self.sprint = Sprint()
+        self.sprint.startDate = '2013/6/02'
+        self.sprint.codeFreezeDate = '2013/6/15'
+        self.sprint.endQADate = '2013/6/19'
+        self.sprint.endDate = '2013/6/21'
+
     def testFormatOfStartDate(self):
-        sprint = Sprint()
         with self.assertRaises(InvalidSprintDateFormat):
-            sprint.startDate = "foobar"
+            self.sprint.startDate = "foobar"
 
 
     def testFormatOfEndDate(self):
-        sprint = Sprint()
         with self.assertRaises(InvalidSprintDateFormat):
-            sprint.endDate = "1-15-2013"
+            self.sprint.endDate = "1-15-2013"
 
 
     def testFormatOfEndQADate(self):
-        sprint = Sprint()
         with self.assertRaises(InvalidSprintDateFormat):
-            sprint.endQADate = "2013/42/12"
+            self.sprint.endQADate = "2013/42/12"
 
     def testFormatOfCodeFreezeDate(self):
-        sprint = Sprint()
         with self.assertRaises(InvalidSprintDateFormat):
-            sprint.codeFreezeDate = "Dec 20th 2001"
+            self.sprint.codeFreezeDate = "Dec 20th 2001"
 
-    def testDatesAreInAppropriateOrder(self):
-        sprint = Sprint()
-        sprint.endDate = '2013/6/02'
+    def testStartDatesAreAppropriate(self):
         with self.assertRaises(InvalidSprintDate):
-            sprint.startDate = '2013/6/03'
-
-        sprint.endDate = None
-        sprint.startDate = '2013/6/02'
+            self.sprint.startDate = '2013/6/21'
 
         with self.assertRaises(InvalidSprintDate):
-            sprint.endDate = '2013/6/01'
+            self.sprint.startDate = '2013/6/16'
 
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.startDate = '2013/6/20'
+
+    def testEndDatesAreAppropriate(self):
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.endDate = '2013/6/1'
+
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.endDate = '2013/6/14'
+
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.endDate = '2013/6/18'
+
+    def testEndQADatesAreAppropriate(self):
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.endQADate = '2013/6/1'
+
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.endQADate = '2013/6/14'
+
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.endQADate = '2013/6/22'
+
+    def testCodeFreezeDatesAreAppropriate(self):
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.codeFreezeDate = '2013/6/1'
+
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.codeFreezeDate = '2013/6/20'
+
+        with self.assertRaises(InvalidSprintDate):
+            self.sprint.codeFreezeDate = '2013/6/22'
 
     def testTimeLeftInSprintCalculations(self):
-        pass
 
 
-suite = unittest.TestLoader().loadTestsFromTestCase(sprintTests)
-unittest.TextTestRunner(verbosity=2).run(suite)
+    suite = unittest.TestLoader().loadTestsFromTestCase(sprintTests)
+    unittest.TextTestRunner(verbosity=2).run(suite)
 
 
 
