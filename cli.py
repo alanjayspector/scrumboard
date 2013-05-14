@@ -461,7 +461,7 @@ $completedPoints/$totalPoints completed SP
                 self.workingSprint["name"] = self.sprint.name
             elif option == 2:
                 self.menuStr = "createCardMenu"
-                return
+            return
 
         print CLI.__createSprintMenuStr.substitute(self.workingSprint)
         self.workingSprint["message"] = ""
