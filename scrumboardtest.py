@@ -57,7 +57,7 @@ class scrumboardTests(unittest.TestCase):
 
         totalQAHours = self.scrumboard.getTotalEstimatedQAHoursFromPeople()
         self.assertEqual(self.qa.estimatedSprintHours, totalQAHours, \
-                         "Total Estimated Hours should be 32 but is {}".format(totalQAHours))
+                         "Total Estimated Hours should be 16 but is {}".format(totalQAHours))
 
     def testGetTotalEstimatedHoursForCards(self):
         pass

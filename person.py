@@ -97,6 +97,11 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
 
         self.__spentSprintHours = value
 
+    def isOverCommitted(self):
+        if self.estimatedSprintHours < self.getAssignedHoursInSprint():
+            return True
+        return False
+
     def getUnassignedHoursInSprint(self):
         totalEstimatedHours = self.getAssignedHoursInSprint()
         return self.estimatedSprintHours - totalEstimatedHours
