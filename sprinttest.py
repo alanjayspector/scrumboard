@@ -71,10 +71,11 @@ class sprintTests(unittest.TestCase):
             self.sprint.codeFreezeDate = '2013/6/22'
 
     def testTimeLeftInSprintCalculations(self):
+        pass
 
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(sprintTests)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+suite = unittest.TestLoader().loadTestsFromTestCase(sprintTests)
+unittest.TextTestRunner(verbosity=2).run(suite)
 
 
 
