@@ -79,6 +79,10 @@ class sprintTests(unittest.TestCase):
         with self.assertRaises(InvalidSprintDate):
             self.sprint.getDevTimeLeftInSprint("2013/1/2")
 
+        self.sprint.codeFreezeDate = None
+        with self.assertRaises(DateNotSetError):
+            self.sprint.getDevTimeLeftInSprint("2013/6/2")
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(sprintTests)
 unittest.TextTestRunner(verbosity=2).run(suite)

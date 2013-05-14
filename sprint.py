@@ -198,6 +198,7 @@ class Sprint(object):
         return Sprint.IDctr
 
     def getDevTimeLeftInSprint(self, dateToCalculateFrom=None):
+        self.__checkDatesAreSet()
         if dateToCalculateFrom is None:
             dateToCalculateFrom = datetime.datetime.now().strftime(Sprint.DATE_FORMAT)
 
@@ -209,7 +210,7 @@ class Sprint(object):
         codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate, Sprint.DATE_FORMAT)
         return self.__getTimeLeftInSprint(currentDate, codeFreezeDate)
 
-    def __getTimeLeftInSprint(self, currentDate, endDate):
+    def __checkDatesAreSet(self):
         if not self.startDate:
             raise DateNotSetError, "startDate on sprint was not set."
         elif not self.endDate:
@@ -218,6 +219,9 @@ class Sprint(object):
             raise DateNotSetError, "endQADate on sprint was not set."
         elif not self.codeFreezeDate:
             raise DateNotSetError, "codeFreezeDate on sprint was not set."
+
+
+    def __getTimeLeftInSprint(self, currentDate, endDate):
 
         if currentDate >= endDate:
             raise InvalidSprintDate, "{} is >= {}".format(currentDate.strftime(Sprint.DATE_FORMAT), \
