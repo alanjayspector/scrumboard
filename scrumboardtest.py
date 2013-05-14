@@ -48,7 +48,7 @@ class scrumboardTests(unittest.TestCase):
         self.cards[0].needsQA = False
         self.cards[0].placeOnBoard = "Done"
         velocity = self.scrumboard.getVelocity()[0]
-        self.assertEqual(self.cards[0].storyPoints, velocity, "Velocity should be 5 not {}".format(velocity))
+        self.assertEqual(5, velocity, "Velocity should be 5 not {}".format(velocity))
 
 
 suite = unittest.TestLoader().loadTestsFromTestCase(scrumboardTests)
