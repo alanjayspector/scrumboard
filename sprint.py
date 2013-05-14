@@ -197,13 +197,17 @@ class Sprint(object):
         Sprint.IDctr += 1
         return Sprint.IDctr
 
-    def getDevTimeLeftInSprint(self, dateToCalculateFrom=datetime.datetime.today()):
-        codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate, Sprint.DATE_FORMAT)
-        return self.__getTimeLeftInSprint(dateToCalculateFrom, codeFreezeDate)
+    def getDevTimeLeftInSprint(self, dateToCalculateFrom=None):
+        if dateToCalculateFrom is None:
+            dateToCalculateFrom = datetime.datetime.now().strftime(Sprint.DATE_FORMAT)
 
-    def getQATimeLeftInSprint(self, dateToCalculateFrom=datetime.datetime.today()):
-        endQADate = datetime.datetime.strptime(self.endQADate, Sprint.DATE_FORMAT)
-        return self.__getTimeLeftInSprint(dateToCalculateFrom, endQADate)
+        try:
+            currentDate = datetime.datetime.strptime(dateToCalculateFrom, Sprint.DATE_FORMAT)
+        except:
+            raise ValueError, "dateToCalculateFrom must be %Y/%m/%d format not {}".format(dateToCalculateFrom)
+
+        codeFreezeDate = datetime.datetime.strptime(self.codeFreezeDate, Sprint.DATE_FORMAT)
+        return self.__getTimeLeftInSprint(currentDate, codeFreezeDate)
 
     def __getTimeLeftInSprint(self, currentDate, endDate):
         if not self.startDate:

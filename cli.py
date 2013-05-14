@@ -142,21 +142,20 @@ $completedPoints/$totalPoints completed SP
         self.workingPerson = None
         self.workingCard = None
         self.selectedCard = None
-        self.currentDate = self.sprint.startDate
+        self.currentDate = datetime.datetime.strptime(self.sprint.startDate, Sprint.DATE_FORMAT)
         self.isSprintOver = False
 
     def iterateDay(self):
         if self.isSprintOver:
             return
-        currentDate = datetime.datetime.strptime(self.currentDate, Sprint.DATE_FORMAT)
-        newDate = (currentDate + datetime.timedelta(days=1)).strftime(Sprint.DATE_FORMAT)
+        newDate = (self.currentDate + datetime.timedelta(days=1))
         endDate = datetime.datetime.strptime(self.sprint.endDate, Sprint.DATE_FORMAT)
         if endDate <= newDate:
             self.isSprintOver = True
-            self.currentDate = self.sprint.endDate
+            self.currentDate = datetime.datetime.strptime(self.sprint.endDate, Sprint.DATE_FORMAT)
             return
         else:
-            self.currentDate = (currentDate + datetime.timedelta(days=1)).strftime(Sprint.DATE_FORMAT)
+            self.currentDate = newDate
 
     def createCardMenu(self, option=None):
         if not option:
@@ -274,7 +273,9 @@ $completedPoints/$totalPoints completed SP
     def generateCardStatuses(self, cardColor="reportRedCards"):
         scrumboardMethod = getattr(self.scrumboard, cardColor)
         if callable(scrumboardMethod):
-            for card in scrumboardMethod(self.sprint.getDevTimeLeftInSprint(self.currentDate)):
+            currentDateString = self.currentDate.strftime(Sprint.DATE_FORMAT)
+            devTimeLeftInSprint = self.sprint.getDevTimeLeftInSprint(currentDateString)
+            for card in scrumboardMethod(devTimeLeftInSprint):
                 print card
                 raw_input("Press any key to continue:")
 
