@@ -16,22 +16,25 @@ class InvalidSprintDate(SprintException): pass
 class InvalidHoursPerDay(SprintException): pass
 
 
+class DateNotSetError(SprintException): pass
+
+
 class Sprint(object):
     IDctr = 0
     DATE_FORMAT = "%Y/%m/%d"
 
 
     def __init__(self, params=None):
-        startDate = datetime.datetime.now()
         self.__sprintID = Sprint.getNextID()
-        self.__startDate = startDate.strftime(Sprint.DATE_FORMAT)
-        self.__endDate = (startDate + datetime.timedelta(days=13)).strftime(Sprint.DATE_FORMAT)
+        self.__startDate = None
+        self.__endDate = None
         self.__hoursPerDay = 4
-        self.__codeFreezeDate = (startDate + datetime.timedelta(days=7)).strftime(Sprint.DATE_FORMAT)
-        self.__endQADate = (startDate + datetime.timedelta(days=12)).strftime(Sprint.DATE_FORMAT)
+        self.__codeFreezeDate = None
+        self.__endQADate = None
         self.name = None
         self.scrumBoard = Scrumboard(self)
         if isinstance(params, dict):
+            #disallow the ability to set your own scrumboard
             params.pop("scrumBoard", None)
             for key in params:
                 if hasattr(self, key):
@@ -149,19 +152,21 @@ class Sprint(object):
         except ValueError:
             raise InvalidSprintDateFormat, "codeFreezeDate must be in format:%s" % Sprint.DATE_FORMAT
 
-        startDate = datetime.datetime.strptime(self.startDate, Sprint.DATE_FORMAT)
-        endDate = datetime.datetime.strptime(self.endDate, Sprint.DATE_FORMAT)
-        endQADate = datetime.datetime.strptime(self.endQADate, Sprint.DATE_FORMAT)
+        if self.endQADate:
+            endQADate = datetime.datetime.strptime(self.endQADate, Sprint.DATE_FORMAT)
+            if newDate >= endQADate:
+                raise InvalidSprintDate, "{} is greater than than or equal to QA's end date of {}".format(value,
+                                                                                                          self.endQADate)
+        if self.startDate:
+            startDate = datetime.datetime.strptime(self.startDate, Sprint.DATE_FORMAT)
+            if newDate <= startDate:
+                raise InvalidSprintDate, "{} is less than or equal to start date of {}".format(value, self.startDate)
+        if self.endDate:
+            endDate = datetime.datetime.strptime(self.endDate, Sprint.DATE_FORMAT)
+            if newDate >= endDate:
+                raise InvalidSprintDate, "{} is great than or equal to end date of {}".format(value, self.endDate)
 
-        if newDate >= endQADate:
-            raise InvalidSprintDate, "{} is greater than than or equal to QA's end date of {}".format(value,
-                                                                                                      self.endQADate)
-        elif newDate <= startDate:
-            raise InvalidSprintDate, "{} is less than or equal to start date of {}".format(value, self.startDate)
-        elif newDate >= endDate:
-            raise InvalidSprintDate, "{} is great than or equal to end date of {}".format(value, self.endDate)
-        else:
-            self.__codeFreezeDate = value
+        self.__codeFreezeDate = value
 
     @property
     def sprintID(self):
@@ -185,6 +190,15 @@ class Sprint(object):
         return self.__getTimeLeftInSprint(dateToCalculateFrom, endQADate)
 
     def __getTimeLeftInSprint(self, currentDate, endDate):
+        if not self.startDate:
+            raise DateNotSetError, "startDate on sprint was not set."
+        elif not self.endDate:
+            raise DateNotSetError, "endDate on sprint was not set."
+        elif not self.endQADate:
+            raise DateNotSetError, "endQADate on sprint was not set."
+        elif not self.codeFreezeDate:
+            raise DateNotSetError, "codeFreezeDate on sprint was not set."
+
         delta = endDate - currentDate
         return delta.days * self.hoursPerDay
 

@@ -8,6 +8,19 @@ import datetime
 import copy
 
 
+def generateSprintDates():
+    startDate = datetime.datetime.now()
+    endDate = startDate + datetime.timedelta(days=13)
+    codeFreezeDate = startDate + datetime.timedelta(days=7)
+    endQADate = startDate + datetime.timedelta(days=12)
+    return {
+        "startDate": startDate.strftime(Sprint.DATE_FORMAT),
+        "endDate": endDate.strftime(Sprint.DATE_FORMAT),
+        "codeFreezeDate": codeFreezeDate.strftime(Sprint.DATE_FORMAT),
+        "endQADate": endQADate.strftime(Sprint.DATE_FORMAT)
+    }
+
+
 class CLI(object):
     __createSprintMenuStr = Template("""
 Welcome to the Scrumboard Project
@@ -122,7 +135,7 @@ $completedPoints/$totalPoints completed SP
         self.termination_condition = False
         self.menuStr = "createSprintMenu"
         self.menuBuffer = None
-        self.sprint = Sprint()
+        self.sprint = Sprint(generateSprintDates())
         self.scrumboard = self.sprint.scrumBoard
         self.option = None
         self.workingSprint = None
