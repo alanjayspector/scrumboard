@@ -28,6 +28,7 @@ class sprintTests(unittest.TestCase):
             sprint.codeFreezeDate = "Dec 20th 2001"
 
     def testDatesAreInAppropriateOrder(self):
+        sprint = Sprint()
         pass
 
     def testTimeLeftInSprintCalculations(self):
