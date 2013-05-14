@@ -59,7 +59,6 @@ class scrumboardTests(unittest.TestCase):
 
 
     def testGetTotalAssigned(self):
-        self.cards[0].qa = None
         pass
 
 
