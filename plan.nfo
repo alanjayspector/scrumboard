@@ -16,7 +16,7 @@ Phase I
         Display Status on each Card on the Board <-- done
         simulate days passing to calculate statuses on Cards <-- done
         End Sprint <-- done
-        *** need to fully exercise the simulation still though
+        *** need to fully exercise the simulation still though <--- done
 
 3. learn how to use Postgres with Python
 4. setup up DDL for project
