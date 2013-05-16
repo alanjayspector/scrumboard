@@ -31,6 +31,9 @@ def timeZoneChangeExample(dateString):
 def toDict(instance):
         ourDict = {}
         for k,v in instance.__dict__.items():
+            isAnIDColumn = re.search("ID$", k)
+            if isAnIDColumn:
+                continue
             protected_attr_check = re.search("__(\w+)$", k)
             if protected_attr_check:
                 groups = protected_attr_check.groups()
