@@ -31,10 +31,11 @@ def createCard(connection, card):
     print SQL
     cursor = connection.cursor()
     cursor.execute(SQL, params)
-    print cursor.fetchone()[0]
+    newID = cursor.fetchone()[0]
 
     connection.commit()
     cursor.close()
+    return newID
 
 def readCard(connection,ID):
     pass
@@ -53,7 +54,7 @@ exampleCard = Card({
     "estimatedQAHours": 4,
 })
 
-createCard(connection,exampleCard)
+cardID = createCard(connection,exampleCard)
 
 print exampleCard
 
