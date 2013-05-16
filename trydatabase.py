@@ -1,7 +1,7 @@
 __author__ = 'alan'
 
 import psycopg2
-import utils
+from utils import toDict
 import sys
 from card import Card
 
@@ -21,7 +21,14 @@ except psycopg2.DatabaseError, e:
 
 
 
-def createCard(con, params):
+def createCard(con, card):
+    params = toDict(card)
+    keys = params.keys()
+    SQL = "INSERT INTO cards ({}) VALUES ({})".format(
+        ",".join([str(attr) for attr in keys]),
+        ",".join(["?" for attr in keys])
+    )
+
     pass
 
 def readCard(con,ID):
