@@ -1,11 +1,7 @@
 __author__ = 'alanspector'
 
+import re
 import datetime
-from person import Person
-from card import Card
-from sprint import Sprint
-from scrumboard import Scrumboard
-import random
 import pytz
 
 
@@ -20,43 +16,32 @@ def getLocalizeDateTime(date_string, tz):
 
 
 
-def timeZoneChangeExample():
-        dateString = None
-        easternTZ = pytz.timezone("US/Eastern")
-        westernTZ = pytz.timezone("US/Pacific")
-        centralTZ = pytz.timezone("US/Central")
-        utcTZ = pytz.timezone("UTC")
-        print dateString
-        print getLocalizeDateTime(dateString, easternTZ)
-        print getLocalizeDateTime(dateString, westernTZ)
-        print getLocalizeDateTime(dateString, centralTZ)
-        print getLocalizeDateTime(dateString, utcTZ)
+def timeZoneChangeExample(dateString):
 
-        return True
+    easternTZ = pytz.timezone("US/Eastern")
+    westernTZ = pytz.timezone("US/Pacific")
+    centralTZ = pytz.timezone("US/Central")
+    utcTZ = pytz.timezone("UTC")
+    print dateString
+    print getLocalizeDateTime(dateString, easternTZ)
+    print getLocalizeDateTime(dateString, westernTZ)
+    print getLocalizeDateTime(dateString, centralTZ)
+    print getLocalizeDateTime(dateString, utcTZ)
 
+def toDict(instance):
+        ourDict = {}
+        for k,v in instance.__dict__.items():
+            protected_attr_check = re.search("__(\w+)$", k)
+            if protected_attr_check:
+                groups = protected_attr_check.groups()
+                if len(groups) > 1:
+                    raise Exception,\
+                        "atttribute {} breaks toDict() check _<CLASS>__attribute".format(k)
+                ourDict[groups[0]] = v
+            else:
+                ourDict[k] = v
+        return ourDict
 
-def generateCard(person):
-    card = Card()
-    card.storyPoints = Card.cardDataMap["storyPoints"][random.randint(0,(len(Card.cardDataMap["storyPoints"])-1))]
-    card.estimatedDevHours = random.randint(1,16)
-    card.estimatedQAHours= random.randint(2,6)
-    card.description = "Random Description:%d" % random.randint(1,375)
-    card.person = person
-    return card
-
-def generatePerson(sprintID = 1):
-    person = Person({ "firstName":"Alan", "lastName": "Spector", \
-                      "currentSprintID":1, "estimatedSprintHours":32 })
-
-    for i in range(random.randint(2,10)):
-        card = generateCard(person)
-        person.addCardToCurrentSprint(card)
-
-    return person
-
-def generateSprint():
-    sprint = Sprint()
-    scrumboard = Scrumboard(sprint)
 
 
 

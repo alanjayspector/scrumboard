@@ -1,6 +1,7 @@
 __author__ = 'alan'
 
 import psycopg2
+import utils
 import sys
 
 
@@ -31,9 +32,9 @@ def deleteCard(con,ID):
     pass
 
 
+exampleCard = Card({
 
-
-
+})
 
 
 
