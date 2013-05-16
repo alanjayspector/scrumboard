@@ -10,9 +10,6 @@ try:
 
     con = psycopg2.connect(database=raw_input("database:"), password=raw_input("password:"), user=raw_input("user:"))
     cur = con.cursor()
-    cur.execute('SELECT version()')
-    ver = cur.fetchone()
-    print ver
 
 
 except psycopg2.DatabaseError, e:
@@ -20,7 +17,24 @@ except psycopg2.DatabaseError, e:
     sys.exit(1)
 
 
-finally:
 
-    if con:
-        con.close()
+def createCard(con, params):
+    pass
+
+def readCard(con,ID):
+    pass
+
+def updateCard(con,ID,params):
+    pass
+
+def deleteCard(con,ID):
+    pass
+
+
+
+
+
+
+
+
+con.close()
