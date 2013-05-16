@@ -3,6 +3,8 @@ __author__ = 'alan'
 import psycopg2
 import utils
 import sys
+from card import Card
+
 
 
 con = None
@@ -33,9 +35,14 @@ def deleteCard(con,ID):
 
 
 exampleCard = Card({
-
+    "description": "As user I want to fly.",
+    "storyPoints": 1,
+    "estimatedDevHours": 18,
+    "estimatedQAHours": 4,
 })
 
+createCard(con,exampleCard)
 
+print exampleCard
 
 con.close()
