@@ -11,8 +11,8 @@ con = None
 
 try:
 
-    con = psycopg2.connect(database=raw_input("database:"), password=raw_input("password:"), user=raw_input("user:"))
-    cur = con.cursor()
+    connection = psycopg2.connect(database=raw_input("database:"), password=raw_input("password:"), user=raw_input("user:"))
+    cur = connection.cursor()
 
 
 except psycopg2.DatabaseError, e:
@@ -21,23 +21,28 @@ except psycopg2.DatabaseError, e:
 
 
 
-def createCard(con, card):
+def createCard(connection, card):
     params = toDict(card)
     keys = params.keys()
-    SQL = "INSERT INTO cards ({}) VALUES ({})".format(
-        ",".join([str(attr) for attr in keys]),
-        ",".join(["?" for attr in keys])
+    SQL = 'INSERT INTO cards ("cardID",{}) VALUES (DEFAULT,{}) RETURNING "cardID";'.format(
+        ",".join(['"{}"'.format(attr) for attr in keys]),
+        ",".join(['%({})s'.format(attr)  for attr in keys])
     )
+    print SQL
+    cursor = connection.cursor()
+    cursor.execute(SQL, params)
+    print cursor.fetchone()[0]
 
+    connection.commit()
+    cursor.close()
+
+def readCard(connection,ID):
     pass
 
-def readCard(con,ID):
+def updateCard(connection,ID,params):
     pass
 
-def updateCard(con,ID,params):
-    pass
-
-def deleteCard(con,ID):
+def deleteCard(connection,ID):
     pass
 
 
@@ -48,8 +53,8 @@ exampleCard = Card({
     "estimatedQAHours": 4,
 })
 
-createCard(con,exampleCard)
+createCard(connection,exampleCard)
 
 print exampleCard
 
-con.close()
+connection.close()
