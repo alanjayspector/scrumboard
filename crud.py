@@ -1,7 +1,5 @@
 __author__ = 'alan'
 
-import re
-
 
 class CRUD(object):
     def __init__(self):
@@ -14,7 +12,7 @@ class CRUD(object):
         SQL = 'INSERT INTO {} ("ID",{}) VALUES (DEFAULT,{}) RETURNING "ID";'.format(
             self.TABLE,
             ",".join(['"{}"'.format(attr) for attr in keys]),
-            ",".join(['%({})s'.format(attr)  for attr in keys])
+            ",".join(['%({})s'.format(attr) for attr in keys])
         )
         cursor = self.connection.cursor()
         cursor.execute(SQL, params)
@@ -30,12 +28,12 @@ class CRUD(object):
         SQL = 'SELECT {} from {} where "ID"=%s'.format(
             ",".join(['"{}"'.format(attr) for attr in keys]),
             self.TABLE)
-        cursor.execute(SQL,(self.ID,))
+        cursor.execute(SQL, (self.ID,))
         returnValue = cursor.fetchone()
         cursor.close()
         if returnValue is not None:
-            for key,value in zip(keys,returnValue):
-                setattr(self,key,value)
+            for key, value in zip(keys, returnValue):
+                setattr(self, key, value)
             return True
         else:
             return False
@@ -44,13 +42,13 @@ class CRUD(object):
     def toDict(self):
         ourDict = {}
         for k in self.db_columns():
-                    ourDict[k] = getattr(self,k)
+            ourDict[k] = getattr(self, k)
         for k in self.db_objects():
-                    obj = getattr(self,k)
-                    if obj:
-                        ourDict[k] = obj.ID
-                    else:
-                        ourDict[k] = None
+            obj = getattr(self, k)
+            if obj:
+                ourDict[k] = obj.ID
+            else:
+                ourDict[k] = None
         return ourDict
 
 
@@ -58,19 +56,19 @@ class CRUD(object):
         cursor = self.connection.cursor()
         params = self.toDict()
         keys = params.keys()
-        values = [ params[attr] for attr in keys]
+        values = [params[attr] for attr in keys]
         values.append(self.ID)
         SQL = 'UPDATE {} SET {} WHERE "ID"= %s'.format(
             self.TABLE,
-            ",".join(['"{}"=%s'.format(attr) for attr in keys ])
+            ",".join(['"{}"=%s'.format(attr) for attr in keys])
         )
-        cursor.execute(SQL,values)
+        cursor.execute(SQL, values)
         self.connection.commit()
         cursor.close()
 
     def delete(self):
         cursor = self.connection.cursor()
         SQL = 'DELETE FROM {} where "ID"=%s'.format(self.TABLE)
-        cursor.execute(SQL,(self.ID,))
+        cursor.execute(SQL, (self.ID,))
         self.connection.commit()
         cursor.close()
