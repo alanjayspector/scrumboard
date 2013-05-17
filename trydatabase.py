@@ -27,40 +27,43 @@ def setupDatabase(connection):
         cursor.close()
         connection.close()
 
-def setupTables(connection, user):
-    connection.autocommit = True
-    cursor = None
-
-#cards
+def setupCards(connection,user):
     SQL = """CREATE TABLE cards
 (
-  "ID" serial NOT NULL,
-  description text,
-  "storyPoints" integer,
-  "completedDate" date,
-  "estimatedDevHours" integer DEFAULT 0,
-  "needsPOReview" boolean DEFAULT true,
-  "hadPOReview" boolean DEFAULT false,
-  "needsQA" boolean DEFAULT true,
-  "hadQA" boolean DEFAULT false,
-  "needsCodeReview" boolean DEFAULT true,
-  "hadCodeReview" boolean DEFAULT false,
-  "spentDevHours" integer DEFAULT 0,
-  "spentQAHours" integer DEFAULT 0,
-  qa integer,
-  developer integer,
-  "startDate" date,
-  "estimatedQAHours" integer,
-  "placeOnBoard" text,
-  "createdDate" date,
-  CONSTRAINT cards_pkey PRIMARY KEY ("ID")
+"ID" serial NOT NULL,
+description text,
+"storyPoints" integer,
+"completedDate" date,
+"estimatedDevHours" integer DEFAULT 0,
+"needsPOReview" boolean DEFAULT true,
+"hadPOReview" boolean DEFAULT false,
+"needsQA" boolean DEFAULT true,
+"hadQA" boolean DEFAULT false,
+"needsCodeReview" boolean DEFAULT true,
+"hadCodeReview" boolean DEFAULT false,
+"spentDevHours" integer DEFAULT 0,
+"spentQAHours" integer DEFAULT 0,
+qa integer,
+developer integer,
+"startDate" date,
+"estimatedQAHours" integer,
+"placeOnBoard" text,
+"createdDate" date,
+CONSTRAINT cards_pkey PRIMARY KEY ("ID"),
+CONSTRAINT qa_people_fk FOREIGN KEY ("qa")
+      REFERENCES people ("ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+CONSTRAINT qa_people_fk FOREIGN KEY ("developer")
+      REFERENCES people ("ID") MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+)
 )
 WITH (
-  OIDS=FALSE
+OIDS=FALSE
 );
 ALTER TABLE cards
-  OWNER TO %s;
-    """ % user
+OWNER TO %s;
+""" % user
 
     print "Creating Cards table."
     try:
@@ -69,13 +72,42 @@ ALTER TABLE cards
     except psycopg2.DatabaseError, e:
         print 'Error %s' % e
         sys.exit(1)
-
-
-#people
-#boards
-#sprints
-
     cursor.close()
+
+
+def setupPeople(connection,user):
+    SQL = """CREATE TABLE people
+(
+"ID" serial NOT NULL,
+"firstName" text,
+"lastName" text,
+"estimatedSprintHours" integer DEFAULT 0,
+"spentSprintHours" integer DEFAULT 0,
+"isADeveloper" boolean DEFAULT true,
+"avatar" text,
+CONSTRAINT people_pkey PRIMARY KEY ("ID")
+)
+WITH (
+OIDS=FALSE
+);
+ALTER TABLE people
+OWNER TO %s;
+""" % user
+
+    print "Creating People table."
+    try:
+        cursor = connection.cursor()
+        cursor.execute(SQL)
+    except psycopg2.DatabaseError, e:
+        print 'Error %s' % e
+        sys.exit(1)
+    cursor.close()
+
+
+def setupTables(connection, user):
+    connection.autocommit = True
+    setupPeople(connection,user)
+    setupCards(connection,user)
 
 
 
