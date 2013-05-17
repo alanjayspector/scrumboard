@@ -24,9 +24,10 @@ class NotValidCard(ScrumboardError): pass
 
 class Scrumboard(object):
     IDctr = 0
+    TABLE = "boards"
 
     def __init__(self, sprint=None):
-        self.__scrumboardID = Scrumboard.getNextID()
+        self.__ID = Scrumboard.getNextID()
         self.cards = {}
         self.people = {}
         if sprint:
@@ -39,12 +40,12 @@ class Scrumboard(object):
         return Scrumboard.IDctr
 
     @property
-    def scrumboardID(self):
-        return self.__scrumboardID
+    def ID(self):
+        return self.__ID
 
-    @scrumboardID.setter
-    def scrumboardID(self, value):
-        return self.__scrumboardID
+    @ID.setter
+    def ID(self, value):
+        return self.__ID
 
 
     def reportGreenCards(self, timeLeftInSprint):
@@ -100,12 +101,12 @@ class Scrumboard(object):
     def assignPersonToScrumboard(self, person):
         if not isinstance(person, Person):
             raise NotValidPerson
-        self.people[person.personID] = person
+        self.people[person.ID] = person
 
     def assignCardToScrumboard(self, card):
         if not isinstance(card, Card):
             raise NotValidCard
-        self.cards[card.cardID] = card
+        self.cards[card.ID] = card
 
     def getTotalEstimatedDevHoursFromPeople(self):
         totalHours = 0

@@ -35,9 +35,9 @@ class scrumboardTests(unittest.TestCase):
         self.assertEqual(18, self.scrumboard.getTotalStoryPoints(), "Story points 18 vs {}".format(totalStoryPoints))
 
     def testGetCard(self):
-        cardID = self.cards[0].cardID
+        cardID = self.cards[0].ID
         self.assertEqual(self.scrumboard.getCard(cardID), self.cards[0], \
-                         "Card[{}] does not match Card[{}]".format(cardID, self.cards[0].cardID))
+                         "Card[{}] does not match Card[{}]".format(cardID, self.cards[0].ID))
 
     def testVelocity(self):
         velocity = self.scrumboard.getVelocity()[0]

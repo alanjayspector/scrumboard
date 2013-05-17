@@ -82,6 +82,8 @@ class personColorCardChecks(unittest.TestCase):
         self.card.spentDevHours = 19
         self.assertEqual(self.developer.getCurrentYellowCards(32)[0], self.card)
 
+    def testPrint(self):
+        pass
 
 suite = unittest.TestLoader().loadTestsFromTestCase(personColorCardChecks)
 unittest.TextTestRunner(verbosity=2).run(suite)

@@ -11,6 +11,9 @@ class cardChecks(unittest.TestCase):
         developer = Person({"firstName": "Alan", "lastName": "Spector"})
         self.card = Card({"description": "My Test Card", "qa": qa, "developer": developer})
 
+    def testPrint(self):
+        pass
+
     def testIsCardRed(self):
         self.card.estimatedDevHours = 8
         self.card.spentDevHours = 4

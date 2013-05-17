@@ -22,10 +22,11 @@ class DateNotSetError(SprintException): pass
 class Sprint(object):
     IDctr = 0
     DATE_FORMAT = "%Y/%m/%d"
+    TABLE = "sprints"
 
 
     def __init__(self, params=None):
-        self.__sprintID = Sprint.getNextID()
+        self.__ID = Sprint.getNextID()
         self.__startDate = None
         self.__endDate = None
         self.__hoursPerDay = 4
@@ -185,12 +186,12 @@ class Sprint(object):
         self.__codeFreezeDate = value
 
     @property
-    def sprintID(self):
-        return self.__sprintID
+    def ID(self):
+        return self.__ID
 
-    @sprintID.setter
-    def sprintID(self, value):
-        return self.__sprintID
+    @ID.setter
+    def ID(self, value):
+        return self.__ID
 
     @staticmethod
     def getNextID():

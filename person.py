@@ -20,16 +20,17 @@ class Person(object):
     IDctr = 0
     __printTemplate = Template("""
 --------------------------------
-ID:$personID
+ID:$ID
 $firstName $lastName
 Developer: $isADeveloper
 Spent Hours/Estimated Hours/Assigned Hours
 $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
 --------------------------------
     """)
+    TABLE = "people"
 
     def __init__(self, params=None):
-        self.__personID = Person.getNextID()
+        self.__ID = Person.getNextID()
         self.isADeveloper = True
         self.firstName = None
         self.lastName = None
@@ -48,7 +49,7 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
         self.cards[self.currentSprintID] = []
 
     def __str__(self):
-        personInfo = {"personID": self.personID, "firstName": self.firstName, \
+        personInfo = {"ID": self.ID, "firstName": self.firstName, \
                       "lastName": self.lastName, "isADeveloper": self.isADeveloper, \
                       "spentSprintHours": self.spentSprintHours, "estimatedSprintHours": self.estimatedSprintHours,
                       "assignedHoursInSprint": self.getAssignedHoursInSprint()
@@ -61,12 +62,12 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
         return Person.IDctr
 
     @property
-    def personID(self):
-        return self.__personID
+    def ID(self):
+        return self.__ID
 
-    @personID.setter
-    def personID(self, value):
-        return self.__personID
+    @ID.setter
+    def ID(self, value):
+        return self.__ID
 
     @property
     def estimatedSprintHours(self):
