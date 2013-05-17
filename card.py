@@ -1,6 +1,7 @@
 __author__ = 'alan'
 
 import datetime
+from crud import CRUD
 from string import Template
 
 
@@ -52,7 +53,7 @@ class InvalidAccessOfDict(CardError): pass
 class InvalidConstructorParams(CardError): pass
 
 
-class Card(object):
+class Card(CRUD):
     cardDataMap = {
         "storyPoints": ( 1, 2, 3, 5, 13, 40, 100 ),
         "placeOnBoard": ["Backlog", "Research", "Development", "CodeReview", "POReview", "QA", "Done"],
@@ -81,7 +82,7 @@ class Card(object):
     NEEDS_STATE_NAME = 1
     HAD_STATE_NAME = 2
     STATE_EXCEPTION = 3
-    DATE_FORMAT = "%Y/%m/%d"
+    DATE_FORMAT = "%Y-%m-%d"
     __printTemplate = Template("""
 --------------------------------
 ID:$ID
@@ -96,7 +97,7 @@ In:$placeOnBoard, $storyPoints SP
     def __init__(self, params=None):
 
         self.__ID = None
-        self.__createdDate = datetime.datetime.now().strftime(Card.DATE_FORMAT)
+        self.__createdDate = datetime.datetime.now().date()
         self.__storyPoints = 1
         self.startDate = None
         self.completedDate = None

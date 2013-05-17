@@ -21,7 +21,7 @@ class DateNotSetError(SprintException): pass
 
 class Sprint(object):
     IDctr = 0
-    DATE_FORMAT = "%Y/%m/%d"
+    DATE_FORMAT = "%Y-%m-%d"
     TABLE = "sprints"
 
 

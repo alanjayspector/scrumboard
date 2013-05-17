@@ -3,7 +3,6 @@ __author__ = 'alan'
 import psycopg2
 import sys
 from card import Card
-from crud import *
 
 
 
@@ -117,31 +116,32 @@ def crudToCard():
         "estimatedQAHours": 4,
     })
 
-    create(connection,createCard)
+    createCard.create(connection)
     print "Create a card"
     print createCard
 
     readCard = Card({"ID":createCard.ID})
-    readCard = read(connection,readCard)
+    readCard.read(connection)
     print "Read a card"
     print readCard
 
     readCard.description = "As a user I want to dance!"
 
-    update(connection,readCard)
+    readCard.update(connection)
 
     readCardAfterUpdate = Card({"ID":createCard.ID})
-    readCardAfterUpdate = read(connection,readCardAfterUpdate)
+    readCardAfterUpdate.read(connection)
     print "Update a card"
     print readCardAfterUpdate
+    return
 
-    delete(connection,readCardAfterUpdate)
+    readCardAfterUpdate.delete(connection)
 
 
     readCardAfterDelete = Card({"ID":createCard.ID})
-    readCardAfterDelete = read(connection,readCardAfterDelete)
+    successfulDelete = readCardAfterDelete.read(connection)
     print "Delete a card"
-    if readCardAfterDelete is None:
+    if successfulDelete is False:
         print "Delete Successful."
     else:
         print "Delete Failed."
