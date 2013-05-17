@@ -1,7 +1,6 @@
 __author__ = 'alan'
 
 import datetime
-import pytz
 from string import Template
 
 
@@ -82,11 +81,10 @@ class Card(object):
     NEEDS_STATE_NAME = 1
     HAD_STATE_NAME = 2
     STATE_EXCEPTION = 3
-    IDctr = 0
     DATE_FORMAT = "%Y/%m/%d"
     __printTemplate = Template("""
 --------------------------------
-ID:$cardID
+ID:$ID
 $description
 Dev:$developer, $spentDevHours/$estimatedDevHours hours
 QA:$qa, $estimatedQAHours hours
@@ -94,9 +92,10 @@ In:$placeOnBoard, $storyPoints SP
 --------------------------------
 """)
 
+    TABLE = "cards"
     def __init__(self, params=None):
 
-        self.__cardID = Card.getNextID()
+        self.__ID = None
         self.__createdDate = datetime.datetime.now().strftime(Card.DATE_FORMAT)
         self.__storyPoints = 1
         self.startDate = None
@@ -147,7 +146,7 @@ In:$placeOnBoard, $storyPoints SP
             self.__qa = person
 
     def __eq__(self, other):
-        return self.cardID == other.cardID
+        return self.ID == other.ID
 
     @property
     def createdDate(self):
@@ -157,10 +156,6 @@ In:$placeOnBoard, $storyPoints SP
     def createdDate(self, value):
         pass
 
-    @staticmethod
-    def getNextID():
-        Card.IDctr += 1
-        return Card.IDctr
 
     def __str__(self):
         developerName = "not assigned"
@@ -173,7 +168,7 @@ In:$placeOnBoard, $storyPoints SP
         cardInfo = {"storyPoints": self.storyPoints, "description": self.description, \
                     "estimatedDevHours": self.estimatedDevHours, "estimatedQAHours": self.estimatedQAHours, \
                     "qa": qaName, "developer": developerName, "spentDevHours": self.spentDevHours, \
-                    "placeOnBoard": self.placeOnBoard, "cardID": self.cardID
+                    "placeOnBoard": self.placeOnBoard, "ID": self.ID
         }
         return Card.__printTemplate.substitute(cardInfo)
 
@@ -222,6 +217,8 @@ In:$placeOnBoard, $storyPoints SP
 
     @spentDevHours.setter
     def spentDevHours(self, value):
+        if self.__spentDevHours == value:
+            return
         if not self.developer:
             raise NoDeveloperAssignedError
         elif isinstance(value, int) is True and value >= 0:
@@ -238,6 +235,8 @@ In:$placeOnBoard, $storyPoints SP
 
     @spentQAHours.setter
     def spentQAHours(self, value):
+        if self.__spentDevHours == value:
+            return
         if not self.qa:
             raise NoQAAssignedError
         elif isinstance(value, int) is True and value >= 0:
@@ -320,12 +319,17 @@ In:$placeOnBoard, $storyPoints SP
                 "hadCodeReview must be a bool not '%s" % value
 
     @property
-    def cardID(self):
-        return self.__cardID
+    def ID(self):
+        return self.__ID
 
-    @cardID.setter
-    def cardID(self, value):
-        pass
+    @ID.setter
+    def ID(self, value):
+        if value is None:
+            raise InvalidValueError, "Can not set ID as None"
+        elif self.__ID is None:
+            self.__ID = value
+        else:
+            raise InvalidValueError, "Can not set ID as None"
 
     @property
     def placeOnBoard(self):
