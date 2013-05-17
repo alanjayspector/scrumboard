@@ -17,7 +17,6 @@ class PersonInvalidCardsParam(PersonError): pass
 
 
 class Person(object):
-    IDctr = 0
     __printTemplate = Template("""
 --------------------------------
 ID:$ID
@@ -30,7 +29,7 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
     TABLE = "people"
 
     def __init__(self, params=None):
-        self.__ID = Person.getNextID()
+        self.__ID = None
         self.isADeveloper = True
         self.firstName = None
         self.lastName = None
@@ -56,18 +55,19 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
         }
         return Person.__printTemplate.substitute(personInfo)
 
-    @staticmethod
-    def getNextID():
-        Person.IDctr += 1
-        return Person.IDctr
-
     @property
     def ID(self):
         return self.__ID
 
+
     @ID.setter
     def ID(self, value):
-        return self.__ID
+        if value is None:
+            raise ValueError,"Can not set ID as None"
+        elif self.__ID is None:
+            self.__ID = value
+        else:
+            raise ValueError, "Can not set ID as None"
 
     @property
     def estimatedSprintHours(self):
