@@ -71,6 +71,8 @@ OWNER TO %s;
     except psycopg2.DatabaseError, e:
         print 'Error %s' % e
         sys.exit(1)
+
+
     cursor.close()
 
 
@@ -137,6 +139,9 @@ def crudToCard(connection,developer):
 
     readCard.description = "As a user I want to dance!"
     developer.assignCardToSelf(readCard)
+    readCard.spentDevHours += 5
+    readCard.spentDevHours += 5
+
 
     print "Update a card"
     readCard.update()
