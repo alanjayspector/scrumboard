@@ -3,6 +3,7 @@ __author__ = 'alan'
 import psycopg2
 import sys
 from card import Card
+from person import Person
 
 
 
@@ -80,6 +81,7 @@ def setupPeople(connection,user):
 "firstName" text,
 "lastName" text,
 "estimatedSprintHours" integer DEFAULT 0,
+"currentSprintID" text,
 "spentSprintHours" integer DEFAULT 0,
 "isADeveloper" boolean DEFAULT true,
 "avatar" text,
@@ -108,7 +110,14 @@ def setupTables(connection, user):
     setupCards(connection,user)
 
 
-def crudToCard():
+def crudToPerson(connection):
+    developer = Person({"firstName": "Alan", "lastName": "Spector", "estimatedSprintHours": 32, "connection":connection})
+    developer.create()
+    print "Creating a developer"
+    print developer
+    return developer
+
+def crudToCard(connection,developer):
     createCard = Card({
         "description": "As user I want to fly.",
         "storyPoints": 1,
@@ -127,14 +136,17 @@ def crudToCard():
     print readCard
 
     readCard.description = "As a user I want to dance!"
+    developer.assignCardToSelf(readCard)
 
+    print "Update a card"
     readCard.update()
 
     readCardAfterUpdate = Card({"ID":createCard.ID, "connection":connection})
     readCardAfterUpdate.read()
-    print "Update a card"
+    print "Read after updated card"
     print readCardAfterUpdate
 
+    return
     readCardAfterUpdate.delete()
 
 
@@ -157,7 +169,8 @@ try:
     setupDatabase(connection)
     connection = psycopg2.connect(database='scrumboard_test', password=password, user=user)
     setupTables(connection,user)
-    crudToCard()
+    developer = crudToPerson(connection)
+    crudToCard(connection, developer)
 
 
     connection.close()

@@ -126,20 +126,46 @@ In:$placeOnBoard, $storyPoints SP
             if placeOnBoard:
                 self.placeOnBoard = placeOnBoard
 
+    def db_columns(self):
+        myColumns = [
+            "createdDate",
+            "storyPoints",
+            "completedDate",
+            "estimatedQAHours",
+            "estimatedDevHours",
+            "needsPOReview",
+            "hadPOReview",
+            "needsQA",
+            "hadQA",
+            "needsCodeReview",
+            "hadCodeReview",
+            "description",
+            "spentDevHours",
+            "spentQAHours",
+            "placeOnBoard"
+        ]
+        return myColumns
+
+    def db_collections(self):
+        return []
+
+    def db_objects(self):
+        return [ "qa", "developer"]
+
     @property
     def developer(self):
         return self.__developer
 
     @developer.setter
-    def developer(self, person):
-        if  isinstance(person,int):
-            developer = person.Person({"ID":person, "connection":self.connection})
-            if qa.read():
-                self.developer = developer
-        if person != None and (not hasattr(person, "isADeveloper") or not person.isADeveloper):
+    def developer(self, value):
+        if  isinstance(value,int):
+            developer = person.Person({"ID":value, "connection":self.connection})
+            if developer.read():
+                self.__developer = developer
+        elif value != None and (not hasattr(value, "isADeveloper") or not value.isADeveloper):
             raise NotADeveloperError
         else:
-            self.__developer = person
+            self.__developer = value
 
     @property
     def qa(self):
@@ -151,7 +177,7 @@ In:$placeOnBoard, $storyPoints SP
         if  isinstance(person,int):
             qa = person.Person({"ID":person, "connection":self.connection})
             if qa.read():
-                self.qa == qa
+                self.__qa == qa
         elif person != None and (not hasattr(person, "isADeveloper") or person.isADeveloper):
             raise NotQAError
         else:
@@ -204,7 +230,7 @@ In:$placeOnBoard, $storyPoints SP
 
     @estimatedQAHours.setter
     def estimatedQAHours(self, value):
-        if isinstance(value, int) is True and value >= 0:
+        if value is None or isinstance(value, int) is True and value >= 0:
             self.__estimatedQAHours = value
         else:
             raise InvalidHourError, \
@@ -217,9 +243,9 @@ In:$placeOnBoard, $storyPoints SP
 
     @estimatedDevHours.setter
     def estimatedDevHours(self, value):
-        if isinstance(value, int) is True and value >= 0:
+        if value is None or isinstance(value, int) is True and value >= 0:
             self.__estimatedDevHours = value
-        else:
+        elif value == self.__estimatedDevHours:
             raise InvalidHourError, \
                 "Value must be an positive int not '%s'" % value
 

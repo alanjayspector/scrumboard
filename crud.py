@@ -34,7 +34,7 @@ class CRUD(object):
         returnValue = cursor.fetchone()
         cursor.close()
         if returnValue is not None:
-            for key,value in zip(params,returnValue):
+            for key,value in zip(keys,returnValue):
                 setattr(self,key,value)
             return True
         else:
@@ -43,25 +43,14 @@ class CRUD(object):
 
     def toDict(self):
         ourDict = {}
-        for k,v in self.__dict__.items():
-            if re.search("__ID$", k):
-                continue
-            if re.match("^connection$",k):
-                continue
-            protected_attr_check = re.search("__(\w+)$", k)
-            if protected_attr_check:
-                groups = protected_attr_check.groups()
-                if len(groups) > 1:
-                    raise Exception,\
-                        "atttribute {} breaks toDict() check _<CLASS>__attribute".format(k)
-                ourDict[groups[0]] = v
-            else:
-                if hasattr(v,"ID"):
-                    ourDict[k] = v.ID
-                elif isinstance(v, dict):
-                    ourDict[k] = v.keys()
-                else:
-                    ourDict[k] = v
+        for k in self.db_columns():
+                    ourDict[k] = getattr(self,k)
+        for k in self.db_objects():
+                    obj = getattr(self,k)
+                    if obj:
+                        ourDict[k] = obj.ID
+                    else:
+                        ourDict[k] = None
         return ourDict
 
 

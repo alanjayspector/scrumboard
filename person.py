@@ -1,6 +1,8 @@
 __author__ = 'alan'
 
 from string import Template
+from crud import CRUD
+import card
 
 
 class PersonError(Exception): pass
@@ -15,7 +17,7 @@ class PersonInvalidCard(PersonError): pass
 class PersonInvalidCardsParam(PersonError): pass
 
 
-class Person(object):
+class Person(CRUD):
     __printTemplate = Template("""
 --------------------------------
 ID:$ID
@@ -38,6 +40,7 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
         self.cards = {}
         self.__estimatedSprintHours = 0
         self.__spentSprintHours = 0
+        self.connection = None
         if isinstance(params, dict):
             for key in params:
                 if key != "cards" and hasattr(self, key):
@@ -45,6 +48,23 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
         if not self.currentSprintID:
             self.currentSprintID = "currentSprint"
         self.cards[self.currentSprintID] = []
+
+    def db_columns(self):
+        return [
+            "isADeveloper",
+            "firstName",
+            "lastName",
+            "currentSprintID",
+            "estimatedSprintHours",
+            "spentSprintHours"
+        ]
+    def db_objects(self):
+        return []
+
+    def db_collections(self):
+        return []
+
+
 
     def __str__(self):
         personInfo = {"ID": self.ID, "firstName": self.firstName, \
@@ -74,7 +94,7 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
 
     @estimatedSprintHours.setter
     def estimatedSprintHours(self, value):
-        if not isinstance(value, int) or value <= 0:
+        if value is not None and not isinstance(value, int) or value < 0:
             raise PersonInvalidHour, "estimatedSprintHours must be greater than 0"
         self.__estimatedSprintHours = value
 
@@ -92,7 +112,7 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
 
     @spentSprintHours.setter
     def spentSprintHours(self, value):
-        if not isinstance(value, int) or value <= 0:
+        if value is not None and not isinstance(value, int) or value < 0:
             raise PersonInvalidHour, "spentSprintHours must be greater than 0"
 
         self.__spentSprintHours = value
