@@ -104,11 +104,14 @@ def read(connection,obj):
         obj.TABLE)
     cursor.execute(SQL,(obj.ID,))
     returnValue = cursor.fetchone()
-    for key,value in zip(params,returnValue):
-        setattr(obj,key,value)
-
-    connection.commit()
     cursor.close()
+    if returnValue is not None:
+        for key,value in zip(params,returnValue):
+            setattr(obj,key,value)
+        return obj
+    else:
+        return None
+
 
 
 def update(connection,obj):
@@ -122,10 +125,53 @@ def update(connection,obj):
         ",".join(['"{}"=%s'.format(attr) for attr in keys ])
     )
     cursor.execute(SQL,values)
+    connection.commit()
     cursor.close()
 
-def delete(connection,ID):
-    pass
+def delete(connection,obj):
+    cursor = connection.cursor()
+    SQL = 'DELETE FROM {} where "ID"=%s'.format(obj.TABLE)
+    cursor.execute(SQL,(obj.ID,))
+    connection.commit()
+    cursor.close()
+
+
+def crudToCard():
+    createCard = Card({
+        "description": "As user I want to fly.",
+        "storyPoints": 1,
+        "estimatedDevHours": 18,
+        "estimatedQAHours": 4,
+    })
+
+    create(connection,createCard)
+    print "Create a card"
+    print createCard
+
+    readCard = Card({"ID":createCard.ID})
+    readCard = read(connection,readCard)
+    print "Read a card"
+    print readCard
+
+    readCard.description = "As a user I want to dance!"
+
+    update(connection,readCard)
+
+    readCardAfterUpdate = Card({"ID":createCard.ID})
+    readCardAfterUpdate = read(connection,readCardAfterUpdate)
+    print "Update a card"
+    print readCardAfterUpdate
+
+    delete(connection,readCardAfterUpdate)
+
+
+    readCardAfterDelete = Card({"ID":createCard.ID})
+    readCardAfterDelete = read(connection,readCardAfterDelete)
+    print "Delete a card"
+    if readCardAfterDelete is None:
+        print "Delete Successful."
+    else:
+        print "Delete Failed."
 
 
 connection = None
@@ -138,39 +184,14 @@ try:
     setupDatabase(connection)
     connection = psycopg2.connect(database='scrumboard_test', password=password, user=user)
     setupTables(connection,user)
+    crudToCard()
 
 
+    connection.close()
 
 except psycopg2.DatabaseError, e:
     print 'Error %s' % e
     sys.exit(1)
 
 
-createCard = Card({
-    "description": "As user I want to fly.",
-    "storyPoints": 1,
-    "estimatedDevHours": 18,
-    "estimatedQAHours": 4,
-})
 
-create(connection,createCard)
-print "Create a card"
-print createCard
-
-readCard = Card({"ID":createCard.ID})
-read(connection,readCard)
-print "Read a card"
-print readCard
-
-readCard.description = "As a user I want to dance!"
-
-update(connection,readCard)
-
-readCardAfterUpdate = Card({"ID":createCard.ID})
-read(connection,readCardAfterUpdate)
-print "Update a card"
-print readCardAfterUpdate
-
-
-
-connection.close()
