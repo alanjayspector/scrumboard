@@ -8,7 +8,7 @@ class CRUD(object):
         pass
 
 
-    def create(self,connection):
+    def create(self):
         params = self.toDict()
         keys = params.keys()
         SQL = 'INSERT INTO {} ("ID",{}) VALUES (DEFAULT,{}) RETURNING "ID";'.format(
@@ -16,15 +16,15 @@ class CRUD(object):
             ",".join(['"{}"'.format(attr) for attr in keys]),
             ",".join(['%({})s'.format(attr)  for attr in keys])
         )
-        cursor = connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(SQL, params)
         newID = cursor.fetchone()[0]
         self.ID = newID
-        connection.commit()
+        self.connection.commit()
         cursor.close()
 
-    def read(self,connection):
-        cursor = connection.cursor()
+    def read(self):
+        cursor = self.connection.cursor()
         params = self.toDict()
         keys = params.keys()
         SQL = 'SELECT {} from {} where "ID"=%s'.format(
@@ -44,8 +44,9 @@ class CRUD(object):
     def toDict(self):
         ourDict = {}
         for k,v in self.__dict__.items():
-            isAnIDColumn = re.search("__ID$", k)
-            if isAnIDColumn:
+            if re.search("__ID$", k):
+                continue
+            if re.match("^connection$",k):
                 continue
             protected_attr_check = re.search("__(\w+)$", k)
             if protected_attr_check:
@@ -64,8 +65,8 @@ class CRUD(object):
         return ourDict
 
 
-    def update(self,connection):
-        cursor = connection.cursor()
+    def update(self):
+        cursor = self.connection.cursor()
         params = self.toDict()
         keys = params.keys()
         values = [ params[attr] for attr in keys]
@@ -75,12 +76,12 @@ class CRUD(object):
             ",".join(['"{}"=%s'.format(attr) for attr in keys ])
         )
         cursor.execute(SQL,values)
-        connection.commit()
+        self.connection.commit()
         cursor.close()
 
-    def delete(self,connection):
-        cursor = connection.cursor()
+    def delete(self):
+        cursor = self.connection.cursor()
         SQL = 'DELETE FROM {} where "ID"=%s'.format(self.TABLE)
         cursor.execute(SQL,(self.ID,))
-        connection.commit()
+        self.connection.commit()
         cursor.close()

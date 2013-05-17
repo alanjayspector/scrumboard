@@ -114,32 +114,32 @@ def crudToCard():
         "storyPoints": 1,
         "estimatedDevHours": 18,
         "estimatedQAHours": 4,
+        "connection":connection
     })
 
-    createCard.create(connection)
+    createCard.create()
     print "Create a card"
     print createCard
 
-    readCard = Card({"ID":createCard.ID})
-    readCard.read(connection)
+    readCard = Card({"ID":createCard.ID, "connection":connection})
+    readCard.read()
     print "Read a card"
     print readCard
 
     readCard.description = "As a user I want to dance!"
 
-    readCard.update(connection)
+    readCard.update()
 
-    readCardAfterUpdate = Card({"ID":createCard.ID})
-    readCardAfterUpdate.read(connection)
+    readCardAfterUpdate = Card({"ID":createCard.ID, "connection":connection})
+    readCardAfterUpdate.read()
     print "Update a card"
     print readCardAfterUpdate
-    return
 
-    readCardAfterUpdate.delete(connection)
+    readCardAfterUpdate.delete()
 
 
-    readCardAfterDelete = Card({"ID":createCard.ID})
-    successfulDelete = readCardAfterDelete.read(connection)
+    readCardAfterDelete = Card({"ID":createCard.ID, "connection":connection})
+    successfulDelete = readCardAfterDelete.read()
     print "Delete a card"
     if successfulDelete is False:
         print "Delete Successful."

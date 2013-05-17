@@ -1,6 +1,5 @@
 __author__ = 'alan'
 
-from card import Card
 from string import Template
 
 
@@ -151,8 +150,8 @@ $spentSprintHours/$estimatedSprintHours/$assignedHoursInSprint
 
 
     def assignCardToSelf(self, card):
-        if not isinstance(card, Card):
-            raise PersonInvalidCard, "addCardToCurrentSprint must take a Card instance"
+#        if not isinstance(card, Card):
+#            raise PersonInvalidCard, "addCardToCurrentSprint must take a Card instance"
         if not self.cards.has_key(self.currentSprintID):
             self.cards[self.currentSprintID] = []
         self.cards[self.currentSprintID].append(card)

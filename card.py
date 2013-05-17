@@ -3,6 +3,7 @@ __author__ = 'alan'
 import datetime
 from crud import CRUD
 from string import Template
+import person
 
 
 class CardError(Exception): pass
@@ -114,6 +115,7 @@ In:$placeOnBoard, $storyPoints SP
         self.__spentQAHours = 0
         self.__developer = None
         self.__qa = None
+        self.connection = None
         self.__placeOnBoard = "Backlog"
 
         if isinstance(params, dict):
@@ -130,6 +132,10 @@ In:$placeOnBoard, $storyPoints SP
 
     @developer.setter
     def developer(self, person):
+        if  isinstance(person,int):
+            developer = person.Person({"ID":person, "connection":self.connection})
+            if qa.read():
+                self.developer = developer
         if person != None and (not hasattr(person, "isADeveloper") or not person.isADeveloper):
             raise NotADeveloperError
         else:
@@ -141,7 +147,12 @@ In:$placeOnBoard, $storyPoints SP
 
     @qa.setter
     def qa(self, person):
-        if person != None and (not hasattr(person, "isADeveloper") or person.isADeveloper):
+
+        if  isinstance(person,int):
+            qa = person.Person({"ID":person, "connection":self.connection})
+            if qa.read():
+                self.qa == qa
+        elif person != None and (not hasattr(person, "isADeveloper") or person.isADeveloper):
             raise NotQAError
         else:
             self.__qa = person
