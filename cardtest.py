@@ -12,7 +12,7 @@ class cardChecks(unittest.TestCase):
         self.card = Card({"description": "My Test Card", "qa": qa, "developer": developer})
 
     def testPrint(self):
-        pass
+        self.assertEqual()
 
     def testIsCardRed(self):
         self.card.estimatedDevHours = 8

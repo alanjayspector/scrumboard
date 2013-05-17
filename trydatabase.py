@@ -95,23 +95,34 @@ def create(connection, obj):
     connection.commit()
     cursor.close()
 
-def read(connection,obj,ID):
+def read(connection,obj):
     cursor = connection.cursor()
     params = toDict(obj)
     keys = params.keys()
     SQL = 'SELECT {} from {} where "ID"=%s'.format(
         ",".join(['"{}"'.format(attr) for attr in keys]),
         obj.TABLE)
-    cursor.execute(SQL,(ID,))
+    cursor.execute(SQL,(obj.ID,))
     returnValue = cursor.fetchone()
     for key,value in zip(params,returnValue):
         setattr(obj,key,value)
 
+    connection.commit()
     cursor.close()
 
 
-def update(connection,ID,params):
-    pass
+def update(connection,obj):
+    cursor = connection.cursor()
+    params = toDict(obj)
+    keys = params.keys()
+    values = [ params[attr] for attr in keys]
+    values.append(obj.ID)
+    SQL = 'UPDATE {} SET {} WHERE "ID"= %s'.format(
+        obj.TABLE,
+        ",".join(['"{}"=%s'.format(attr) for attr in keys ])
+    )
+    cursor.execute(SQL,values)
+    cursor.close()
 
 def delete(connection,ID):
     pass
@@ -143,11 +154,22 @@ createCard = Card({
 })
 
 create(connection,createCard)
+print "Create a card"
 print createCard
 
-readCard = Card()
-read(connection,readCard,createCard.ID)
+readCard = Card({"ID":createCard.ID})
+read(connection,readCard)
+print "Read a card"
 print readCard
+
+readCard.description = "As a user I want to dance!"
+
+update(connection,readCard)
+
+readCardAfterUpdate = Card({"ID":createCard.ID})
+read(connection,readCardAfterUpdate)
+print "Update a card"
+print readCardAfterUpdate
 
 
 
